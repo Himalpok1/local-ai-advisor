@@ -15,6 +15,11 @@ Local AI Advisor answers *"Will this model + runtime + tool + hardware combinati
 - **Learn** (`/learn`): the core concepts, with live engine-powered widgets.
 - **Methodology** (`/methodology`): how the engine works, plus the full table of benchmarks used.
 - **Check any Hugging Face model** (`/hugging-face`): search or paste any Hub model, including GGUF and MLX repos. The server reads its real config.json and file sizes (parameters, experts, attention layout, KV cache, context) and rates it with the same engine. Gated models are read through public mirrors. Capability tiers for imported models are estimated and labelled as such.
+- **Honest live-import facts**: native and RoPE-extended context are shown separately; ratings use native context. Embeddings/rerankers receive a helpful error. Commercial-use badges summarize declared licenses, and tool/thinking/vision signals show their provenance and uncertainty.
+- **Verified conversion availability**: live imports discover GGUF conversions and measured quant file sizes, with an explicit fallback when none are found. FP8 is a separate quantization. FP16/BF16 safetensors sizes use actual weight files; Hub `safetensors.total` is a parameter count, not bytes.
+- **Accessible, remembered lookups**: search rows identify GGUF/MLX/safetensors and gated repos; ArrowUp/Down, Enter and Escape operate the combobox. Hardware, custom specs, OS and workload are validated and remembered locally under `laa:hf-state` (shared hardware links take precedence).
+- **Model share pages** (`/hf/<owner>/<model>`): 30 seeded pages render facts and default M4 Pro 48GB repository-coding recommendations on the server, with canonical URLs, model-specific OG cards and sitemap entries. The seed uses the report's text-model trending entries plus its most-downloaded catalog rows; it excludes ASR.
+- **Weekly catalog review**: a six-worker, retrying refresh script writes a review-only report; GitHub Actions commits the report and opens/updates a dated issue when models need review. Curated entries are never edited automatically.
 - **Shareable URLs**: every configuration is encoded in the query string and validated with Zod on the way in.
 
 ## Architecture
@@ -26,6 +31,10 @@ components/advisor/      Wizards, result cards, gauges, memory bar, explanation,
 components/explore/      Database explorers        components/learn/   Educational widgets
 data/                    Hardware, models, runtimes, tools, providers, quantizations, benchmarks
 lib/schemas/             Zod domain schemas + engine output types
+lib/hf/                  Server Hub cache/import/discovery, parser, license signals, saved-state validation
+components/advisor/hf-model-facts.tsx  Shared server/client facts presentation
+app/hf/[owner]/[model]/   Static/ISR model pages and model-specific OG images
+.github/workflows/       Weekly review-only model refresh
 lib/workloads/           Use-case profiles (weights, thresholds), dev environments, workload resolver
 lib/memory/              Weights, KV cache, overhead, unified vs discrete memory pools
 lib/performance/         Bandwidth-bound decode, compute-bound prefill, benchmark calibration
@@ -35,7 +44,9 @@ tests/                   Vitest unit tests
 research/                Source notes behind the seed data (URLs for every figure)
 ```
 
-The engine (`lib/`) has no UI dependencies. The pipeline in `lib/recommendations/evaluate.ts` runs these steps:
+The calculation engine has no UI dependencies. HF presentation helpers live in `lib/hf/og.tsx`; `lib/hf/fetch.ts`, `summary.ts` and `og.tsx` are server-only. Imports share in-flight requests, cache model/search results for six hours and conversion/file discovery for 24 hours. Templates are limited to 200KB; recursive file trees follow Hub pagination. Measured weights carry format provenance so a safetensors size is never used as a GGUF measurement.
+
+The pipeline in `lib/recommendations/evaluate.ts` runs these steps:
 
 1. Validate hardware, runtime and tool → API → runtime.
 2. Compute usable memory after the OS, the dev environment and the tool.

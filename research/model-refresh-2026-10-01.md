@@ -1,6 +1,6 @@
 # Model catalog refresh — 2026-10-01
 
-Compared 36 curated models with their Hugging Face config.json. 6 need a look.
+Compared 36 curated models with their Hugging Face config.json. 13 need a look.
 
 | Model | Repo | Result | Downloads |
 |---|---|---|---|
@@ -15,9 +15,9 @@ Compared 36 curated models with their Hugging Face config.json. 6 need a look.
 | Qwen3-Coder 30B-A3B Instruct | Qwen/Qwen3-Coder-30B-A3B-Instruct | ✓ matches | 514,350 |
 | Qwen3 30B-A3B Instruct 2507 | Qwen/Qwen3-30B-A3B-Instruct-2507 | ✓ matches | 812,694 |
 | Qwen3-Next 80B-A3B Instruct | Qwen/Qwen3-Next-80B-A3B-Instruct | ✓ matches | 295,105 |
-| Qwen3 32B | Qwen/Qwen3-32B | ⚠ config context 40960 (catalog 32768) | 4,138,026 |
-| Qwen3 14B | Qwen/Qwen3-14B | ⚠ config context 40960 (catalog 32768) | 2,117,982 |
-| Qwen3 8B | Qwen/Qwen3-8B | ⚠ config context 40960 (catalog 32768) | 11,384,459 |
+| Qwen3 32B | Qwen/Qwen3-32B | ⚠ config native 40960 (catalog 32768) | 4,138,026 |
+| Qwen3 14B | Qwen/Qwen3-14B | ⚠ config native 40960 (catalog 32768) | 2,117,982 |
+| Qwen3 8B | Qwen/Qwen3-8B | ⚠ config native 40960 (catalog 32768) | 11,384,459 |
 | Qwen2.5-Coder 32B Instruct | Qwen/Qwen2.5-Coder-32B-Instruct | ✓ matches | 942,954 |
 | Qwen2.5-Coder 7B Instruct | Qwen/Qwen2.5-Coder-7B-Instruct | ✓ matches | 2,279,997 |
 | Gemma 4 31B | google/gemma-4-31B-it | ✓ matches | 9,845,000 |
@@ -25,36 +25,37 @@ Compared 36 curated models with their Hugging Face config.json. 6 need a look.
 | Gemma 4 12B | google/gemma-4-12B-it | ✓ matches | 1,887,250 |
 | Gemma 4 E4B | google/gemma-4-E4B-it | ✓ matches | 4,365,754 |
 | Gemma 3 27B | unsloth/gemma-3-27b-it | ✓ matches | 42,666 |
-| gpt-oss-20b | openai/gpt-oss-20b | ✓ matches | 6,706,838 |
-| gpt-oss-120b | openai/gpt-oss-120b | ✓ matches | 4,479,008 |
-| Devstral Small 2 (24B) | mistralai/Devstral-Small-2-24B-Instruct-2512 | ⚠ config context 393216 (catalog 262144) | 312,218 |
+| gpt-oss-20b | openai/gpt-oss-20b | ⚠ config native 4096, rope-extended 131072 (catalog 131072) | 6,706,838 |
+| gpt-oss-120b | openai/gpt-oss-120b | ⚠ config native 4096, rope-extended 131072 (catalog 131072) | 4,479,008 |
+| Devstral Small 2 (24B) | mistralai/Devstral-Small-2-24B-Instruct-2512 | ⚠ config native 393216 (catalog 262144) | 312,218 |
 | Mistral Small 3.2 (24B) | mistralai/Mistral-Small-3.2-24B-Instruct-2506 | ✓ matches | 253,960 |
-| Mistral Small 4 (119B-A6.5B) | mistralai/Mistral-Small-4-119B-2603 | ⚠ config context 1048576 (catalog 262144) | 52,393 |
+| Mistral Small 4 (119B-A6.5B) | mistralai/Mistral-Small-4-119B-2603 | ⚠ config native 1048576 (catalog 262144) | 52,393 |
 | GLM-4.7-Flash (30B-A3B) | zai-org/GLM-4.7-Flash | ✓ matches | 1,809,855 |
 | GLM-4.5-Air (106B-A12B) | zai-org/GLM-4.5-Air | ✓ matches | 260,890 |
 | GLM-4.6V-Flash (10B) | zai-org/GLM-4.6V-Flash | ✓ matches | 103,648 |
-| Llama 3.3 70B Instruct | unsloth/Llama-3.3-70B-Instruct | ✓ matches | 46,656 |
-| Llama 4 Scout (109B-A17B) | unsloth/Llama-4-Scout-17B-16E-Instruct | ⚠ config context 2097152 (catalog 262144) | 1,722 |
-| Llama 3.1 8B Instruct | unsloth/Llama-3.1-8B-Instruct | ✓ matches | 126,226 |
-| Llama 3.2 3B Instruct | unsloth/Llama-3.2-3B-Instruct | ✓ matches | 181,513 |
+| Llama 3.3 70B Instruct | unsloth/Llama-3.3-70B-Instruct | ⚠ config native 8192, rope-extended 131072 (catalog 131072) | 46,656 |
+| Llama 4 Scout (109B-A17B) | unsloth/Llama-4-Scout-17B-16E-Instruct | ⚠ config native 8192, rope-extended 10485760 (catalog 262144) | 1,722 |
+| Llama 3.1 8B Instruct | unsloth/Llama-3.1-8B-Instruct | ⚠ config native 8192, rope-extended 131072 (catalog 131072) | 126,226 |
+| Llama 3.2 3B Instruct | unsloth/Llama-3.2-3B-Instruct | ⚠ config native 8192, rope-extended 131072 (catalog 131072) | 181,513 |
 | Phi-4 (14B) | microsoft/phi-4 | ✓ matches | 513,868 |
-| DeepSeek-R1-0528-Qwen3-8B | deepseek-ai/DeepSeek-R1-0528-Qwen3-8B | ✓ matches | 720,001 |
-| DeepSeek-V4-Flash (284B-A13B) | deepseek-ai/DeepSeek-V4-Flash | ✓ matches | 1,149,476 |
+| DeepSeek-R1-0528-Qwen3-8B | deepseek-ai/DeepSeek-R1-0528-Qwen3-8B | ⚠ config native 32768, rope-extended 131072 (catalog 131072) | 720,001 |
+| DeepSeek-V4-Flash (284B-A13B) | deepseek-ai/DeepSeek-V4-Flash | ⚠ config native 65536, rope-extended 1048576 (catalog 1048576) | 1,149,476 |
 
 ## Trending text-generation models not in the catalog
 
 - [Qwen/Qwen3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B) — 29,423,291 downloads, 1711 likes
-- [meta-llama/Llama-3.2-1B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct) — 7,698,354 downloads, 1756 likes
+- [meta-llama/Llama-3.2-1B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct) — 7,698,354 downloads, 1757 likes
 - [zai-org/GLM-5.3](https://huggingface.co/zai-org/GLM-5.3) — 1,375,795 downloads, 2031 likes
 - [meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) — 1,029,505 downloads, 5168 likes
 - [openbmb/MiniCPM5-2B](https://huggingface.co/openbmb/MiniCPM5-2B) — 942,924 downloads, 1702 likes
-- [deepseek-ai/DeepSeek-V4.1-Flash](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash) — 748,482 downloads, 3951 likes
+- [deepseek-ai/DeepSeek-V4.1-Flash](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash) — 748,482 downloads, 3954 likes
 - [nvidia/Qwen3.8-27B-NVFP4](https://huggingface.co/nvidia/Qwen3.8-27B-NVFP4) — 471,004 downloads, 159 likes
 - [Cactus-Compute/needle3](https://huggingface.co/Cactus-Compute/needle3) — 99,581 downloads, 266 likes
-- [XiaomiMiMo/MiMo-V2.6-Pro-RL](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL) — 82,770 downloads, 619 likes
+- [XiaomiMiMo/MiMo-V2.6-Pro-RL](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL) — 82,770 downloads, 620 likes
+- [dealignai/GLM-5.3-CYBERSECURITY-FP8](https://huggingface.co/dealignai/GLM-5.3-CYBERSECURITY-FP8) — 77,647 downloads, 573 likes
 - [XingChen-AGI/Xing4.0-29B-A4B](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B) — 48,705 downloads, 1822 likes
 - [XiaomiMiMo/MiMo-V2.6-Flash-RL](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-RL) — 44,737 downloads, 524 likes
 - [XHToken/Spark-X2.5-4B](https://huggingface.co/XHToken/Spark-X2.5-4B) — 40,039 downloads, 1359 likes
-- [Edge0/Audio8-ASR-Infinite](https://huggingface.co/Edge0/Audio8-ASR-Infinite) — 27,228 downloads, 1991 likes
+- [Edge0/Audio8-ASR-Infinite](https://huggingface.co/Edge0/Audio8-ASR-Infinite) — 27,228 downloads, 1992 likes
 
 _Generated by scripts/refresh-models.mts. Review before editing data/models.ts._

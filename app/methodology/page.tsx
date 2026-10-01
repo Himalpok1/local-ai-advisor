@@ -95,6 +95,7 @@ export default function MethodologyPage() {
       title="Methodology"
       intro="How the advisor turns your hardware, tool and workload into a comfort rating — and where every number comes from."
     >
+      <p className="text-sm text-muted-foreground">The catalog stores vendor-documented practical context. Live Hugging Face imports show native context plus any RoPE-extended window, and rate against native context; quality past native may degrade, so long-context ratings there are optimistic.</p>
       <nav aria-label="On this page" className="-mt-4">
         <ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-sm">
           {TOC.map(([id, label]) => (

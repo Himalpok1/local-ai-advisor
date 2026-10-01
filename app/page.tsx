@@ -1,125 +1,457 @@
 import Link from "next/link";
-import { ArrowRight, Bot, Cpu, HardDrive, Layers, Search, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Bot,
+  Cpu,
+  HardDrive,
+  Layers,
+  Search,
+  Sparkles,
+  Zap,
+  CheckCircle2,
+  XCircle,
+  ShieldCheck,
+  Scale,
+  BookOpen,
+  Boxes,
+  HelpCircle,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 import { LinkButton } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { HomeDemo } from "@/components/home/home-demo";
+import { PopularRigsMatrix } from "@/components/home/popular-rigs";
+import { ComfortExplorer } from "@/components/home/comfort-explorer";
 import { BENCHMARKS, HARDWARE, MODELS, RUNTIMES, TOOLS } from "@/data";
-import { COMFORT_DESCRIPTION, COMFORT_LABEL, COMFORT_LEVELS } from "@/lib/schemas/results";
-import { ComfortBadge } from "@/components/advisor/comfort";
 
 const TIERS = [
-  { title: "Can load", text: "The model physically fits into usable RAM / VRAM / unified memory." },
-  { title: "Can run", text: "Your runtime supports the hardware, and your tool can talk to it." },
-  { title: "Can run usably", text: "Fast enough for basic interaction." },
-  { title: "Comfortable for this workload", text: "Given your tool, project size, context, other apps and expectations — will it actually feel good?", primary: true },
+  {
+    step: "01",
+    title: "Can Load",
+    badge: "Memory",
+    text: "The model physically fits into usable RAM / VRAM without triggering an immediate out-of-memory crash.",
+  },
+  {
+    step: "02",
+    title: "Can Run",
+    badge: "Compatibility",
+    text: "Your runtime (llama.cpp, MLX, Ollama) supports the chip instructions, and your tool connects cleanly via local API.",
+  },
+  {
+    step: "03",
+    title: "Can Run Usably",
+    badge: "Basic Speed",
+    text: "Generation exceeds minimal conversational speeds (> 10 tok/s) so basic one-turn interactions don't feel agonizing.",
+  },
+  {
+    step: "04",
+    title: "Comfortable for Workload",
+    badge: "Real-World Experience",
+    text: "Leaves generous headroom for your OS and IDE. Prompt prefill is fast enough to make multi-turn coding agents feel instant.",
+    primary: true,
+  },
 ];
 
 export default function Home() {
   return (
-    <div>
-      <section className="relative overflow-hidden border-b">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,color-mix(in_oklch,var(--primary)_14%,transparent),transparent)]" />
-        <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-16 sm:px-6 sm:pt-20">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-              <Sparkles className="size-3.5 text-primary" /> Workload-aware local AI recommendations
+    <div className="space-y-16 sm:space-y-24">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden border-b border-border/70 hero-radial-glow subtle-grid">
+        <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
+          <div className="mx-auto max-w-3xl text-center space-y-6">
+            {/* Live Status Eyebrow Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/80 px-3.5 py-1.5 text-xs font-medium text-muted-foreground shadow-2xs backdrop-blur-md">
+              <span className="flex size-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-semibold text-foreground">Zero-Guesswork Local AI</span>
+              <span className="text-border">|</span>
+              <span>{HARDWARE.length} Hardware Profiles · {BENCHMARKS.length} Benchmarks</span>
+            </div>
+
+            {/* Main Headline */}
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl text-foreground">
+              Will local AI{" "}
+              <span className="text-gradient-primary">actually run well</span> on your computer?
+            </h1>
+
+            {/* Subtitle */}
+            <p className="mx-auto max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
+              Don&apos;t guess if a model fits. We calculate real KV-cache headroom, agentic prompt prefill latency, and token speeds for your exact CPU, GPU, or Apple Silicon machine.
             </p>
-            <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-6xl">Will local AI actually run well on your computer?</h1>
-            <p className="mt-5 text-lg text-muted-foreground">
-              Choose your hardware, tools, and workload. We&apos;ll tell you which local AI models will actually be comfortable to use—not just which ones technically fit.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <LinkButton href="/check" size="lg">
-                Check My Computer <ArrowRight className="size-4" />
+
+            {/* Call to Actions */}
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <LinkButton href="/check" size="lg" variant="gradient">
+                <span>Check My Computer</span>
+                <ArrowRight className="size-4" />
               </LinkButton>
               <LinkButton href="/hardware-for-model" size="lg" variant="outline">
                 Find Hardware for a Model
               </LinkButton>
-              <LinkButton href="/stack" size="lg" variant="ghost">
-                Build My Local AI Setup
+              <LinkButton href="/hugging-face" size="lg" variant="ghost">
+                <Search className="size-4" /> Any HF Model
               </LinkButton>
             </div>
           </div>
-          <div className="mx-auto mt-12 max-w-5xl">
+
+          {/* Interactive Hardware & Model Simulator */}
+          <div className="mx-auto mt-12 sm:mt-16 max-w-5xl">
             <HomeDemo />
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-        <div className="max-w-2xl">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">“It fits” is the least interesting answer</h2>
-          <p className="mt-3 text-muted-foreground">Most calculators stop at memory. We separate four questions — and rate the last one, because that’s what you’ll feel every day.</p>
+      {/* The "It Fits" Myth — Visual Reality Check */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-3xl text-center space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+            The Reality Check
+          </p>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-4xl text-foreground">
+            &ldquo;It fits&rdquo; is the least useful metric in local AI
+          </h2>
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+            Most calculators stop at static weights memory. But when a model consumes 98% of your RAM, your computer slows to a crawl. Here is the difference:
+          </p>
         </div>
-        <ol className="mt-8 grid gap-4 md:grid-cols-4">
-          {TIERS.map((t, i) => (
-            <li key={t.title} className={t.primary ? "rounded-xl border-2 border-primary/50 bg-accent/40 p-5" : "rounded-xl border bg-card p-5"}>
-              <span className="text-xs font-semibold text-muted-foreground">Level {i + 1}</span>
-              <p className="mt-1 font-semibold">{t.title}</p>
-              <p className="mt-2 text-sm text-muted-foreground">{t.text}</p>
-            </li>
-          ))}
-        </ol>
-        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {COMFORT_LEVELS.map((l) => (
-            <div key={l} className="flex items-start gap-3 rounded-lg border bg-card p-3">
-              <ComfortBadge level={l} size="sm" />
-              <p className="text-xs text-muted-foreground">{COMFORT_DESCRIPTION[l]}</p>
+
+        {/* Side-by-side comparison */}
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+          {/* The Naive Way */}
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/5 p-6 sm:p-8 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 px-3 py-1 text-xs font-semibold text-rose-600 dark:text-rose-400">
+                <XCircle className="size-3.5" /> Naive Memory Check
+              </span>
+              <span className="text-xs font-medium text-muted-foreground">What other sites do</span>
+            </div>
+            <h3 className="text-xl font-bold text-foreground">
+              &ldquo;Fits! 15.6 GB / 16 GB RAM used.&rdquo;
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Considers only raw weight file size on disk. Ignores dynamic KV cache expansion, OS system reserves, and multi-turn prompt processing.
+            </p>
+            <div className="rounded-xl border border-rose-500/20 bg-card/60 p-4 space-y-2 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-semibold">
+                <span>The Painful Result:</span>
+              </div>
+              <ul className="space-y-1.5 list-disc list-inside">
+                <li>0 MB free RAM left for VS Code, browser, or Docker</li>
+                <li>OS begins heavy disk paging (SSD swap thrashing)</li>
+                <li>Decode speed drops from 30 tok/s down to 1.2 tok/s</li>
+                <li>Coding agents like Claude Code time out repeatedly</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* The Local AI Advisor Way */}
+          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 sm:p-8 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="size-3.5" /> Local AI Advisor Simulation
+              </span>
+              <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 font-semibold">
+                Calibrated Physics
+              </span>
+            </div>
+            <h3 className="text-xl font-bold text-foreground">
+              &ldquo;Comfortable for Agentic Coding&rdquo;
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Models usable memory after your OS and development environment, calculates exact KV cache growth for 8K–64K context, and predicts first-token latency.
+            </p>
+            <div className="rounded-xl border border-emerald-500/20 bg-card/60 p-4 space-y-2 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold">
+                <span>The Actual Experience:</span>
+              </div>
+              <ul className="space-y-1.5 list-disc list-inside">
+                <li>Protects 4–6 GB headroom for your IDE and multitasking</li>
+                <li>Accurate KV cache reservation for long context windows</li>
+                <li>Benchmark-calibrated token speeds (30–80 tok/s)</li>
+                <li>Sub-second agent step latency without thermal throttling</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The 4 Capability Tiers */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-2xl space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+            Evaluation Pipeline
+          </p>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-foreground">
+            The Four Questions We Answer
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            We evaluate every combination across four progressive capability tiers. We rate the fourth one, because that is what you experience every single day.
+          </p>
+        </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {TIERS.map((t) => (
+            <div
+              key={t.title}
+              className={cn(
+                "relative flex flex-col justify-between rounded-2xl border p-5 sm:p-6 transition-all",
+                t.primary
+                  ? "border-primary/60 bg-primary/5 ring-1 ring-primary/40 shadow-sm"
+                  : "border-border/80 bg-card",
+              )}
+            >
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-muted-foreground">{t.step}</span>
+                  <span
+                    className={cn(
+                      "rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+                      t.primary ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+                    )}
+                  >
+                    {t.badge}
+                  </span>
+                </div>
+                <h3 className="mt-3 text-base font-bold text-foreground">{t.title}</h3>
+                <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{t.text}</p>
+              </div>
             </div>
           ))}
         </div>
-        <p className="sr-only">{COMFORT_LEVELS.map((l) => COMFORT_LABEL[l]).join(", ")}</p>
       </section>
 
-      <section className="border-y bg-muted/30">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-16 sm:px-6 md:grid-cols-3">
-          <Feature icon={<Bot className="size-5" />} title="Tool-aware" text="An agent like Claude Code, Codex or OpenCode makes dozens of sequential calls with large prompts. A chat app makes one. We model the difference." />
-          <Feature icon={<Layers className="size-5" />} title="Headroom-aware" text="Your IDE, browser, Docker and simulator need memory too. A model that leaves 1 GB free is not the same as one that leaves 16 GB." />
-          <Feature icon={<Cpu className="size-5" />} title="Honest about speed" text="Generation, prompt processing and time-to-first-token are estimated separately, calibrated with verified benchmarks, and labelled with confidence." />
+      {/* Interactive Rating Philosophy Explorer */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-2xl space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+            Comfort Scale
+          </p>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-foreground">
+            Transparent Rating Standards
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            We never hide evaluation behind an opaque numerical score. Click through the scale below to understand our qualitative comfort criteria and expectations.
+          </p>
+        </div>
+
+        <div className="mt-8">
+          <ComfortExplorer />
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-        <h2 className="text-2xl font-semibold tracking-tight">Start where you are</h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <Entry href="/check" icon={<Search className="size-5" />} title="I don’t know which model" text="Answer five plain-language questions; we pick models that will be comfortable — fast, balanced and quality options." />
-          <Entry href="/hardware-for-model" icon={<HardDrive className="size-5" />} title="I know the model, not the hardware" text="Choose a model, tool and workload; see which machines meet a comfortable experience — not just load it." />
-          <Entry href="/stack" icon={<Layers className="size-5" />} title="Give me a complete setup" text="Hardware → runtime → model → local API → coding agent, with setup steps." />
-          <Entry href="/compare/models" icon={<Sparkles className="size-5" />} title="Compare models on my machine" text="Memory, headroom, generation, prompt processing and comfort side by side." />
-          <Entry href="/compare/hardware" icon={<Cpu className="size-5" />} title="Compare machines for my workload" text="Mac mini vs MacBook Pro vs Mac Studio vs RTX PC — with tradeoffs, not a single winner." />
-          <Entry href="/hugging-face" icon={<Search className="size-5" />} title="Check any Hugging Face model" text="Paste a model link — we read its real architecture and rate it for your machine, even if it came out today." />
-          <Entry href="/learn" icon={<Bot className="size-5" />} title="Learn the concepts" text="Why “fits” doesn’t mean “fast”, and why a fast chat model isn’t necessarily a good coding agent." />
+      {/* Popular Machines Showcase */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-3xl text-center space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+            Popular Rigs
+          </p>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-4xl text-foreground">
+            What runs on popular machines?
+          </h2>
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+            Jump directly into calibrated recommendations and sweet-spot models for the most widely used local AI machines.
+          </p>
         </div>
-        <p className="mt-10 text-sm text-muted-foreground">
-          Database: {HARDWARE.length} hardware configurations · {MODELS.length} models · {RUNTIMES.length} runtimes · {TOOLS.length} AI tools · {BENCHMARKS.length} verified benchmark results.{" "}
-          <Link href="/methodology" className="text-primary hover:underline">
-            How we calculate →
+
+        <div className="mt-10">
+          <PopularRigsMatrix />
+        </div>
+      </section>
+
+      {/* The 3 Core Architecture Pillars */}
+      <section className="border-y border-border/70 bg-muted/20 py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center space-y-2 mb-12">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-foreground">
+              Engineered for Realistic Physics
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Why Local AI Advisor delivers recommendations you can actually trust.
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xs space-y-3">
+              <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
+                <Bot className="size-5" />
+              </span>
+              <h3 className="text-lg font-bold text-foreground">Tool- &amp; Agent-Aware</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                An agent like Claude Code, OpenCode, or Continue makes dozens of sequential calls with large repo contexts. A simple chat app makes one. We model prompt prefill latency and context growth specifically for each tool.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xs space-y-3">
+              <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
+                <Layers className="size-5" />
+              </span>
+              <h3 className="text-lg font-bold text-foreground">System Headroom-Aware</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Your IDE, browser, Docker containers, and simulator need memory too. A model that leaves 1 GB of free RAM will cause constant swapping; one that leaves 12 GB guarantees a smooth, fluid desktop experience.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xs space-y-3">
+              <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
+                <Cpu className="size-5" />
+              </span>
+              <h3 className="text-lg font-bold text-foreground">Benchmark-Calibrated</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Generation and prompt processing speeds are calibrated against 76 verified llama.cpp scoreboards and MLX benchmark tables. Every measured number is labelled, and estimates are shown as honest ranges.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tool Hub ("Start Where You Are") */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+              All Tools &amp; Explorers
+            </p>
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-foreground">
+              Start where you are
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Choose the workflow that matches what you already know.
+            </p>
+          </div>
+          <Link
+            href="/methodology"
+            className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-primary hover:underline"
+          >
+            <span>Read full engine methodology</span>
+            <ArrowRight className="size-3.5" />
           </Link>
-        </p>
+        </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ToolCard
+            href="/check"
+            icon={<Search className="size-5" />}
+            tag="6-Step Advisor"
+            title="I don’t know which model"
+            text="Answer plain-language questions about your machine and project; get instant fast, balanced, and flagship options."
+          />
+          <ToolCard
+            href="/hardware-for-model"
+            icon={<HardDrive className="size-5" />}
+            tag="Reverse Finder"
+            title="I know the model, not the hardware"
+            text="Select a model, your favorite tool, and target experience to find the exact minimum and comfortable hardware required."
+          />
+          <ToolCard
+            href="/hugging-face"
+            icon={<Sparkles className="size-5" />}
+            tag="Live Hub Parser"
+            title="Check any Hugging Face model"
+            text="Paste any HF model link — we parse config.json, GGUF quants, and KV architecture to rate it for your computer live."
+          />
+          <ToolCard
+            href="/stack"
+            icon={<Layers className="size-5" />}
+            tag="Stack Builder"
+            title="Build a complete local AI setup"
+            text="Hardware → runtime → model → local API → coding agent, complete with copy-paste terminal setup instructions."
+          />
+          <ToolCard
+            href="/compare/models"
+            icon={<Scale className="size-5" />}
+            tag="Model Comparison"
+            title="Compare models on my machine"
+            text="Put models side-by-side: memory footprints, headroom, decode tokens/sec, and agent step latency."
+          />
+          <ToolCard
+            href="/compare/hardware"
+            icon={<Cpu className="size-5" />}
+            tag="Rig Comparison"
+            title="Compare hardware for my workload"
+            text="Mac mini vs MacBook Pro vs RTX desktop — evaluate real tradeoffs and bandwidth instead of synthetic hype."
+          />
+          <ToolCard
+            href="/models"
+            icon={<Boxes className="size-5" />}
+            tag="Interactive Database"
+            title="Explore 36 curated models"
+            text="Filter dense, MoE, vision, and reasoning models by active parameter count, architecture, and context support."
+          />
+          <ToolCard
+            href="/learn"
+            icon={<BookOpen className="size-5" />}
+            tag="Educational Center"
+            title="Learn the concepts"
+            text="Interactive visual calculators explaining KV cache growth, memory bandwidth limits, and quantization tradeoffs."
+          />
+        </div>
+
+        {/* Database Stats Bar */}
+        <div className="mt-10 rounded-2xl border border-border/70 bg-card p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4 shadow-2xs">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm text-muted-foreground">
+            <span>
+              <strong className="text-foreground">{HARDWARE.length}</strong> Hardware Rigs
+            </span>
+            <span>·</span>
+            <span>
+              <strong className="text-foreground">{MODELS.length}</strong> Curated Models
+            </span>
+            <span>·</span>
+            <span>
+              <strong className="text-foreground">{RUNTIMES.length}</strong> Runtimes
+            </span>
+            <span>·</span>
+            <span>
+              <strong className="text-foreground">{TOOLS.length}</strong> AI Tools
+            </span>
+            <span>·</span>
+            <span>
+              <strong className="text-foreground">{BENCHMARKS.length}</strong> Calibrated Benchmarks
+            </span>
+          </div>
+          <Link
+            href="/methodology"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+          >
+            <span>Inspect Engine Math &amp; Sources</span>
+            <ArrowRight className="size-3.5" />
+          </Link>
+        </div>
       </section>
     </div>
   );
 }
 
-function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
-  return (
-    <div>
-      <span className="grid size-10 place-items-center rounded-lg bg-accent text-accent-foreground">{icon}</span>
-      <h3 className="mt-3 font-semibold">{title}</h3>
-      <p className="mt-1.5 text-sm text-muted-foreground">{text}</p>
-    </div>
-  );
-}
-
-function Entry({ href, icon, title, text }: { href: string; icon: React.ReactNode; title: string; text: string }) {
+function ToolCard({
+  href,
+  icon,
+  tag,
+  title,
+  text,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  tag: string;
+  title: string;
+  text: string;
+}) {
   return (
     <Link href={href} className="group">
-      <Card className="h-full p-5 transition group-hover:border-primary/50 group-hover:shadow-sm">
-        <span className="text-primary">{icon}</span>
-        <p className="mt-3 flex items-center gap-1 font-semibold">
-          {title} <ArrowRight className="size-4 opacity-0 transition group-hover:opacity-100" />
-        </p>
-        <p className="mt-1.5 text-sm text-muted-foreground">{text}</p>
+      <Card className="flex h-full flex-col justify-between p-5 sm:p-6 transition-all duration-200 group-hover:border-primary/50 group-hover:shadow-md group-hover:-translate-y-0.5">
+        <div>
+          <div className="flex items-center justify-between">
+            <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+              {icon}
+            </span>
+            <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              {tag}
+            </span>
+          </div>
+          <h3 className="mt-4 text-base font-bold text-foreground flex items-center justify-between gap-1">
+            <span>{title}</span>
+            <ArrowRight className="size-4 text-primary opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0" />
+          </h3>
+          <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{text}</p>
+        </div>
       </Card>
     </Link>
   );

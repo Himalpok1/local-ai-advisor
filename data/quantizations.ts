@@ -43,9 +43,17 @@ export const QUANTIZATIONS: Record<QuantId, Quantization> = {
     id: "q8",
     label: "Q8",
     bitsPerWeight: { gguf: 8.5, mlx: 8.5, safetensors: 8.0 },
-    formatNames: { gguf: "Q8_0", mlx: "8-bit", safetensors: "FP8 / INT8" },
+    formatNames: { gguf: "Q8_0", mlx: "8-bit", safetensors: "INT8" },
     qualityLoss: 0.003,
     description: "Practically lossless, about half of FP16 size. Slower decode than Q4 (more bytes per token).",
+  },
+  fp8: {
+    id: "fp8",
+    label: "FP8",
+    bitsPerWeight: { gguf: 8, safetensors: 8 },
+    formatNames: { gguf: "FP8", safetensors: "fp8" },
+    qualityLoss: 0.003,
+    description: "8-bit floating point. Runtime and architecture support varies; quality loss is estimated.",
   },
   fp16: {
     id: "fp16",
@@ -65,7 +73,7 @@ export const QUANTIZATIONS: Record<QuantId, Quantization> = {
   },
 };
 
-export const QUANT_ORDER: QuantId[] = ["q3", "q4", "q5", "q6", "q8", "fp16", "mxfp4"];
+export const QUANT_ORDER: QuantId[] = ["q3", "q4", "q5", "q6", "q8", "fp8", "fp16", "mxfp4"];
 
 export function getQuant(id: QuantId): Quantization {
   return QUANTIZATIONS[id];

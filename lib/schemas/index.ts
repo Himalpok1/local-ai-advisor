@@ -112,7 +112,7 @@ export type HardwareConfigurationInput = z.input<typeof HardwareConfigurationSch
 /* Models & quantization                                               */
 /* ------------------------------------------------------------------ */
 
-export const QuantIdSchema = z.enum(["q3", "q4", "q5", "q6", "q8", "fp16", "mxfp4"]);
+export const QuantIdSchema = z.enum(["q3", "q4", "q5", "q6", "q8", "fp8", "fp16", "mxfp4"]);
 export type QuantId = z.infer<typeof QuantIdSchema>;
 
 export const ModelFormatSchema = z.enum(["gguf", "mlx", "safetensors"]);
@@ -184,6 +184,7 @@ export const ModelSchema = z.object({
   supportedQuantizations: z.array(QuantIdSchema).min(1),
   supportedFormats: z.array(ModelFormatSchema).min(1),
   /** Known on-disk sizes (GB) per quant where published; otherwise derived from params × bpw. */
+  knownSizeFormats: z.partialRecord(QuantIdSchema, ModelFormatSchema).optional(),
   knownSizesGB: z.partialRecord(QuantIdSchema, z.number().positive()).optional(),
   license: z.string(),
   releaseDate: z.string(),

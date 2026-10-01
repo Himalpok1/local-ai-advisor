@@ -1,0 +1,49 @@
+name: Model catalog refresh
+on:
+  schedule:
+    - cron: '23 7 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: model-catalog-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run refresh:models
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      - name: Commit review report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add research/model-refresh-*.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'docs: refresh model catalog review report'
+            git push
+          fi
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const file = fs.readdirSync('research').filter(f => /^model-refresh-\d{4}-\d{2}-\d{2}\.md$/.test(f)).sort().at(-1);
+            const report = fs.readFileSync(`research/${file}`, 'utf8');
+            const count = Number(report.match(/(\d+) need a look\./)?.[1] ?? 0);
+            if (!count) return;
+            const title = report.split('\n')[0].replace(/^# /, '');
+            const rows = report.split('\n').filter(line => line.startsWith('|') && line.includes('⚠'));
+            const body = `${count} models need a look. Review only; curated data was not edited.\n\n| Model | Repo | Result | Downloads |\n|---|---|---|---|\n${rows.join('\n')}`;
+            const issues = await github.paginate(github.rest.issues.listForRepo, { ...context.repo, state: 'all', creator: 'github-actions[bot]', per_page: 100 });
+            const existing = issues.find(issue => !issue.pull_request && issue.title === title);
+            if (existing) await github.rest.issues.update({ ...context.repo, issue_number: existing.number, body });
+            else await github.rest.issues.create({ ...context.repo, title, body });

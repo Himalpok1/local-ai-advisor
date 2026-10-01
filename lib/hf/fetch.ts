@@ -1,5 +1,5 @@
 import "server-only";
-import { HfParseError, parseHfModel, type HfConfig, type HfFile, type HfModelInfo, type ParsedHfModel } from "./parse";
+import { HfParseError, parseHfModel, ggufSizes, nonGenerativeReason, normalizeRepo, type HfConfig, type HfFile, type HfModelInfo, type ParsedHfModel } from "./parse";
 
 /**
  * Server-side Hugging Face Hub access. The token (HF_TOKEN) never leaves the
@@ -8,6 +8,7 @@ import { HfParseError, parseHfModel, type HfConfig, type HfFile, type HfModelInf
 const HUB = "https://huggingface.co";
 const TTL_MS = 6 * 60 * 60 * 1000;
 const cache = new Map<string, { at: number; value: unknown }>();
+const inflight = new Map<string, Promise<unknown>>();
 
 export class HfError extends Error {
   constructor(
@@ -27,13 +28,39 @@ async function hubFetch(url: string): Promise<Response> {
   return fetch(url, { headers: headers(), signal: AbortSignal.timeout(12_000), cache: "no-store" });
 }
 
-async function cached<T>(key: string, load: () => Promise<T>): Promise<T> {
+async function cached<T>(key: string, load: () => Promise<T>, ttl = TTL_MS): Promise<T> {
   const hit = cache.get(key);
-  if (hit && Date.now() - hit.at < TTL_MS) return hit.value as T;
-  const value = await load();
-  cache.set(key, { at: Date.now(), value });
-  if (cache.size > 500) cache.delete(cache.keys().next().value!);
-  return value;
+  if (hit && Date.now() - hit.at < ttl) return hit.value as T;
+  const pending = inflight.get(key);
+  if (pending) return pending as Promise<T>;
+  const promise = load().then((value) => {
+    cache.set(key, { at: Date.now(), value });
+    if (cache.size > 500) cache.delete(cache.keys().next().value!);
+    return value;
+  }).finally(() => inflight.delete(key));
+  inflight.set(key, promise);
+  return promise;
+}
+
+/** Read small template files without downloading an unbounded response. */
+async function smallText(url: string): Promise<string | undefined> {
+  try {
+    const res = await hubFetch(url);
+    if (!res.ok || !res.body) return undefined;
+    const reader = res.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let size = 0;
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        size += value.length;
+        if (size > 200_000) return undefined;
+        chunks.push(value);
+      }
+      return Buffer.concat(chunks).toString("utf8");
+    } finally { await reader.cancel(); }
+  } catch { return undefined; }
 }
 
 const EXPAND = ["safetensors", "gguf", "cardData", "pipeline_tag", "gated", "downloads", "likes", "createdAt", "lastModified", "config", "library_name", "tags", "author"];
@@ -57,10 +84,48 @@ async function getConfig(repo: string): Promise<HfConfig | null | "gated"> {
 }
 
 async function getFiles(repo: string): Promise<HfFile[]> {
-  const res = await hubFetch(`${HUB}/api/models/${repo}/tree/main?recursive=true`);
-  if (!res.ok) return [];
-  const list = (await res.json()) as { type: string; path: string; size?: number; lfs?: { size?: number } }[];
-  return list.filter((f) => f.type === "file").map((f) => ({ path: f.path, size: f.lfs?.size ?? f.size }));
+  return cached(`files:${repo}`, async () => {
+    const files: HfFile[] = [];
+    let url: string | undefined = `${HUB}/api/models/${repo}/tree/main?recursive=true&limit=1000`;
+    for (let page = 0; url && page < 10; page++) {
+      const res = await hubFetch(url);
+      if (!res.ok) throw new HfError(`Couldn't read files for ${repo}.`, 502);
+      const list = (await res.json()) as { type: string; path: string; size?: number; lfs?: { size?: number } }[];
+      files.push(...list.filter((f) => f.type === "file").map((f) => ({ path: f.path, size: f.lfs?.size ?? f.size })));
+      const next = res.headers.get("link")?.match(/<([^>]+)>;\s*rel="next"/)?.[1];
+      url = next && next.startsWith(`${HUB}/api/models/${repo}/tree/`) ? next : undefined;
+    }
+    if (url) throw new HfError(`File listing for ${repo} is too large to verify completely.`, 502);
+    return files;
+  }, 24 * 60 * 60 * 1000);
+}
+
+/** Find measured GGUF sizes in up to three matching community conversions. */
+export async function findGgufVariants(modelName: string): Promise<ReturnType<typeof ggufSizes>> {
+  return cached(`variants:${modelName.toLowerCase()}`, async () => {
+    try {
+      const slug = modelName.split("/").pop()!;
+      const res = await hubFetch(`${HUB}/api/models?search=${encodeURIComponent(slug)}&filter=gguf&sort=downloads&direction=-1&limit=20`);
+      if (!res.ok) return {};
+      const list = await res.json() as HfModelInfo[];
+      const preferred = new Set(["unsloth", "bartowski", "lmstudio-community", "ggml-org", "mradermacher"]);
+      const candidates = list.filter((m) => normalizeRepo(m.id) === m.id && m.id.split("/")[1].toLowerCase().includes(slug.toLowerCase()))
+        .sort((a, b) => Number(preferred.has(b.id.split("/")[0])) - Number(preferred.has(a.id.split("/")[0])))
+        .slice(0, 3);
+      const results = await Promise.all(candidates.map(async (m) => {
+        try {
+          const sizes = ggufSizes(await getFiles(m.id));
+          return Object.fromEntries(Object.entries(sizes).map(([q, v]) => [q, { ...v, file: `${m.id}/${v.file}` }]));
+        } catch { return {}; }
+      }));
+      const merged: ReturnType<typeof ggufSizes> = {};
+      for (const sizes of results) for (const [q, size] of Object.entries(sizes)) {
+        const quant = q as keyof typeof merged;
+        if (!merged[quant]) merged[quant] = size;
+      }
+      return merged;
+    } catch { return {}; }
+  }, 24 * 60 * 60 * 1000);
 }
 
 /** Find an architecture config: the repo itself, its base model, or a public mirror of a gated repo. */
@@ -69,7 +134,12 @@ async function resolveConfig(repo: string, info: HfModelInfo): Promise<{ config:
   const base = info.cardData?.base_model;
   for (const b of Array.isArray(base) ? base : base ? [base] : []) if (typeof b === "string") candidates.push(b);
   const extra: string[] = [];
-  for (const c of candidates) extra.push(`unsloth/${c.split("/")[1]}`);
+  for (const c of candidates) {
+    const slug = c.split("/")[1];
+    extra.push(`unsloth/${slug}`);
+    // Early Meta-Llama releases omit the Meta- prefix in public mirrors.
+    if (slug.startsWith("Meta-Llama-")) extra.push(`unsloth/${slug.replace(/^Meta-/, "")}`);
+  }
   for (const c of [...candidates, ...extra]) {
     if (!/^[\w.-]+\/[\w.-]+$/.test(c)) continue;
     const cfg = await getConfig(c);
@@ -78,9 +148,13 @@ async function resolveConfig(repo: string, info: HfModelInfo): Promise<{ config:
   return null;
 }
 
+/** Import a generative model; tokens and Hub access remain server-only. */
 export async function loadHfModel(repo: string): Promise<ParsedHfModel> {
+  if (normalizeRepo(repo) !== repo) throw new HfError("Invalid Hugging Face repository id.", 422);
   return cached(`model:${repo}`, async () => {
     const info = await getInfo(repo);
+    const rejection = nonGenerativeReason(info);
+    if (rejection) throw new HfError(`${repo} looks like an embedding/reranker model, not a text-generation model (${rejection}). Choose a generative chat or instruct model.`, 422);
     const resolved = await resolveConfig(repo, info);
     if (!resolved) {
       throw new HfError(
@@ -90,19 +164,43 @@ export async function loadHfModel(repo: string): Promise<ParsedHfModel> {
         422,
       );
     }
-    // Newer repos ship the chat template as a separate file; it tells us about tool calling.
     const hasTemplate = !!(info.config?.tokenizer_config?.chat_template || info.gguf?.chat_template);
     if (!hasTemplate) {
-      const res = await hubFetch(`${HUB}/${resolved.source}/resolve/main/chat_template.jinja`);
-      if (res.ok) {
-        const template = (await res.text()).slice(0, 200_000);
-        info.config = { ...info.config, tokenizer_config: { ...info.config?.tokenizer_config, chat_template: template } };
+      let template = await smallText(`${HUB}/${resolved.source}/resolve/main/chat_template.jinja`);
+      if (!template) {
+        const raw = await smallText(`${HUB}/${resolved.source}/resolve/main/tokenizer_config.json`);
+        if (raw) try {
+          const tokenizer: unknown = JSON.parse(raw);
+          if (tokenizer && typeof tokenizer === "object" && "chat_template" in tokenizer) {
+            const t = tokenizer.chat_template;
+            if (typeof t === "string") template = t;
+            else if (Array.isArray(t)) template = t.flatMap((v: unknown) => v && typeof v === "object" && "template" in v && typeof v.template === "string" ? [v.template] : []).join("\n");
+          }
+        } catch { /* Optional metadata; missing signals are labelled by the parser. */ }
       }
+      if (template) info.config = { ...info.config, tokenizer_config: { ...info.config?.tokenizer_config, chat_template: template } };
     }
-    const isGguf = !!info.gguf;
-    const files = isGguf ? await getFiles(repo) : [];
+    let files: HfFile[] = [];
+    let filesUnavailable = false;
+    try { files = await getFiles(repo); } catch { filesUnavailable = true; }
     try {
       const parsed = parseHfModel({ repo, info, config: resolved.config, configSource: resolved.source, files });
+      if (filesUnavailable) parsed.warnings.push("File listing unavailable; quantization availability and sizes could not be verified (low confidence).");
+      if (!parsed.facts.isGgufRepo && !parsed.facts.isMlxRepo) {
+        const variants = await findGgufVariants(repo);
+        const quants = Object.keys(variants) as (keyof typeof variants)[];
+        if (quants.length) {
+          parsed.model.supportedQuantizations = quants;
+          parsed.facts.ggufFiles = variants;
+          for (const q of quants) {
+            (parsed.model.knownSizesGB ??= {})[q] = variants[q]!.bytes / 1024 ** 3;
+            parsed.facts.sizeFormats[q] = "gguf";
+            (parsed.model.knownSizeFormats ??= {})[q] = "gguf";
+          }
+          parsed.warnings = parsed.warnings.filter((w) => !w.startsWith("Assumes GGUF / MLX"));
+          parsed.warnings.push("GGUF sizes come from community conversions matched by model name; equivalence and runtime support are not verified. MLX conversion availability is unverified.");
+        }
+      }
       if (resolved.source !== repo) parsed.warnings.unshift(`Architecture read from ${resolved.source}.`);
       return parsed;
     } catch (e) {
@@ -117,6 +215,8 @@ export interface HfSearchHit {
   downloads?: number;
   likes?: number;
   pipeline_tag?: string;
+  gated?: boolean;
+  tags?: string[];
 }
 
 export async function searchHf(query: string): Promise<HfSearchHit[]> {
@@ -130,6 +230,6 @@ export async function searchHf(query: string): Promise<HfSearchHit[]> {
       .filter((m) => !seen.has(m.id) && seen.add(m.id))
       .sort((x, y) => (y.downloads ?? 0) - (x.downloads ?? 0))
       .slice(0, 12)
-      .map((m) => ({ id: m.id, downloads: m.downloads, likes: m.likes, pipeline_tag: m.pipeline_tag }));
+      .map((m) => ({ id: m.id, downloads: m.downloads, likes: m.likes, pipeline_tag: m.pipeline_tag, gated: !!m.gated, tags: m.tags }));
   });
 }

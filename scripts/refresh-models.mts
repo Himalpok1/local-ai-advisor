@@ -20,41 +20,67 @@ const HUB = "https://huggingface.co";
 const today = new Date().toISOString().slice(0, 10);
 
 async function json<T>(url: string): Promise<T | null> {
-  const r = await fetch(url, { headers: H });
-  return r.ok ? ((await r.json()) as T) : null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const r = await fetch(url, { headers: H, signal: AbortSignal.timeout(20_000) });
+      if (r.ok) return await r.json() as T;
+      if (r.status !== 429 && r.status < 500) return null;
+      if (attempt < 2) {
+        const retry = Number(r.headers.get("retry-after"));
+        await new Promise((resolve) => setTimeout(resolve, Math.min(30_000, Math.max(1000 * 2 ** attempt, retry * 1000 || 0))));
+      }
+    } catch {
+      if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** attempt));
+    }
+  }
+  return null;
 }
 
 const repoOf = (url: string) => url.match(/huggingface\.co\/([^/]+\/[^/?#]+)/)?.[1];
 const pct = (a: number, b: number) => Math.abs(a - b) / Math.max(1e-9, Math.abs(b));
 
-const rows: string[] = [];
-const issues: string[] = [];
-for (const m of MODELS) {
+// Workers write per-model slots so network completion order cannot reorder the report.
+const results: { rows: string[]; issues: string[] }[] = [];
+async function compare(m: (typeof MODELS)[number], index: number) {
+  const rows: string[] = [];
+  const issues: string[] = [];
+  results[index] = { rows, issues };
   const repo = repoOf(m.source.url);
   if (!repo) {
     rows.push(`| ${m.name} | — | no Hugging Face source | |`);
-    continue;
+    return;
   }
   const info = await json<HfModelInfo>(`${HUB}/api/models/${repo}?expand[]=safetensors&expand[]=cardData&expand[]=config&expand[]=pipeline_tag&expand[]=downloads&expand[]=gated`);
   const config = await json<HfConfig>(`${HUB}/${repo}/resolve/main/config.json`);
   if (!info || !config) {
     rows.push(`| ${m.name} | ${repo} | ⚠ couldn't read (gated or moved) | |`);
     issues.push(`${m.name}: couldn't read ${repo}`);
-    continue;
+    return;
   }
   try {
-    const { model: hub } = parseHfModel({ repo, info, config, today });
+    const { model: hub, facts } = parseHfModel({ repo, info, config, today });
     const diffs: string[] = [];
     if (pct(hub.parameterCount, m.parameterCount) > 0.03) diffs.push(`params ${m.parameterCount}B → ${hub.parameterCount}B`);
     if (pct(kvBytesPerToken(hub), kvBytesPerToken(m)) > 0.1 && !m.architecture.kvBytesPerTokenOverride) diffs.push(`KV ${Math.round(kvBytesPerToken(m) / 1024)}→${Math.round(kvBytesPerToken(hub) / 1024)} KB/token`);
     if (hub.vision !== m.vision) diffs.push(`vision ${m.vision}→${hub.vision}`);
-    if (hub.contextWindow !== m.contextWindow && hub.contextWindow > m.contextWindow) diffs.push(`config context ${hub.contextWindow} (catalog ${m.contextWindow})`);
+    if (hub.contextWindow !== m.contextWindow) diffs.push(`config native ${hub.contextWindow}${facts.extendedContext ? `, rope-extended ${facts.extendedContext}` : ""} (catalog ${m.contextWindow})`);
     rows.push(`| ${m.name} | ${repo} | ${diffs.length ? "⚠ " + diffs.join("; ") : "✓ matches"} | ${info.downloads?.toLocaleString("en-US") ?? ""} |`);
     if (diffs.length) issues.push(`${m.name}: ${diffs.join("; ")}`);
   } catch (e) {
+    issues.push(`${m.name}: parse error`);
     rows.push(`| ${m.name} | ${repo} | ⚠ parse error: ${(e as Error).message} | |`);
   }
 }
+
+let nextIndex = 0;
+await Promise.all(Array.from({ length: 6 }, async () => {
+  while (nextIndex < MODELS.length) {
+    const index = nextIndex++;
+    await compare(MODELS[index], index);
+  }
+}));
+const rows = results.flatMap((r) => r.rows);
+const issues = results.flatMap((r) => r.issues);
 
 // Popular models not yet in the catalog
 const known = new Set(MODELS.map((m) => repoOf(m.source.url)?.toLowerCase().split("/")[1]));
@@ -62,7 +88,7 @@ const trending = (await json<{ id: string; downloads?: number; likes?: number }[
 const fresh = trending
   .filter((t) => !known.has(t.id.split("/")[1].toLowerCase()))
   // Skip quantized re-uploads and uncensored/merged fine-tunes; keep well-adopted releases.
-  .filter((t) => !/gguf|mlx|awq|gptq|fp8|bnb|exl|-4bit|-8bit|abliterat|obliterat|uncensor|heretic|merge/i.test(t.id) && (t.downloads ?? 0) >= 25_000)
+  .filter((t) => !/gguf|mlx|awq|gptq|bnb|exl|-4bit|-8bit|abliterat|obliterat|uncensor|heretic|merge/i.test(t.id) && (t.downloads ?? 0) >= 25_000)
   .sort((a, b) => (b.downloads ?? 0) - (a.downloads ?? 0))
   .slice(0, 15);
 

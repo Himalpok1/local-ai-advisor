@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Loader2, Search, TriangleAlert } from "lucide-react";
-import { QUANTIZATIONS, TOOLS } from "@/data";
-import type { QuantId, WorkloadProfileInput } from "@/lib/schemas";
+import { ArrowRight, Loader2, Search, TriangleAlert } from "lucide-react";
+import { TOOLS } from "@/data";
+import type { WorkloadProfileInput } from "@/lib/schemas";
 import type { ParsedHfModel } from "@/lib/hf/parse";
 import { normalizeRepo } from "@/lib/hf/parse";
 import { importHfModel } from "@/lib/hf/client";
@@ -11,44 +11,53 @@ import { bestQuantFor, candidateQuants } from "@/lib/recommendations";
 import { encodeState, resolveHardware, type AppState } from "@/lib/share";
 import { recHref } from "@/lib/links";
 import { USE_CASE_LIST } from "@/lib/workloads/profiles";
-import { kvBytesPerToken, kvCacheGB, weightsGB } from "@/lib/memory";
-import { fmtCtx, fmtGB, fmtParams } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, Select } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { HardwarePicker } from "./hardware-picker";
 import { defaultsForUseCase, workloadLabel } from "./workload-form";
+import { ModelFacts } from "./hf-model-facts";
+import { readHfState } from "@/lib/hf/state";
 import { RecommendationCard } from "./recommendation-card";
 
 const EXAMPLES = ["Qwen/Qwen3.8-27B", "unsloth/Qwen3.8-27B-GGUF", "google/gemma-4-26B-A4B-it", "openai/gpt-oss-120b", "mistralai/Devstral-Small-2-24B-Instruct-2512", "zai-org/GLM-4.7-Flash"];
-const ATTENTION_LABEL = {
-  full: "Standard (full attention)",
-  "sliding-window": "Sliding-window + global layers",
-  "hybrid-linear": "Hybrid linear + full attention",
-  mla: "Multi-head latent attention (compressed KV)",
-} as const;
-
 interface Hit {
   id: string;
   downloads?: number;
+  tags?: string[];
+  gated?: boolean;
+}
+
+function hitFormat(hit: Hit): string {
+  if (hit.tags?.some((t) => /gguf/i.test(t)) || /-gguf/i.test(hit.id)) return "GGUF";
+  return hit.tags?.includes("mlx") ? "MLX" : "safetensors";
 }
 
 export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initial: AppState }) {
   const [query, setQuery] = useState(initialRepo ?? "");
   const [hits, setHits] = useState<Hit[]>([]);
+  const [active, setActive] = useState(-1);
+  const [restored, setRestored] = useState(false);
+  const searchVersion = useRef(0);
+  const loadVersion = useRef(0);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(!!initialRepo);
   const [error, setError] = useState<string>();
   const [result, setResult] = useState<ParsedHfModel>();
-  const [state, setState] = useState<AppState>({ hardwareId: "mbp-m4-pro-20c-48", ...initial });
+  const [state, setState] = useState<AppState>({ ...initial, hardwareId: initial.hardwareId ?? "mbp-m4-pro-20c-48" });
   const debounce = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const load = async (raw: string) => {
+    const version = ++loadVersion.current;
+    ++searchVersion.current;
+    clearTimeout(debounce.current);
     const repo = normalizeRepo(raw);
     setOpen(false);
     if (!repo) {
+      setLoading(false);
+      setResult(undefined);
       setError("Enter a model id like “Qwen/Qwen3-8B” or paste a huggingface.co link.");
       return;
     }
@@ -56,23 +65,45 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
     setLoading(true);
     setError(undefined);
     try {
-      setResult(await importHfModel(repo));
+      const parsed = await importHfModel(repo);
+      if (version === loadVersion.current) setResult(parsed);
     } catch (e) {
+      if (version !== loadVersion.current) return;
       setResult(undefined);
       setError((e as Error).message);
     } finally {
-      setLoading(false);
+      if (version === loadVersion.current) setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Restore after hydration so server and client initially render identically.
+    const timer = setTimeout(() => {
+      try {
+        if (typeof window !== "undefined" && !initial.hardwareId) {
+          const saved = readHfState(window.localStorage.getItem("laa:hf-state"));
+          if (saved) setState(saved);
+        }
+      } catch { /* Storage may be unavailable in private mode. */ }
+      setRestored(true);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [initial.hardwareId]);
+
+  useEffect(() => {
+    if (!restored || typeof window === "undefined") return;
+    try { window.localStorage.setItem("laa:hf-state", JSON.stringify({ hardwareId: state.hardwareId, custom: state.custom, os: state.os, workload: state.workload })); } catch { /* Optional persistence. */ }
+  }, [state, restored]);
 
   // Shared links (?repo=…) load the model on arrival.
   useEffect(() => {
     if (!initialRepo) return;
     let alive = true;
+    const version = ++loadVersion.current;
     importHfModel(initialRepo)
-      .then((r) => alive && setResult(r))
-      .catch((e: Error) => alive && setError(e.message))
-      .finally(() => alive && setLoading(false));
+      .then((r) => alive && version === loadVersion.current && setResult(r))
+      .catch((e: Error) => alive && version === loadVersion.current && setError(e.message))
+      .finally(() => alive && version === loadVersion.current && setLoading(false));
     return () => {
       alive = false;
     };
@@ -86,6 +117,9 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
 
   const onType = (v: string) => {
     setQuery(v);
+    const version = ++searchVersion.current;
+    setActive(-1);
+    setOpen(false);
     clearTimeout(debounce.current);
     if (v.trim().length < 2 || v.includes("huggingface.co")) {
       setHits([]);
@@ -95,9 +129,11 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
       try {
         const r = await fetch(`/api/hf/search?q=${encodeURIComponent(v.trim())}`);
         const body = await r.json();
+        if (version !== searchVersion.current) return;
         setHits(body.results ?? []);
         setOpen(true);
       } catch {
+        if (version !== searchVersion.current) return;
         setHits([]);
       }
     }, 300);
@@ -106,7 +142,8 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
   const hardware = resolveHardware(state);
   const rec = useMemo(() => {
     if (!result || !hardware) return undefined;
-    return bestQuantFor({ hardware, modelId: result.model.id, os: state.os, workload: state.workload }, candidateQuants(result.model.id));
+    const quants = candidateQuants(result.model.id);
+    return bestQuantFor({ hardware, modelId: result.model.id, os: state.os, workload: state.workload }, quants.length ? quants : result.model.supportedQuantizations);
   }, [result, hardware, state.os, state.workload]);
   const setWorkload = (p: Partial<WorkloadProfileInput>) => setState((s) => ({ ...s, workload: { ...s.workload, ...p } }));
 
@@ -136,6 +173,18 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
               placeholder="e.g. Qwen/Qwen3.8-27B or https://huggingface.co/…"
               aria-label="Hugging Face model"
               role="combobox"
+              onKeyDown={(e) => {
+                if (e.key === "Escape") { setOpen(false); setActive(-1); ++searchVersion.current; clearTimeout(debounce.current); }
+                if ((e.key === "ArrowDown" || e.key === "ArrowUp") && hits.length) {
+                  e.preventDefault(); setOpen(true);
+                  const next = e.key === "ArrowDown" ? (active + 1) % hits.length : (active <= 0 ? hits.length - 1 : active - 1);
+                  setActive(next);
+                  document.getElementById(`hf-option-${next}`)?.scrollIntoView({ block: "nearest" });
+                }
+                if (e.key === "Enter" && open && active >= 0 && hits[active]) { e.preventDefault(); void load(hits[active].id); }
+              }}
+              aria-activedescendant={open && active >= 0 ? `hf-option-${active}` : undefined}
+              aria-autocomplete="list"
               aria-expanded={open}
               aria-controls="hf-results"
               autoComplete="off"
@@ -148,10 +197,10 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
         </div>
         {open && hits.length > 0 && (
           <ul id="hf-results" role="listbox" className="absolute z-20 mt-1 max-h-80 w-full overflow-y-auto rounded-xl border bg-card p-1 shadow-lg">
-            {hits.map((h) => (
-              <li key={h.id} role="option" aria-selected={false}>
-                <button type="button" onMouseDown={() => load(h.id)} className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm hover:bg-muted">
-                  <span className="truncate font-medium">{h.id}</span>
+            {hits.map((h, index) => (
+              <li key={h.id} id={`hf-option-${index}`} role="option" aria-selected={active === index} className={active === index ? "bg-muted" : ""}>
+                <button type="button" tabIndex={-1} onMouseDown={(e) => e.preventDefault()} onClick={() => load(h.id)} className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm hover:bg-muted">
+                  <span className="truncate font-medium">{h.id}</span><Badge>{hitFormat(h)}</Badge>{h.gated && <Badge tone="warn">Gated</Badge>}
                   {h.downloads !== undefined && <span className="shrink-0 text-xs text-muted-foreground">{h.downloads.toLocaleString("en-US")} downloads</span>}
                 </button>
               </li>
@@ -182,7 +231,7 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
 
       {result && (
         <div className={cn("mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]", loading && "opacity-60")}>
-          <ModelFacts r={result} />
+          <div className="space-y-3"><ModelFacts r={result} /><Link className="text-sm text-primary hover:underline" href={`/hf/${result.facts.repo}`}>Permanent model page</Link></div>
           <div className="space-y-5">
             <Card>
               <CardHeader>
@@ -217,92 +266,5 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
         </div>
       )}
     </div>
-  );
-}
-
-function ModelFacts({ r }: { r: ParsedHfModel }) {
-  const m = r.model;
-  const f = r.facts;
-  const quants = m.supportedQuantizations;
-  const fmt = m.supportedFormats.includes("gguf") ? "gguf" : m.supportedFormats[0];
-  return (
-    <Card>
-      <CardHeader>
-        <div className="flex flex-wrap items-start justify-between gap-2">
-          <div className="min-w-0">
-            <CardTitle className="truncate text-xl">{m.name}</CardTitle>
-            <CardDescription>
-              {m.organization} · {m.license}
-              {f.downloads !== undefined && ` · ${f.downloads.toLocaleString("en-US")} downloads`}
-            </CardDescription>
-          </div>
-          <a href={m.source.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-primary hover:underline">
-            Hugging Face <ExternalLink className="size-3.5" />
-          </a>
-        </div>
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          {f.isGgufRepo && <Badge tone="primary">GGUF repo</Badge>}
-          {f.isMlxRepo && <Badge tone="primary">MLX repo</Badge>}
-          {m.denseOrMoE === "moe" && <Badge>Mixture of experts</Badge>}
-          {m.vision && <Badge>Vision</Badge>}
-          {m.thinking && <Badge>Reasoning / thinking mode</Badge>}
-          {f.gated && <Badge tone="warn">Gated</Badge>}
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-5">
-        <dl className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-          <dt className="text-muted-foreground">Parameters</dt>
-          <dd className="text-right">
-            {fmtParams(m.parameterCount)} {f.parametersExact ? <Badge tone="good">exact</Badge> : <Badge>estimated</Badge>}
-          </dd>
-          {m.denseOrMoE === "moe" && (
-            <>
-              <dt className="text-muted-foreground">Active per token</dt>
-              <dd className="text-right">
-                ≈{fmtParams(m.activeParameterCount)} ({f.experts?.active} of {f.experts?.total} experts)
-              </dd>
-            </>
-          )}
-          <dt className="text-muted-foreground">Context window</dt>
-          <dd className="text-right">{fmtCtx(m.contextWindow)} tokens</dd>
-          <dt className="text-muted-foreground">Attention</dt>
-          <dd className="text-right">{ATTENTION_LABEL[f.attention]}</dd>
-          <dt className="text-muted-foreground">Layers · KV heads · head dim</dt>
-          <dd className="text-right">
-            {f.layers} · {f.kvHeads} · {f.headDim}
-          </dd>
-          <dt className="text-muted-foreground">KV cache</dt>
-          <dd className="text-right">
-            {Math.round(kvBytesPerToken(m) / 1024)} KB/token · {fmtGB(kvCacheGB(m, 32768, 1, "f16"))} at 32K
-          </dd>
-          <dt className="text-muted-foreground">Tool calling</dt>
-          <dd className="text-right capitalize">{m.toolCalling} (from chat template)</dd>
-        </dl>
-
-        <div>
-          <p className="mb-2 text-sm font-medium">Weights by quantization</p>
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-            {quants.map((q: QuantId) => {
-              const known = !!m.knownSizesGB?.[q];
-              return (
-                <div key={q} className="rounded-lg border p-2 text-center">
-                  <p className="text-xs text-muted-foreground">{QUANTIZATIONS[q].formatNames[fmt] ?? QUANTIZATIONS[q].label}</p>
-                  <p className="font-medium tabular-nums">{fmtGB(weightsGB(m, QUANTIZATIONS[q], fmt))}</p>
-                  <p className="text-[10px] text-muted-foreground">{known ? "file size" : "computed"}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {r.warnings.length > 0 && (
-          <ul className="space-y-1 rounded-lg bg-muted/60 p-3 text-xs text-muted-foreground">
-            {r.warnings.map((w) => (
-              <li key={w}>• {w}</li>
-            ))}
-          </ul>
-        )}
-      </CardContent>
-    </Card>
   );
 }

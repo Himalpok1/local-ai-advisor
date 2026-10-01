@@ -26,9 +26,9 @@ export const KV_TYPE_FACTOR: Record<KvCacheType, number> = { f16: 1, q8: 0.53, q
 
 /** Bytes per weight for a model at a quantization, honouring published file sizes. */
 export function weightsGB(model: Model, quant: Quantization, format: ModelFormat): number {
-  // Published sizes are GGUF files; MLX / safetensors are derived from bits per weight.
+  // Legacy curated sizes are GGUF; imported measurements carry their actual format.
   const known = model.knownSizesGB?.[quant.id];
-  if (known && (format === "gguf" || quant.id === "mxfp4")) return known;
+  if (known && (model.knownSizeFormats?.[quant.id] ? model.knownSizeFormats[quant.id] === format : (format === "gguf" || quant.id === "mxfp4"))) return known;
   const bpw = quant.bitsPerWeight[format] ?? quant.bitsPerWeight.gguf ?? 16;
   // Embeddings / norms are often kept at higher precision: +2% for small models.
   const extra = model.parameterCount < 10 ? 1.03 : 1.01;

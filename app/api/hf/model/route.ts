@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     return Response.json(parsed, { headers: { "Cache-Control": "public, max-age=3600, s-maxage=21600" } });
   } catch (e) {
     if (e instanceof HfError) return Response.json({ error: e.message }, { status: e.status });
-    console.error("hf model lookup failed", repo, e);
+    console.error("hf model lookup failed", repo);
     return Response.json({ error: "Couldn't reach Hugging Face right now. Please try again." }, { status: 502 });
   }
 }

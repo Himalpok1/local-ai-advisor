@@ -4,7 +4,7 @@ const hits = new Map<string, { start: number; count: number }>();
 export function rateLimited(key: string, limit = 30, windowMs = 60_000): boolean {
   const now = Date.now();
   const h = hits.get(key);
-  if (!h || now - h.start > windowMs) {
+  if (!h || now - h.start >= windowMs) {
     hits.set(key, { start: now, count: 1 });
     if (hits.size > 5000) hits.clear();
     return false;

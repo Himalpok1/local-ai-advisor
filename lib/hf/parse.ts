@@ -7,6 +7,8 @@
  */
 import { ModelSchema, type Model, type ModelInput, type QuantId } from "@/lib/schemas";
 
+import { licenseUse, type LicenseUse } from "./licenses";
+
 export const HF_REPO_RE = /^[A-Za-z0-9][\w.-]{0,95}\/[\w.-]{1,96}$/;
 export const HF_ID_PREFIX = "hf:";
 
@@ -35,7 +37,16 @@ export interface HfFile {
 /** Raw config.json — loosely typed because every architecture differs. */
 export type HfConfig = Record<string, unknown>;
 
+export interface CapabilitySignal {
+  value: "good" | "basic";
+  signal: "chat-template" | "model-name" | "config" | "none";
+}
+
 export interface HfFacts {
+  extendedContext?: number;
+  commercialUse: LicenseUse;
+  signals: Record<"toolCalling" | "thinking" | "vision", CapabilitySignal>;
+  sizeFormats: Partial<Record<QuantId, "gguf" | "safetensors">>;
   repo: string;
   configSource?: string;
   attention: "full" | "sliding-window" | "hybrid-linear" | "mla";
@@ -70,6 +81,7 @@ const GGUF_PATTERNS: [QuantId, RegExp[]][] = [
   ["q4", [/(^|[-_.])Q4_K_M\b/i, /Q4_K_XL/i, /Q4_K_S/i, /(^|[-_.])Q4_0\b/i, /IQ4_(NL|XS)/i]],
   ["q5", [/(^|[-_.])Q5_K_M\b/i, /Q5_K_XL/i, /Q5_K_S/i]],
   ["q6", [/(^|[-_.])Q6_K\b(?!_)/i, /Q6_K_(M|L|XL)/i]],
+  ["fp8", [/(^|[-_.])FP8(?:[-_.]|$)/i]],
   ["q8", [/(^|[-_.])Q8_0\b/i, /Q8_K_(L|XL)/i]],
   ["fp16", [/(^|[-_.])BF16\b/i, /(^|[-_.])F16\b/i]],
   ["mxfp4", [/MXFP4/i]],
@@ -77,17 +89,21 @@ const GGUF_PATTERNS: [QuantId, RegExp[]][] = [
 
 /** Group split GGUF shards (…-00001-of-00003.gguf) and sum their sizes per quant. */
 export function ggufSizes(files: HfFile[]): Partial<Record<QuantId, { file: string; bytes: number }>> {
-  const groups = new Map<string, number>();
+  const groups = new Map<string, HfFile[]>();
   for (const f of files) {
     if (!f.path.toLowerCase().endsWith(".gguf")) continue;
     if (/mmproj|imatrix|(^|\/)mtp[-/]/i.test(f.path)) continue;
     const key = f.path.replace(/-\d{5}-of-\d{5}\.gguf$/i, ".gguf");
-    groups.set(key, (groups.get(key) ?? 0) + (f.size ?? 0));
+    groups.set(key, [...(groups.get(key) ?? []), f]);
   }
+  const measured = [...groups.entries()].flatMap(([file, group]) => {
+    const bytes = completeFileBytes(group);
+    return bytes ? [[file, bytes] as const] : [];
+  });
   const out: Partial<Record<QuantId, { file: string; bytes: number }>> = {};
   for (const [quant, patterns] of GGUF_PATTERNS) {
     for (const re of patterns) {
-      const hit = [...groups.entries()].find(([name, size]) => size > 0 && re.test(name.split("/").pop()!));
+      const hit = measured.find(([name, size]) => size > 0 && re.test(name.split("/").pop()!));
       if (hit) {
         out[quant] = { file: hit[0], bytes: hit[1] };
         break;
@@ -95,6 +111,17 @@ export function ggufSizes(files: HfFile[]): Partial<Record<QuantId, { file: stri
     }
   }
   return out;
+}
+
+/** Refuse partial or unknown-size shard sets instead of labelling them exact. */
+function completeFileBytes(files: HfFile[]): number | undefined {
+  if (!files.length || files.some((f) => !f.size || f.size <= 0)) return undefined;
+  const shards = files.map((f) => f.path.match(/-(\d+)-of-(\d+)\.(?:gguf|safetensors)$/i));
+  if (shards.some(Boolean)) {
+    const expected = Number(shards[0]?.[2]);
+    if (files.length !== expected || shards.some((s) => !s || Number(s[2]) !== expected || Number(s[1]) < 1 || Number(s[1]) > expected) || new Set(shards.map((s) => s?.[1])).size !== expected) return undefined;
+  } else if (files.length !== 1) return undefined;
+  return files.reduce((sum, f) => sum + f.size!, 0);
 }
 
 function chatTemplate(info: HfModelInfo): string {
@@ -115,6 +142,7 @@ function estimateParams(tc: HfConfig, layers: number, hidden: number, heads: num
   return layers * (attn + mlp) + emb;
 }
 
+/** Parse architecture and explicitly label inferred capabilities. */
 export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: HfConfig; configSource?: string; files?: HfFile[]; today?: string }): ParsedHfModel {
   const { repo, info } = args;
   const warnings: string[] = [];
@@ -123,6 +151,9 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
   const today = args.today ?? new Date().toISOString().slice(0, 10);
   const isGgufRepo = !!info.gguf || (args.files ?? []).some((f) => f.path.endsWith(".gguf"));
   const isMlxRepo = info.library_name === "mlx" || (info.tags ?? []).includes("mlx");
+
+  const rejection = nonGenerativeReason(info, config, args.files);
+  if (rejection) throw new HfParseError(`${repo} looks like an embedding/reranker model, not a text-generation model (${rejection}). Choose a generative chat or instruct model.`);
 
   const layers = num(tc.num_hidden_layers) ?? num(tc.n_layer) ?? num(tc.num_layers);
   if (!layers) throw new HfParseError(`Couldn't read the architecture of ${repo} (no num_hidden_layers in config.json).`);
@@ -195,17 +226,33 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
   // ---- Quantizations & formats ----
   const files = args.files ?? [];
   const sizes = ggufSizes(files);
+  const nativeFp8 = /fp8/i.test(String((config.quantization_config as HfConfig | undefined)?.quant_method ?? ""));
   const nativeMxfp4 = (config.quantization_config as { quant_method?: string } | undefined)?.quant_method === "mxfp4";
   let supportedQuantizations: QuantId[];
   if (isGgufRepo && Object.keys(sizes).length) {
     supportedQuantizations = Object.keys(sizes) as QuantId[];
+  } else if (nativeFp8) {
+    supportedQuantizations = ["fp8"];
   } else if (nativeMxfp4) {
     supportedQuantizations = ["mxfp4"];
   } else {
     supportedQuantizations = ["q3", "q4", "q5", "q6", "q8", "fp16"];
   }
   const knownSizesGB: Partial<Record<QuantId, number>> = {};
-  for (const [q, v] of Object.entries(sizes)) knownSizesGB[q as QuantId] = +(v!.bytes / GiB).toFixed(2);
+  for (const [q, v] of Object.entries(sizes)) knownSizesGB[q as QuantId] = v!.bytes / GiB;
+  const sizeFormats: HfFacts["sizeFormats"] = {};
+  for (const q of Object.keys(sizes) as QuantId[]) sizeFormats[q] = "gguf";
+  // Hub safetensors.total counts parameters, never bytes. Use actual weight files.
+  const tensorFiles = files.filter((f) => /^(?:model|pytorch_model)(?:-\d+-of-\d+)?\.safetensors$/.test(f.path));
+  const tensorBytes = ["model", "pytorch_model"].map((prefix) => {
+    const single = tensorFiles.find((f) => f.path === `${prefix}.safetensors`);
+    return completeFileBytes(single ? [single] : tensorFiles.filter((f) => f.path.startsWith(`${prefix}-`)));
+  }).find((bytes) => bytes !== undefined);
+  const dtype = String(tc.torch_dtype ?? tc.dtype ?? config.torch_dtype ?? config.dtype ?? "");
+  if (!isGgufRepo && !isMlxRepo && !config.quantization_config && /^(bfloat16|float16)$/.test(dtype) && tensorBytes && !knownSizesGB.fp16) {
+    knownSizesGB.fp16 = tensorBytes / GiB;
+    sizeFormats.fp16 = "safetensors";
+  }
   const supportedFormats: ModelInput["supportedFormats"] = isGgufRepo ? ["gguf"] : isMlxRepo ? ["mlx"] : ["safetensors", "gguf", "mlx"];
   if (!isGgufRepo && !isMlxRepo) warnings.push("Assumes GGUF / MLX conversions of this model exist (they do for most popular models). Sizes are computed from bits per weight.");
 
@@ -213,18 +260,40 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
   const name = repo.split("/")[1];
   const lname = repo.toLowerCase();
   const template = chatTemplate(info);
-  const toolCalling = /\btools?\b|tool_call|function_call|\bfunctions\b|<\|tool/i.test(template) ? "good" : "basic";
-  const thinking = /enable_thinking|<think>|reasoning_effort|thinking/i.test(template) || /reason|thinking|-r1/i.test(lname);
+  const signals: HfFacts["signals"] = {
+    toolCalling: { value: /\btools?\b|tool_call|function_call|\bfunctions\b|<\|tool/i.test(template) ? "good" : "basic", signal: template ? "chat-template" : "none" },
+    thinking: /enable_thinking|<think>|reasoning_effort|thinking/i.test(template)
+      ? { value: "good", signal: "chat-template" }
+      : /(?:^|[\/_-])(?:reason(?:ing|er)?|thinking|qwq|t1|r1(?:-distill)?)(?:$|[\/_.-])/i.test(lname)
+        ? { value: "good", signal: "model-name" } : { value: "basic", signal: template ? "chat-template" : "none" },
+    vision: [config, tc].some((c) => ["image_token_index", "vision_config", "mm_vision_tower", "multi_modal_projector_bias"].some((key) => c[key] !== undefined)) || files.some((f) => /mmproj/i.test(f.path)) || info.pipeline_tag === "image-text-to-text" || (info.tags ?? []).includes("image-text-to-text")
+      ? { value: "good", signal: "config" } : { value: "basic", signal: "none" },
+  };
+  const toolCalling = signals.toolCalling.value;
+  const thinking = signals.thinking.value === "good";
   const pEff = Math.sqrt(total * active) / 1e9;
   const base = Math.min(4.2, Math.max(1.2, 1.1 + 0.55 * Math.log2(Math.max(0.5, pEff))));
   const isCoder = /coder|code|devstral|starcoder|codestral/.test(lname);
   const isReasoner = thinking;
-  const vision = !!config.vision_config || info.pipeline_tag === "image-text-to-text" || (info.tags ?? []).includes("image-text-to-text");
-  const contextWindow = num(tc.max_position_embeddings) ?? info.gguf?.context_length ?? 8192;
+  const vision = signals.vision.value === "good";
+  const advertisedContext = num(tc.max_position_embeddings) ?? info.gguf?.context_length ?? 8192;
+  const rope = tc.rope_scaling && typeof tc.rope_scaling === "object" ? tc.rope_scaling as HfConfig : {};
+  const original = num(rope.original_max_position_embeddings);
+  const extendedContext = (num(rope.factor) ?? 1) > 1 && original && original > 0 && original < advertisedContext ? advertisedContext : undefined;
+  const contextWindow = extendedContext ? original! : advertisedContext;
+  if (extendedContext) warnings.push(`Context native ${contextWindow}, rope-extended to ${extendedContext} (${String(rope.rope_type ?? rope.type ?? "scaling")}); quality degrades past native — treat long-context ratings as optimistic.`);
+  else if ((num(rope.factor) ?? 1) > 1) warnings.push("RoPE scaling is configured but native context cannot be separated reliably; using the advertised context (low confidence).");
+  if (!num(tc.max_position_embeddings) && !info.gguf?.context_length) warnings.push("Context window estimated as 8192 tokens (low confidence; no context metadata).");
+  if (!template) warnings.push("No chat template found; tool calling is inferred as limited (low confidence).");
+  for (const [capability, signal] of Object.entries(signals)) {
+    if (signal.signal !== "chat-template") warnings.push(`${capability}: ${signal.value}, inferred from ${signal.signal === "none" ? "missing signals" : signal.signal} (low confidence).`);
+  }
   warnings.push("Capability ratings are estimated from model size and name — this model hasn't been assessed by hand.");
   if (toolCalling === "basic" && template) warnings.push("The chat template doesn't mention tools, so tool calling is assumed to be limited.");
 
   const lic = info.cardData?.license;
+  const commercialUse = licenseUse(lic);
+  if (commercialUse.commercial !== "yes") warnings.push(`Commercial use ${commercialUse.commercial}: ${commercialUse.note}.`);
   const model = ModelSchema.parse({
     id: `${HF_ID_PREFIX}${repo}`,
     organization: info.author ?? repo.split("/")[0],
@@ -259,6 +328,7 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
     },
     supportedQuantizations,
     supportedFormats,
+    knownSizeFormats: sizeFormats,
     knownSizesGB: Object.keys(knownSizesGB).length ? knownSizesGB : undefined,
     license: lic ?? "See model card",
     releaseDate: (info.createdAt ?? today).slice(0, 7),
@@ -277,6 +347,10 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
     warnings,
     facts: {
       repo,
+      extendedContext,
+      commercialUse,
+      signals,
+      sizeFormats,
       configSource: args.configSource,
       attention,
       layers,
@@ -297,6 +371,17 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
   };
 }
 
+/** Return the metadata signal that rules out a generative language model. */
+export function nonGenerativeReason(info: HfModelInfo, config: HfConfig = {}, files: HfFile[] = []): string | undefined {
+  const tag = info.pipeline_tag ?? info.cardData?.pipeline_tag;
+  if (tag && ["feature-extraction", "sentence-similarity", "fill-mask", "token-classification", "text-classification", "zero-shot-classification"].includes(tag)) return `pipeline: ${tag}`;
+  if (info.library_name === "sentence-transformers") return "library: sentence-transformers";
+  const type = String(config.model_type ?? info.config?.model_type ?? "").toLowerCase();
+  if (["bert", "modernbert", "nomic_bert", "xlm-roberta", "roberta", "distilbert", "deberta", "deberta-v2", "electra"].includes(type)) return `model_type: ${type}`;
+  const file = files.find((f) => /embed/i.test(f.path) && /\.gguf$/i.test(f.path));
+  return file ? `GGUF file: ${file.path}` : undefined;
+}
+
 export class HfParseError extends Error {}
 
 /** Accept "owner/name", "hf:owner/name" or a full huggingface.co URL. */
@@ -304,5 +389,5 @@ export function normalizeRepo(input: string): string | null {
   let s = input.trim();
   s = s.replace(/^hf:/, "").replace(/^https?:\/\/(www\.)?huggingface\.co\//, "").replace(/^models\//, "");
   s = s.split(/[?#]/)[0].split("/").slice(0, 2).join("/");
-  return HF_REPO_RE.test(s) ? s : null;
+  return HF_REPO_RE.test(s) && s.split("/").every((part) => part !== "." && part !== "..") ? s : null;
 }

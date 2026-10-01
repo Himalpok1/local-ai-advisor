@@ -35,6 +35,15 @@ const PAIRS: [string, string][] = [
 ];
 
 describe("Hugging Face import", () => {
+  it.each([
+    ["openai/gpt-oss-20b", 4096, 131072],
+    ["deepseek-ai/DeepSeek-V4-Flash", 65536, 1048576],
+  ] as const)("separates native and RoPE context for %s", (repo, native, extended) => {
+    const result = parse(repo);
+    expect(result.model.contextWindow).toBe(native);
+    expect(result.facts.extendedContext).toBe(extended);
+  });
+
   it.each(PAIRS)("%s matches the curated KV-cache and size data", (repo, curatedId) => {
     const { model } = parse(repo);
     const curated = getModel(curatedId);
