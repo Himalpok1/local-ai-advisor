@@ -8,7 +8,7 @@ import { accounts, users } from "@/lib/db/schema";
 export const { handlers, auth, signIn, signOut } = NextAuth(() => ({
   adapter: DrizzleAdapter(getDb(), { usersTable: users, accountsTable: accounts }),
   providers: [Google],
-  // Self-hosted behind Hostinger's proxy, which sets the Host header (not Vercel, where this is automatic).
+  // Self-hosted. Hostinger's proxy hands Next a Host of 0.0.0.0:3000, so production also sets AUTH_URL.
   trustHost: true,
   // Signed JWT cookie: reading the session never hits MySQL; the DB is only used on sign-in.
   session: { strategy: "jwt" },
