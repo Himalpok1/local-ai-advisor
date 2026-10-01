@@ -77,7 +77,7 @@ Invalid frontmatter fails `npm test` and `npm run build` with the file and field
 - Run `npm run refresh:models`. It compares every curated model with Hugging Face and writes `research/model-refresh-YYYY-MM-DD.md`. It reads `HF_TOKEN` from the environment or `~/.config/huggingface/token`.
 - Review the report: rows marked ⚠ need a human decision (context length, parameters, missing models worth adding).
 - The weekly GitHub Action (`.github/workflows/model-refresh.yml`, Mondays) runs the same script, commits the report and opens or updates a GitHub issue titled after the report. Triage those issues: comment with your findings and what you recommend, label/close duplicates, and leave curated changes to Himal.
-- **Never auto-edit curated data files** (`data/*.ts`, including `data/models.ts` and `data/hardware.ts`) or the recommendation engine (`lib/recommendations`, `lib/compatibility`, `lib/performance`, `lib/memory`). Propose changes in the issue instead.
+- **Data files change only under the Daily data refresh rules above:** factual, sourced fields only. Never edit `capabilities` tiers, editorial notes or the recommendation engine (`lib/`); propose those in the issue instead.
 - A new model is great blog material: write a post about it, linking to `/new-models` and `/hugging-face`.
 
 ## Environment and secrets
@@ -94,4 +94,4 @@ The [claude-seo](https://github.com/AgriciDaniel/claude-seo) skills (v2.4.1) are
 - **New page types or structured data:** `/seo-schema <url>` to validate JSON-LD. Shared helpers are in `components/seo/json-ld.tsx`.
 - **Monthly:** run `/seo-audit https://iownchatgpt.com` and save the summary as `research/seo-audit-YYYY-MM-DD.md`, with findings in `research/seo-audit-YYYY-MM-DD/`. Compare scores with the previous report (`research/seo-audit-2026-10-01.md` is the baseline). Turn "Still open" items into GitHub issues; fix code-only items, and leave hosting, Search Console, AdSense and policy decisions to Himal.
 - Topic ideas from the audit's search-intent gaps (`seo-audit-*/sxo.md`) go into the Ideas backlog in `research/blog-calendar.md`.
-- The same rules apply as everywhere else: never edit curated data files to chase a score, and engine changes need tests in `tests/`.
+- The same rules apply as everywhere else: never edit data files or the engine (`lib/`) to chase a score. Open an issue for Himal instead.
