@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
+import { UserMenu } from "./user-menu";
 
 const NAV = [
   { href: "/check", label: "Check My Computer", icon: Compass },
@@ -121,6 +122,8 @@ export function SiteHeader() {
             <Sparkles className="size-3.5" />
             <span>Check My Computer</span>
           </Link>
+
+          <UserMenu />
 
           {/* Mobile menu trigger */}
           <div className="flex items-center gap-1 lg:hidden">
