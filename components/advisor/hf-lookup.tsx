@@ -224,7 +224,7 @@ function ModelFacts({ r }: { r: ParsedHfModel }) {
   const m = r.model;
   const f = r.facts;
   const quants = m.supportedQuantizations;
-  const fmt = m.supportedFormats[0];
+  const fmt = m.supportedFormats.includes("gguf") ? "gguf" : m.supportedFormats[0];
   return (
     <Card>
       <CardHeader>

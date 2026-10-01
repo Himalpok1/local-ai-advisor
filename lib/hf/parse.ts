@@ -213,7 +213,7 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
   const name = repo.split("/")[1];
   const lname = repo.toLowerCase();
   const template = chatTemplate(info);
-  const toolCalling = /\btools?\b/.test(template) ? "good" : template ? "basic" : "basic";
+  const toolCalling = /\btools?\b|tool_call|function_call|\bfunctions\b|<\|tool/i.test(template) ? "good" : "basic";
   const thinking = /enable_thinking|<think>|reasoning_effort|thinking/i.test(template) || /reason|thinking|-r1/i.test(lname);
   const pEff = Math.sqrt(total * active) / 1e9;
   const base = Math.min(4.2, Math.max(1.2, 1.1 + 0.55 * Math.log2(Math.max(0.5, pEff))));
