@@ -1,65 +1,57 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { Moon, Sun, Monitor } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Theme = "light" | "dark" | "system";
 
-export function ThemeToggle({ className }: { className?: string }) {
-  const [theme, setTheme] = useState<Theme>("system");
-  const [mounted, setMounted] = useState(false);
+const KEY = "laa-theme";
+const EVENT = "laa-theme-change";
 
+function readTheme(): Theme {
+  const saved = localStorage.getItem(KEY);
+  return saved === "light" || saved === "dark" ? saved : "system";
+}
+
+function subscribe(cb: () => void) {
+  window.addEventListener(EVENT, cb);
+  window.addEventListener("storage", cb);
+  return () => {
+    window.removeEventListener(EVENT, cb);
+    window.removeEventListener("storage", cb);
+  };
+}
+
+const noop = () => () => {};
+
+function applyTheme(t: Theme) {
+  const dark = t === "dark" || (t === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const root = document.documentElement;
+  root.classList.toggle("dark", dark);
+  root.setAttribute("data-theme", dark ? "dark" : "light");
+}
+
+/** `compact` renders one button that cycles light → dark → system. */
+export function ThemeToggle({ className, compact }: { className?: string; compact?: boolean }) {
+  const theme = useSyncExternalStore(subscribe, readTheme, () => "system" as Theme);
+  const mounted = useSyncExternalStore(noop, () => true, () => false);
+
+  // Follow the OS setting live while the theme is "system".
   useEffect(() => {
-    setMounted(true);
-    const saved = localStorage.getItem("laa-theme") as Theme | null;
-    if (saved && (saved === "light" || saved === "dark" || saved === "system")) {
-      setTheme(saved);
-      applyTheme(saved);
-    } else {
-      setTheme("system");
-      applyTheme("system");
-    }
-
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
-    const listener = () => {
-      const current = localStorage.getItem("laa-theme");
-      if (!current || current === "system") {
-        applyTheme("system");
-      }
-    };
+    const listener = () => readTheme() === "system" && applyTheme("system");
     mql.addEventListener("change", listener);
     return () => mql.removeEventListener("change", listener);
   }, []);
 
-  function applyTheme(t: Theme) {
-    const root = document.documentElement;
-    if (t === "dark") {
-      root.classList.add("dark");
-      root.setAttribute("data-theme", "dark");
-    } else if (t === "light") {
-      root.classList.remove("dark");
-      root.setAttribute("data-theme", "light");
-    } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (prefersDark) {
-        root.classList.add("dark");
-        root.setAttribute("data-theme", "dark");
-      } else {
-        root.classList.remove("dark");
-        root.setAttribute("data-theme", "light");
-      }
-    }
-  }
-
   function handleSelect(next: Theme) {
-    setTheme(next);
-    localStorage.setItem("laa-theme", next);
+    localStorage.setItem(KEY, next);
     applyTheme(next);
+    window.dispatchEvent(new Event(EVENT));
   }
 
-  // Cycle toggle for compact navbar display
   function cycleTheme() {
-    const next: Theme = theme === "system" ? "dark" : theme === "dark" ? "light" : "system";
+    const next: Theme = theme === "system" ? "light" : theme === "light" ? "dark" : "system";
     handleSelect(next);
   }
 
@@ -71,6 +63,21 @@ export function ThemeToggle({ className }: { className?: string }) {
         className={cn("flex size-9 items-center justify-center rounded-lg border bg-card text-muted-foreground hover:bg-muted hover:text-foreground transition", className)}
       >
         <Sun className="size-4" />
+      </button>
+    );
+  }
+
+  if (compact) {
+    const Icon = theme === "light" ? Sun : theme === "dark" ? Moon : Monitor;
+    return (
+      <button
+        type="button"
+        onClick={cycleTheme}
+        aria-label={`Theme: ${theme}. Click to change`}
+        title={`Theme: ${theme}`}
+        className={cn("flex size-9 cursor-pointer items-center justify-center rounded-xl text-muted-foreground transition hover:bg-muted hover:text-foreground", className)}
+      >
+        <Icon className="size-4" />
       </button>
     );
   }

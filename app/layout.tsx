@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
+import { MobileTabBar } from "@/components/site/mobile-tab-bar";
 import { Providers } from "@/components/site/providers";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 // Google tags carried over from the previous iownchatgpt.com site.
@@ -19,6 +20,15 @@ export const metadata: Metadata = {
   description:
     "Choose your hardware, tools and workload. Find which local AI models will be comfortable to use — not just which ones technically fit.",
   icons: { icon: "/brand/logo-mark-128.png", apple: "/brand/logo-mark-512.png" },
+};
+
+export const viewport: Viewport = {
+  // "cover" lets the bottom tab bar sit under the iPhone home indicator using safe-area insets.
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8f9fc" },
+    { media: "(prefers-color-scheme: dark)", color: "#0d0f17" },
+  ],
 };
 
 const themeInitScript = `(function(){
@@ -38,15 +48,16 @@ const themeInitScript = `(function(){
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${jakarta.variable} ${geistMono.variable} h-full antialiased`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="flex min-h-full flex-col font-sans">
+      <body className="pb-tabbar flex min-h-full flex-col font-sans">
         <Providers>
           <SiteHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter />
+          <MobileTabBar />
         </Providers>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="gtag-init" strategy="afterInteractive">

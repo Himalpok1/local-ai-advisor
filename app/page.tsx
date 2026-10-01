@@ -1,56 +1,18 @@
 import Link from "next/link";
-import Image from "next/image";
-import {
-  ArrowRight,
-  Cpu,
-  HardDrive,
-  Layers,
-  Search,
-  Sparkles,
-  Zap,
-  CheckCircle2,
-  XCircle,
-  Scale,
-  BookOpen,
-} from "lucide-react";
+import { ArrowRight, BookOpen, Clock, Compass, Cpu, HelpCircle, Laptop, ListChecks, Lock, MessageSquare, ShoppingCart, Sparkles, WifiOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { LinkButton } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { HomeDemo } from "@/components/home/home-demo";
+import { HeroChat } from "@/components/explainers/hero-chat";
+import { LocalAiDiagram } from "@/components/explainers/local-ai-diagram";
+import { SpeedFeel } from "@/components/explainers/speed-feel";
+import { MemoryFill } from "@/components/explainers/memory-fill";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { PopularRigsMatrix, type RigCategory } from "@/components/home/popular-rigs";
+import { LESSONS, TOTAL_MINUTES } from "@/components/learn/lessons";
+import { TOOL_GROUPS } from "@/components/site/nav";
 import { rigSummary } from "@/lib/can-i-run";
-import { ComfortExplorer } from "@/components/home/comfort-explorer";
-import { BENCHMARKS, HARDWARE, MODELS, RUNTIMES, TOOLS } from "@/data";
+import { HARDWARE, MODELS } from "@/data";
 
-const TIERS = [
-  {
-    step: "01",
-    title: "Can Load",
-    badge: "Memory",
-    text: "The model physically fits into usable RAM / VRAM without triggering an immediate out-of-memory crash.",
-  },
-  {
-    step: "02",
-    title: "Can Run",
-    badge: "Compatibility",
-    text: "Your runtime (llama.cpp, MLX, Ollama) supports the chip instructions, and your tool connects cleanly via local API.",
-  },
-  {
-    step: "03",
-    title: "Can Run Usably",
-    badge: "Basic Speed",
-    text: "Generation exceeds minimal conversational speeds (> 10 tok/s) so basic one-turn interactions don't feel agonizing.",
-  },
-  {
-    step: "04",
-    title: "Comfortable for Workload",
-    badge: "Real-World Experience",
-    text: "Leaves generous headroom for your OS and IDE. Prompt prefill is fast enough to make multi-turn coding agents feel instant.",
-    primary: true,
-  },
-];
-
-/** Machines shown in "Popular rigs"; their picks are computed by the engine. */
+/** Machines shown in "Popular computers"; their picks are computed by the engine. */
 const POPULAR_RIGS: { id: string; category: RigCategory }[] = [
   { id: "mba-m4-10c-16", category: "apple" },
   { id: "mbp-m4-pro-20c-48", category: "apple" },
@@ -63,467 +25,263 @@ const POPULAR_RIGS: { id: string; category: RigCategory }[] = [
   { id: "dgx-spark-128", category: "apu" },
 ];
 
+const HOW = [
+  { icon: Laptop, title: "Tell us your computer", text: "Pick it from a list, or let us detect it for you. Mac, Windows PC or Linux." },
+  { icon: MessageSquare, title: "Say what you want to do", text: "Chat, write, read long documents, code with an AI agent… each needs something different." },
+  { icon: ListChecks, title: "Get models that feel good", text: "Ranked by how they’ll actually feel to use, with copy-paste install steps." },
+];
+
+const PATHS = [
+  { href: "/check", icon: Compass, title: "I have a computer", text: "Find the best models for the machine you already own.", cta: "Check my computer" },
+  { href: "/can-i-run", icon: HelpCircle, title: "I have a model in mind", text: "See if Llama, Qwen, Gemma or another model runs on your computer.", cta: "Can I run it?" },
+  { href: "/hardware-for-model", icon: ShoppingCart, title: "I’m shopping for a computer", text: "Find what to buy to run the models you want, comfortably.", cta: "Find hardware" },
+];
+
 export default function Home() {
   const rigs = POPULAR_RIGS.map(({ id, category }) => ({ ...rigSummary(HARDWARE.find((h) => h.id === id)!), category }));
+  const moreTools = TOOL_GROUPS.flatMap((g) => g.items).filter((t) => !["/check", "/can-i-run", "/hardware-for-model"].includes(t.href));
+
   return (
-    <div className="space-y-16 sm:space-y-24">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border/70 subtle-grid">
-        <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
-          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-12">
-          <div className="text-center space-y-6 lg:text-left">
-            {/* Live Status Eyebrow Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/80 px-3.5 py-1.5 text-xs font-medium text-muted-foreground shadow-2xs backdrop-blur-md">
-              <span className="flex size-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-semibold text-foreground">Zero-Guesswork Local AI</span>
-              <span className="text-border">|</span>
-              <span>{HARDWARE.length} Hardware Profiles · {BENCHMARKS.length} Benchmarks</span>
-            </div>
-
-            {/* Main Headline */}
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-[4.25rem] text-foreground">
-              Will local AI{" "}
-              <span className="text-primary">actually run well</span> on your computer?
+    <div className="space-y-20 sm:space-y-28">
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div className="glow-primary pointer-events-none absolute inset-0" aria-hidden />
+        <div className="relative mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] items-center gap-10 px-4 pb-4 pt-8 sm:px-6 sm:pt-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14 lg:pt-20">
+          <div className="text-center lg:text-left">
+            <p className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-border/80 bg-card/80 px-3 py-1.5 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-comfortable opacity-60" />
+                <span className="relative inline-flex size-2 rounded-full bg-comfortable" />
+              </span>
+              Free · no sign-up · {MODELS.length} models rated
+            </p>
+            <h1 className="mt-5 animate-fade-up text-[2.5rem] font-extrabold leading-[1.05] tracking-tight text-balance [animation-delay:80ms] sm:text-6xl lg:text-[4.25rem]">
+              Your own ChatGPT, running on <span className="text-primary">your computer.</span>
             </h1>
-
-            {/* Subtitle */}
-            <p className="mx-auto max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed lg:mx-0">
-              Don&apos;t guess if a model fits. We calculate real KV-cache headroom, agentic prompt prefill latency, and token speeds for your exact CPU, GPU, or Apple Silicon machine.
+            <p className="mx-auto mt-5 max-w-xl animate-fade-up text-lg leading-relaxed text-muted-foreground text-pretty [animation-delay:160ms] lg:mx-0">
+              Local AI is private, free and works offline. Tell us what computer you have and we’ll show you which AI models will run smoothly on it, and
+              exactly how to install them.
             </p>
-
-            {/* Call to Actions */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2 lg:justify-start">
-              <LinkButton href="/check" size="lg" variant="primary">
-                <span>Check My Computer</span>
-                <ArrowRight className="size-4" />
-              </LinkButton>
-              <LinkButton href="/hardware-for-model" size="lg" variant="outline">
-                Find Hardware for a Model
-              </LinkButton>
-              <LinkButton href="/hugging-face" size="lg" variant="ghost">
-                <Search className="size-4" /> Any HF Model
-              </LinkButton>
+            <div className="mt-8 flex animate-fade-up flex-col items-center gap-3 [animation-delay:240ms] sm:flex-row sm:justify-center lg:justify-start">
+              <Link
+                href="/check"
+                className="group inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-7 text-lg font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition hover:brightness-110 active:scale-[0.98] sm:w-auto"
+              >
+                Check my computer <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/learn"
+                className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border border-border/80 bg-card px-6 text-base font-semibold shadow-sm transition hover:bg-muted active:scale-[0.98] sm:w-auto"
+              >
+                <BookOpen className="size-5 text-primary" /> New to this? Start learning
+              </Link>
             </div>
-          </div>
-          <div className="overflow-hidden rounded-3xl border border-border/70 bg-[#F7F7F5] shadow-sm">
-            <Image
-              src="/brand/editorial-capability-layers.webp"
-              width={1536}
-              height={1024}
-              alt="A computer and four colored layers representing memory, compatibility, speed, and comfort"
-              className="h-auto w-full"
-              loading="eager"
-              fetchPriority="high"
-            />
-          </div>
+            <p className="mt-3 flex animate-fade-up items-center justify-center gap-1.5 text-sm text-muted-foreground [animation-delay:300ms] lg:justify-start">
+              <Clock className="size-4" /> The check takes about a minute
+            </p>
           </div>
 
-          {/* Interactive Hardware & Model Simulator */}
-          <div className="mx-auto mt-12 sm:mt-16 max-w-5xl">
-            <HomeDemo />
+          <div className="relative mx-auto w-full max-w-lg animate-fade-up [animation-delay:200ms]">
+            <HeroChat />
+            <span className="absolute -left-6 top-16 hidden animate-float rounded-2xl border border-border/70 bg-card px-3 py-2 text-sm font-semibold shadow-lg lg:flex lg:items-center lg:gap-1.5">
+              <Lock className="size-4 text-comfortable" /> Private
+            </span>
+            <span className="absolute -right-5 bottom-24 hidden animate-float rounded-2xl border border-border/70 bg-card px-3 py-2 text-sm font-semibold shadow-lg [animation-delay:1.5s] lg:flex lg:items-center lg:gap-1.5">
+              <WifiOff className="size-4 text-primary" /> Works offline
+            </span>
           </div>
         </div>
       </section>
 
-      {/* The "It Fits" Myth — Visual Reality Check */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mx-auto max-w-3xl text-center space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-            The Reality Check
-          </p>
-          <h2 className="text-2xl font-bold tracking-tight sm:text-4xl text-foreground">
-            &ldquo;It fits&rdquo; is the least useful metric in local AI
-          </h2>
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Most calculators stop at static weights memory. But when a model consumes 98% of your RAM, your computer slows to a crawl. Here is the difference:
-          </p>
-        </div>
-
-        {/* Side-by-side comparison */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {/* The Naive Way */}
-          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/5 p-6 sm:p-8 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 px-3 py-1 text-xs font-semibold text-rose-600 dark:text-rose-400">
-                <XCircle className="size-3.5" /> Naive Memory Check
-              </span>
-              <span className="text-xs font-medium text-muted-foreground">What other sites do</span>
-            </div>
-            <h3 className="text-xl font-bold text-foreground">
-              &ldquo;Fits! 15.6 GB / 16 GB RAM used.&rdquo;
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Considers only raw weight file size on disk. Ignores dynamic KV cache expansion, OS system reserves, and multi-turn prompt processing.
-            </p>
-            <div className="rounded-xl border border-rose-500/20 bg-card/60 p-4 space-y-2 text-xs text-muted-foreground">
-              <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-semibold">
-                <span>The Painful Result:</span>
-              </div>
-              <ul className="space-y-1.5 list-disc list-inside">
-                <li>0 MB free RAM left for VS Code, browser, or Docker</li>
-                <li>OS begins heavy disk paging (SSD swap thrashing)</li>
-                <li>Decode speed drops from 30 tok/s down to 1.2 tok/s</li>
-                <li>Coding agents like Claude Code time out repeatedly</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* The Local AI Advisor Way */}
-          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 sm:p-8 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                <CheckCircle2 className="size-3.5" /> Local AI Advisor Simulation
-              </span>
-              <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 font-semibold">
-                Calibrated Physics
-              </span>
-            </div>
-            <h3 className="text-xl font-bold text-foreground">
-              &ldquo;Comfortable for Agentic Coding&rdquo;
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Models usable memory after your OS and development environment, calculates exact KV cache growth for 8K–64K context, and predicts first-token latency.
-            </p>
-            <div className="rounded-xl border border-emerald-500/20 bg-card/60 p-4 space-y-2 text-xs text-muted-foreground">
-              <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold">
-                <span>The Actual Experience:</span>
-              </div>
-              <ul className="space-y-1.5 list-disc list-inside">
-                <li>Protects 4–6 GB headroom for your IDE and multitasking</li>
-                <li>Accurate KV cache reservation for long context windows</li>
-                <li>Benchmark-calibrated token speeds (30–80 tok/s)</li>
-                <li>Sub-second agent step latency without thermal throttling</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div className="mx-auto mt-8 max-w-xl overflow-hidden rounded-2xl border border-border/70 bg-card">
-          <Image
-            src="/brand/fit-check.gif"
-            width={720}
-            height={360}
-            alt="Four fit checks progress from load through comfort"
-            className="h-auto w-full motion-reduce:hidden"
-            unoptimized
-          />
-          <Image
-            src="/brand/fit-check-poster.png"
-            width={720}
-            height={360}
-            alt="All four fit checks complete: comfortable"
-            className="hidden h-auto w-full motion-reduce:block"
-          />
-        </div>
+      {/* What is local AI */}
+      <section className="mx-auto max-w-5xl px-4 sm:px-6">
+        <SectionHeading eyebrow="Local AI in 30 seconds" title="Three pieces, all on your computer">
+          You download a free app and an AI model. The app runs the model on your own machine. No account, no cloud.
+        </SectionHeading>
+        <Reveal className="mt-8">
+          <LocalAiDiagram />
+        </Reveal>
+        <Reveal className="mt-4 text-center">
+          <Link href="/learn/what-is-local-ai" className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-primary hover:underline">
+            Lesson 1: What is local AI? <ArrowRight className="size-4" />
+          </Link>
+        </Reveal>
       </section>
 
-      {/* The 4 Capability Tiers */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="max-w-2xl space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-            Evaluation Pipeline
-          </p>
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-foreground">
-            The Four Questions We Answer
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            We evaluate every combination across four progressive capability tiers. We rate the fourth one, because that is what you experience every single day.
-          </p>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {TIERS.map((t) => (
-            <div
-              key={t.title}
-              className={cn(
-                "relative flex flex-col justify-between rounded-2xl border p-5 sm:p-6 transition-all",
-                t.primary
-                  ? "border-primary/60 bg-primary/5 ring-1 ring-primary/40 shadow-sm"
-                  : "border-border/80 bg-card",
-              )}
-            >
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-muted-foreground">{t.step}</span>
-                  <span
-                    className={cn(
-                      "rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
-                      t.primary ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
-                    )}
-                  >
-                    {t.badge}
-                  </span>
-                </div>
-                <h3 className="mt-3 text-base font-bold text-foreground">{t.title}</h3>
-                <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{t.text}</p>
-              </div>
-            </div>
+      {/* How it works */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading eyebrow="How it works" title="Three questions. Honest answers.">
+          We do the math for your exact computer, so you don’t have to learn it first.
+        </SectionHeading>
+        <Stagger as="ol" className="relative mt-10 grid gap-4 md:grid-cols-3 md:gap-6">
+          {/* The line joining the steps on desktop. */}
+          <span className="absolute left-[16%] right-[16%] top-8 hidden h-1 rounded-full flow-x opacity-40 md:block" aria-hidden />
+          {HOW.map((s, i) => (
+            <StaggerItem as="li" key={s.title} className="relative flex gap-4 rounded-3xl border border-border/70 bg-card p-5 shadow-sm md:flex-col md:items-center md:p-6 md:text-center">
+              <span className="relative grid size-16 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/25">
+                <s.icon className="size-7" />
+                <span className="absolute -right-2 -top-2 grid size-7 place-items-center rounded-full border-2 border-card bg-foreground text-xs font-bold text-background">
+                  {i + 1}
+                </span>
+              </span>
+              <span>
+                <span className="block text-lg font-bold">{s.title}</span>
+                <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{s.text}</span>
+              </span>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
+        <Reveal className="mt-8 text-center">
+          <Link
+            href="/check"
+            className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-foreground px-6 font-semibold text-background transition hover:opacity-90 active:scale-[0.98]"
+          >
+            Try it now <ArrowRight className="size-4" />
+          </Link>
+        </Reveal>
       </section>
 
-      {/* Interactive Rating Philosophy Explorer */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="max-w-2xl space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-            Comfort Scale
+      {/* Feel the speed */}
+      <section className="mx-auto grid max-w-6xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1fr] lg:gap-14">
+        <Reveal>
+          <p className="text-sm font-semibold text-primary">Why your computer matters</p>
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">The same AI can type like a snail, or faster than you read.</h2>
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+            Speed is measured in <strong className="text-foreground">tokens per second</strong> (a token is about ¾ of a word). Tap the speeds to feel the
+            difference. Your computer decides which one you get.
           </p>
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-foreground">
-            Transparent Rating Standards
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            We never hide evaluation behind an opaque numerical score. Click through the scale below to understand our qualitative comfort criteria and expectations.
-          </p>
-        </div>
+          <Link href="/learn/speed" className="mt-4 inline-flex min-h-11 items-center gap-1.5 font-semibold text-primary hover:underline">
+            Learn what decides the speed <ArrowRight className="size-4" />
+          </Link>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <SpeedFeel />
+        </Reveal>
+      </section>
 
+      {/* It fits ≠ it runs well */}
+      <section className="mx-auto grid max-w-6xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.8fr] lg:gap-14">
+        <Reveal className="lg:order-2">
+          <p className="text-sm font-semibold text-primary">Why we’re different</p>
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">“It fits” doesn’t mean “it runs well”.</h2>
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+            Most calculators only check whether a model squeezes into memory. But your computer needs room to breathe too. We rate how a model will{" "}
+            <strong className="text-foreground">feel</strong>, from “Technically runs” to “Excellent”.
+          </p>
+          <Link href="/learn/fits-vs-fast" className="mt-4 inline-flex min-h-11 items-center gap-1.5 font-semibold text-primary hover:underline">
+            See why in 3 minutes <ArrowRight className="size-4" />
+          </Link>
+        </Reveal>
+        <Reveal delay={0.1} className="lg:order-1">
+          <MemoryFill />
+        </Reveal>
+      </section>
+
+      {/* Popular computers */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeading eyebrow="Popular computers" title="What runs on a computer like yours?">
+          Our top picks for chatting and for coding on the machines people ask about most.
+        </SectionHeading>
         <div className="mt-8">
-          <ComfortExplorer />
-        </div>
-      </section>
-
-      {/* Popular Machines Showcase */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid items-center gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-10">
-        <div className="max-w-3xl space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-            Popular Rigs
-          </p>
-          <h2 className="text-2xl font-bold tracking-tight sm:text-4xl text-foreground">
-            What runs on popular machines?
-          </h2>
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            The engine’s best picks for chat and agentic coding on the most widely used local AI machines.
-          </p>
-        </div>
-        <div className="overflow-hidden rounded-2xl border border-border/70 bg-[#F7F7F5]">
-          <Image
-            src="/brand/editorial-model-choice.webp"
-            width={1774}
-            height={887}
-            alt="A computer connected through a performance gauge to several model choices"
-            className="h-auto w-full"
-          />
-        </div>
-        </div>
-
-        <div className="mt-10">
           <PopularRigsMatrix rigs={rigs} />
         </div>
       </section>
 
-      {/* The 3 Core Architecture Pillars */}
-      <section className="border-y border-border/70 bg-muted/20 py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="mx-auto max-w-2xl text-center space-y-2 mb-12">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-foreground">
-              Engineered for Realistic Physics
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Why Local AI Advisor delivers recommendations you can actually trust.
-            </p>
+      {/* Learn */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <Reveal className="overflow-hidden rounded-[2rem] bg-primary text-primary-foreground shadow-xl shadow-primary/20">
+          <div className="grid gap-8 p-6 sm:p-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div>
+              <p className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+                <BookOpen className="size-3.5" /> Free course
+              </p>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">New to local AI? Learn it in {LESSONS.length} short lessons.</h2>
+              <p className="mt-3 text-lg leading-relaxed opacity-90">
+                Animated, jargon-free, about {TOTAL_MINUTES} minutes in total. Each lesson ends with a quick question so you know it clicked.
+              </p>
+              <Link
+                href="/learn"
+                className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-2xl bg-white px-6 font-semibold text-primary shadow-lg transition hover:bg-white/90 active:scale-[0.98]"
+              >
+                Start learning <ArrowRight className="size-4" />
+              </Link>
+            </div>
+            <ol className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-2 lg:overflow-visible lg:px-0">
+              {LESSONS.slice(0, 6).map((l, i) => (
+                <li key={l.slug} className="w-60 shrink-0 snap-start lg:w-auto">
+                  <Link href={`/learn/${l.slug}`} className="flex h-full flex-col rounded-2xl bg-white/10 p-4 ring-1 ring-white/15 transition hover:bg-white/15 active:scale-[0.98]">
+                    <span className="grid size-8 place-items-center rounded-full bg-white text-sm font-bold text-primary">{i + 1}</span>
+                    <span className="mt-3 font-bold leading-snug">{l.title}</span>
+                    <span className="mt-1 text-xs opacity-80">{l.minutes} min</span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
           </div>
-
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xs space-y-3">
-              <Image src="/brand/icon-compatibility.svg" width={44} height={44} alt="" className="size-11" />
-              <h3 className="text-lg font-bold text-foreground">Tool- &amp; Agent-Aware</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                An agent like Claude Code, OpenCode, or Continue makes dozens of sequential calls with large repo contexts. A simple chat app makes one. We model prompt prefill latency and context growth specifically for each tool.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xs space-y-3">
-              <Image src="/brand/icon-memory.svg" width={44} height={44} alt="" className="size-11" />
-              <h3 className="text-lg font-bold text-foreground">System Headroom-Aware</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Your IDE, browser, Docker containers, and simulator need memory too. A model that leaves 1 GB of free RAM will cause constant swapping; one that leaves 12 GB guarantees a smooth, fluid desktop experience.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xs space-y-3">
-              <Image src="/brand/icon-speed.svg" width={44} height={44} alt="" className="size-11" />
-              <h3 className="text-lg font-bold text-foreground">Benchmark-Calibrated</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Generation and prompt processing speeds are calibrated against 76 verified llama.cpp scoreboards and MLX benchmark tables. Every measured number is labelled, and estimates are shown as honest ranges.
-              </p>
-            </div>
-          </div>
-        </div>
+        </Reveal>
       </section>
 
-      {/* Tool Hub ("Start Where You Are") */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-              All Tools &amp; Explorers
-            </p>
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-foreground">
-              Start where you are
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Choose the workflow that matches what you already know.
-            </p>
-          </div>
-          <Link
-            href="/methodology"
-            className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-primary hover:underline"
-          >
-            <span>Read full engine methodology</span>
-            <ArrowRight className="size-3.5" />
-          </Link>
-        </div>
+      {/* Choose your path */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading eyebrow="Where to start" title="Pick the one that sounds like you" />
+        <Stagger className="mt-8 grid gap-4 md:grid-cols-3">
+          {PATHS.map((p, i) => (
+            <StaggerItem key={p.href}>
+              <Link
+                href={p.href}
+                className={cn(
+                  "group flex h-full flex-col rounded-3xl border bg-card p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-xl active:scale-[0.99]",
+                  i === 0 ? "border-primary/50 ring-1 ring-primary/20" : "border-border/70 hover:border-primary/40",
+                )}
+              >
+                <span className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <p.icon className="size-6" />
+                </span>
+                <span className="mt-4 text-xl font-bold">{p.title}</span>
+                <span className="mt-1.5 flex-1 text-muted-foreground">{p.text}</span>
+                <span className="mt-5 inline-flex items-center gap-1.5 font-semibold text-primary">
+                  {p.cta} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </Link>
+            </StaggerItem>
+          ))}
+        </Stagger>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <ToolCard
-            href="/can-i-run"
-            icon={<Image src="/brand/icon-comfort.svg" width={40} height={40} alt="" className="size-10" />}
-            tag="Instant Answers"
-            title="Can my computer run it?"
-            text={`Every open model on ${HARDWARE.length} Macs, GPUs and AI PCs: verdicts for chat, coding and agents, speeds, and exact download commands for Ollama, llama.cpp and LM Studio.`}
-            className="sm:col-span-2"
-          />
-          <ToolCard
-            href="/speed-test"
-            icon={<Zap className="size-5" />}
-            tag="Browser Benchmark"
-            title="Test my GPU's speed"
-            text="Measure your real memory bandwidth with WebGPU in five seconds, with no download, and see the speed ceiling it sets for popular models."
-          />
-          <ToolCard
-            href="/new-models"
-            icon={<Sparkles className="size-5" />}
-            tag="Release Feed"
-            title="What's new in open models"
-            text="The latest releases from Qwen, Google, Meta, Mistral, DeepSeek and more, each rated for a laptop, a gaming GPU and a big Mac. With RSS."
-          />
-          <ToolCard
-            href="/check"
-            icon={<Image src="/brand/icon-hardware.svg" width={40} height={40} alt="" className="size-10" />}
-            tag="6-Step Advisor"
-            title="I don’t know which model"
-            text="Answer plain-language questions about your machine and project; get instant fast, balanced, and flagship options."
-          />
-          <ToolCard
-            href="/hardware-for-model"
-            icon={<HardDrive className="size-5" />}
-            tag="Reverse Finder"
-            title="I know the model, not the hardware"
-            text="Select a model, your favorite tool, and target experience to find the exact minimum and comfortable hardware required."
-          />
-          <ToolCard
-            href="/hugging-face"
-            icon={<Sparkles className="size-5" />}
-            tag="Live Hub Parser"
-            title="Check any Hugging Face model"
-            text="Paste any HF model link — we parse config.json, GGUF quants, and KV architecture to rate it for your computer live."
-          />
-          <ToolCard
-            href="/stack"
-            icon={<Layers className="size-5" />}
-            tag="Stack Builder"
-            title="Build a complete local AI setup"
-            text="Hardware → runtime → model → local API → coding agent, complete with copy-paste terminal setup instructions."
-          />
-          <ToolCard
-            href="/compare/models"
-            icon={<Scale className="size-5" />}
-            tag="Model Comparison"
-            title="Compare models on my machine"
-            text="Put models side-by-side: memory footprints, headroom, decode tokens/sec, and agent step latency."
-          />
-          <ToolCard
-            href="/compare/hardware"
-            icon={<Cpu className="size-5" />}
-            tag="Rig Comparison"
-            title="Compare hardware for my workload"
-            text="Mac mini vs MacBook Pro vs RTX desktop — evaluate real tradeoffs and bandwidth instead of synthetic hype."
-          />
-          <ToolCard
-            href="/models"
-            icon={<Image src="/brand/icon-model.svg" width={40} height={40} alt="" className="size-10" />}
-            tag="Interactive Database"
-            title={`Explore ${MODELS.length} curated models`}
-            text="Filter by architecture, size, context, vision and license, including OSI open-source only."
-          />
-          <ToolCard
-            href="/learn"
-            icon={<BookOpen className="size-5" />}
-            tag="Educational Center"
-            title="Learn the concepts"
-            text="Interactive visual calculators explaining KV cache growth, memory bandwidth limits, and quantization tradeoffs."
-          />
-        </div>
-
-        {/* Database Stats Bar */}
-        <div className="mt-10 rounded-2xl border border-border/70 bg-card p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4 shadow-2xs">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm text-muted-foreground">
-            <span>
-              <strong className="text-foreground">{HARDWARE.length}</strong> Hardware Rigs
-            </span>
-            <span>·</span>
-            <span>
-              <strong className="text-foreground">{MODELS.length}</strong> Curated Models
-            </span>
-            <span>·</span>
-            <span>
-              <strong className="text-foreground">{RUNTIMES.length}</strong> Runtimes
-            </span>
-            <span>·</span>
-            <span>
-              <strong className="text-foreground">{TOOLS.length}</strong> AI Tools
-            </span>
-            <span>·</span>
-            <span>
-              <strong className="text-foreground">{BENCHMARKS.length}</strong> Calibrated Benchmarks
-            </span>
-          </div>
-          <Link
-            href="/methodology"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
-          >
-            <span>Inspect Engine Math &amp; Sources</span>
-            <ArrowRight className="size-3.5" />
-          </Link>
-        </div>
+        <Reveal className="mt-10 rounded-3xl border border-border/70 bg-muted/40 p-5 sm:p-6">
+          <p className="flex items-center gap-2 font-semibold">
+            <Sparkles className="size-4 text-primary" /> More tools for when you’re ready
+          </p>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {moreTools.map((t) => (
+              <li key={t.href}>
+                <Link
+                  href={t.href}
+                  className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border/80 bg-card px-3.5 text-sm font-medium transition hover:border-primary/50 hover:text-primary active:scale-95"
+                >
+                  <t.icon className="size-4 text-muted-foreground" /> {t.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 flex items-start gap-2 text-sm text-muted-foreground">
+            <Cpu className="mt-0.5 size-4 shrink-0" />
+            Ratings come from a model of each computer’s memory and speed, calibrated against public benchmarks.{" "}
+            <Link href="/methodology" className="font-medium text-foreground underline-offset-2 hover:underline">
+              How we calculate
+            </Link>
+          </p>
+        </Reveal>
       </section>
     </div>
   );
 }
 
-function ToolCard({
-  href,
-  icon,
-  tag,
-  title,
-  text,
-  className,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  tag: string;
-  title: string;
-  text: string;
-  className?: string;
-}) {
+function SectionHeading({ eyebrow, title, children }: { eyebrow: string; title: string; children?: React.ReactNode }) {
   return (
-    <Link href={href} className={cn("group", className)}>
-      <Card className="flex h-full flex-col justify-between p-5 sm:p-6 transition-all duration-200 group-hover:border-primary/50 group-hover:shadow-md group-hover:-translate-y-0.5">
-        <div>
-          <div className="flex items-center justify-between">
-            <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-              {icon}
-            </span>
-            <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              {tag}
-            </span>
-          </div>
-          <h3 className="mt-4 text-base font-bold text-foreground flex items-center justify-between gap-1">
-            <span>{title}</span>
-            <ArrowRight className="size-4 text-primary opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0" />
-          </h3>
-          <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{text}</p>
-        </div>
-      </Card>
-    </Link>
+    <Reveal className="mx-auto max-w-2xl text-center">
+      <p className="text-sm font-semibold text-primary">{eyebrow}</p>
+      <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">{title}</h2>
+      {children && <p className="mt-3 text-lg leading-relaxed text-muted-foreground text-pretty">{children}</p>}
+    </Reveal>
   );
 }

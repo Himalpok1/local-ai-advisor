@@ -66,69 +66,132 @@ export function ModelsTable({
   };
 
   return (
-    <div className="overflow-x-auto rounded-xl border bg-card">
-      <table className="w-full text-sm">
-        <thead className="border-b bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
-          <tr>
-            {selectable && <th className="py-2 pl-4 pr-2 font-medium"><span className="sr-only">Compare</span></th>}
-            <th className="py-2 pl-4 pr-4 font-medium">Model</th>
-            <Th sort={sort} dir={dir} onSort={onSort} k="rating">Comfort rating</Th>
-            <Th sort={sort} dir={dir} onSort={onSort} k="memory">Memory</Th>
-            <Th sort={sort} dir={dir} onSort={onSort} k="headroom">Headroom</Th>
-            <Th sort={sort} dir={dir} onSort={onSort} k="generation">Generation</Th>
-            <Th sort={sort} dir={dir} onSort={onSort} k="prefill">Prompt processing</Th>
-            <Th sort={sort} dir={dir} onSort={onSort} k="context">Max practical context</Th>
-            <Th sort={sort} dir={dir} onSort={onSort} k="coding">Coding</Th>
-            <Th sort={sort} dir={dir} onSort={onSort} k="agent">Agent use</Th>
-            <th className="py-2 pr-4 font-medium">Confidence</th>
-          </tr>
-        </thead>
-        <tbody>
+    <>
+      {/* Phones: one card per model, sorted by the same control. */}
+      <div className="md:hidden">
+        <label className="mb-2 flex items-center justify-end gap-2 text-sm text-muted-foreground">
+          Sort by
+          <select
+            value={sort}
+            onChange={(e) => {
+              setSort(e.target.value as SortKey);
+              setDir(-1);
+            }}
+            className="h-10 rounded-xl border border-border/80 bg-card px-3 text-sm font-medium text-foreground"
+          >
+            <option value="rating">Rating</option>
+            <option value="generation">Speed</option>
+            <option value="headroom">Free memory</option>
+            <option value="memory">Memory used</option>
+            <option value="coding">Coding skill</option>
+          </select>
+        </label>
+        <ul className="space-y-2">
           {sorted.map((r) => {
             const blocked = r.level === "unsupported" || r.level === "does-not-fit";
-            const gen = r.dimensions.find((d) => d.key === "generation");
-            const pp = r.dimensions.find((d) => d.key === "prefill");
             return (
-              <tr key={r.id} className="border-b last:border-0 hover:bg-muted/30">
+              <li key={r.id} className="flex items-stretch gap-1 rounded-2xl border border-border/70 bg-card">
                 {selectable && (
-                  <td className="py-2 pl-4 pr-2">
-                    <input type="checkbox" aria-label={`Compare ${r.model.name}`} checked={selected?.has(r.model.id) ?? false} onChange={() => onToggle?.(r.model.id)} className="size-4 accent-[var(--primary)]" />
-                  </td>
+                  <label className="grid w-11 shrink-0 cursor-pointer place-items-center rounded-l-2xl">
+                    <input type="checkbox" aria-label={`Compare ${r.model.name}`} checked={selected?.has(r.model.id) ?? false} onChange={() => onToggle?.(r.model.id)} className="size-5 accent-[var(--primary)]" />
+                  </label>
                 )}
-                <td className="py-2 pl-4 pr-4">
-                  <Link href={hrefFor(r)} className="font-medium hover:text-primary hover:underline">
-                    {r.model.name}
-                  </Link>
-                  <span className="block text-xs text-muted-foreground">
-                    {quantName(r)} · {r.runtime.name}
+                <Link href={hrefFor(r)} className={cn("min-w-0 flex-1 py-3 pr-3 active:opacity-70", !selectable && "pl-4")}>
+                  <span className="flex items-start justify-between gap-2">
+                    <span className="min-w-0">
+                      <span className="block font-semibold leading-snug">{r.model.name}</span>
+                      <span className="block text-xs text-muted-foreground">
+                        {quantName(r)} · {r.runtime.name}
+                      </span>
+                    </span>
+                    <ComfortBadge level={r.level} size="sm" />
                   </span>
-                </td>
-                <td className="py-2 pr-4">
-                  <ComfortBadge level={r.level} size="sm" />
-                </td>
-                <td className="whitespace-nowrap py-2 pr-4 tabular-nums">{blocked && r.level !== "does-not-fit" ? "—" : fmtGB(r.memory.inferencePeakGB || r.memory.weightsGB)}</td>
-                <td className={cn("whitespace-nowrap py-2 pr-4 tabular-nums", r.memory.headroomGB < 1 && "text-technical")}>{blocked ? "—" : fmtGB(r.memory.headroomGB)}</td>
-                <td className="whitespace-nowrap py-2 pr-4">
-                  {gen && r.performance ? (
-                    <>
-                      {LEVEL_WORD[gen.level]}
-                      <span className="block text-xs text-muted-foreground">{fmtTps(r.performance.perStreamGenerationTps, r.performance.basis)}</span>
-                    </>
-                  ) : (
-                    "—"
+                  {!blocked && (
+                    <span className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                      {r.performance && (
+                        <span>
+                          Speed <strong className="font-semibold text-foreground">{fmtTps(r.performance.perStreamGenerationTps, r.performance.basis)}</strong>
+                        </span>
+                      )}
+                      <span>
+                        Uses <strong className="font-semibold text-foreground">{fmtGB(r.memory.inferencePeakGB || r.memory.weightsGB)}</strong>
+                      </span>
+                      <span className={cn(r.memory.headroomGB < 1 && "text-technical")}>
+                        Free <strong className="font-semibold text-foreground">{fmtGB(r.memory.headroomGB)}</strong>
+                      </span>
+                    </span>
                   )}
-                </td>
-                <td className="whitespace-nowrap py-2 pr-4">{pp ? LEVEL_WORD[pp.level] : "—"}</td>
-                <td className="whitespace-nowrap py-2 pr-4 tabular-nums">{r.context.maxPractical ? fmtCtx(r.context.maxPractical) : "—"}</td>
-                <td className="whitespace-nowrap py-2 pr-4">{tierWord(r.model.capabilities.coding - r.quant.qualityLoss * 10)}</td>
-                <td className="whitespace-nowrap py-2 pr-4">{r.model.toolCalling === "none" ? "No tool calling" : tierWord(r.model.capabilities.agentic - r.quant.qualityLoss * 10)}</td>
-                <td className="py-2 pr-4">{!blocked && <ConfidenceBadge level={r.confidence.level} />}</td>
-              </tr>
+                </Link>
+              </li>
             );
           })}
-        </tbody>
-      </table>
-    </div>
+        </ul>
+      </div>
+
+      <div className="hidden overflow-x-auto rounded-xl border bg-card md:block">
+        <table className="w-full text-sm">
+          <thead className="border-b bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
+            <tr>
+              {selectable && <th className="py-2 pl-4 pr-2 font-medium"><span className="sr-only">Compare</span></th>}
+              <th className="py-2 pl-4 pr-4 font-medium">Model</th>
+              <Th sort={sort} dir={dir} onSort={onSort} k="rating">Comfort rating</Th>
+              <Th sort={sort} dir={dir} onSort={onSort} k="memory">Memory</Th>
+              <Th sort={sort} dir={dir} onSort={onSort} k="headroom">Headroom</Th>
+              <Th sort={sort} dir={dir} onSort={onSort} k="generation">Generation</Th>
+              <Th sort={sort} dir={dir} onSort={onSort} k="prefill">Prompt processing</Th>
+              <Th sort={sort} dir={dir} onSort={onSort} k="context">Max practical context</Th>
+              <Th sort={sort} dir={dir} onSort={onSort} k="coding">Coding</Th>
+              <Th sort={sort} dir={dir} onSort={onSort} k="agent">Agent use</Th>
+              <th className="py-2 pr-4 font-medium">Confidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map((r) => {
+              const blocked = r.level === "unsupported" || r.level === "does-not-fit";
+              const gen = r.dimensions.find((d) => d.key === "generation");
+              const pp = r.dimensions.find((d) => d.key === "prefill");
+              return (
+                <tr key={r.id} className="border-b last:border-0 hover:bg-muted/30">
+                  {selectable && (
+                    <td className="py-2 pl-4 pr-2">
+                      <input type="checkbox" aria-label={`Compare ${r.model.name}`} checked={selected?.has(r.model.id) ?? false} onChange={() => onToggle?.(r.model.id)} className="size-4 accent-[var(--primary)]" />
+                    </td>
+                  )}
+                  <td className="py-2 pl-4 pr-4">
+                    <Link href={hrefFor(r)} className="font-medium hover:text-primary hover:underline">
+                      {r.model.name}
+                    </Link>
+                    <span className="block text-xs text-muted-foreground">
+                      {quantName(r)} · {r.runtime.name}
+                    </span>
+                  </td>
+                  <td className="py-2 pr-4">
+                    <ComfortBadge level={r.level} size="sm" />
+                  </td>
+                  <td className="whitespace-nowrap py-2 pr-4 tabular-nums">{blocked && r.level !== "does-not-fit" ? "—" : fmtGB(r.memory.inferencePeakGB || r.memory.weightsGB)}</td>
+                  <td className={cn("whitespace-nowrap py-2 pr-4 tabular-nums", r.memory.headroomGB < 1 && "text-technical")}>{blocked ? "—" : fmtGB(r.memory.headroomGB)}</td>
+                  <td className="whitespace-nowrap py-2 pr-4">
+                    {gen && r.performance ? (
+                      <>
+                        {LEVEL_WORD[gen.level]}
+                        <span className="block text-xs text-muted-foreground">{fmtTps(r.performance.perStreamGenerationTps, r.performance.basis)}</span>
+                      </>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td className="whitespace-nowrap py-2 pr-4">{pp ? LEVEL_WORD[pp.level] : "—"}</td>
+                  <td className="whitespace-nowrap py-2 pr-4 tabular-nums">{r.context.maxPractical ? fmtCtx(r.context.maxPractical) : "—"}</td>
+                  <td className="whitespace-nowrap py-2 pr-4">{tierWord(r.model.capabilities.coding - r.quant.qualityLoss * 10)}</td>
+                  <td className="whitespace-nowrap py-2 pr-4">{r.model.toolCalling === "none" ? "No tool calling" : tierWord(r.model.capabilities.agentic - r.quant.qualityLoss * 10)}</td>
+                  <td className="py-2 pr-4">{!blocked && <ConfidenceBadge level={r.confidence.level} />}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 

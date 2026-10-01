@@ -78,12 +78,49 @@
   --color-technical: var(--c-technical);
   --color-nofit: var(--c-nofit);
   --color-unsupported: var(--c-unsupported);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Motion tokens: one rhythm for the whole site. */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-up: fade-up 0.5s var(--ease-out-soft) both;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.4s ease-out infinite;
+  --animate-shimmer: shimmer 2.2s linear infinite;
+  --animate-blink: blink 1s steps(2, start) infinite;
+  --animate-dash: dash 1.6s linear infinite;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 45%, transparent); }
+    80%, 100% { box-shadow: 0 0 0 14px transparent; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes blink {
+    to { visibility: hidden; }
+  }
+  @keyframes dash {
+    to { stroke-dashoffset: -24; }
+  }
 }
 
 * {
   border-color: var(--border);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 5rem;
 }
 
 body {
@@ -144,4 +181,80 @@ input[type="range"] {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Room for the mobile bottom tab bar (and the iPhone home indicator). */
+.pb-tabbar {
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+}
+@media (min-width: 1024px) {
+  .pb-tabbar {
+    padding-bottom: 0;
+  }
+}
+.bottom-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Remove the 300ms tap delay and the grey tap flash on phones. */
+a,
+button,
+[role="button"],
+summary,
+label {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Soft brand glow used behind heroes. */
+.glow-primary {
+  background:
+    radial-gradient(60% 50% at 50% 0%, color-mix(in oklch, var(--primary) 16%, transparent) 0%, transparent 70%),
+    radial-gradient(40% 40% at 90% 20%, color-mix(in oklch, oklch(0.75 0.15 200) 12%, transparent) 0%, transparent 70%);
+}
+
+.shimmer-bar {
+  background-image: linear-gradient(90deg, transparent 0%, color-mix(in oklch, white 35%, transparent) 50%, transparent 100%);
+  background-size: 200% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Animated "data flowing" connectors used in explainer diagrams (utilities so md:flow-x works). */
+@utility flow-x {
+  background-image: repeating-linear-gradient(90deg, color-mix(in oklch, var(--primary) 70%, transparent) 0 8px, transparent 8px 16px);
+  background-size: 32px 100%;
+  animation: flow-x 0.9s linear infinite;
+}
+@utility flow-y {
+  background-image: repeating-linear-gradient(180deg, color-mix(in oklch, var(--primary) 70%, transparent) 0 8px, transparent 8px 16px);
+  background-size: 100% 32px;
+  animation: flow-y 0.9s linear infinite;
+}
+@keyframes flow-x {
+  to { background-position: 32px 0; }
+}
+@keyframes flow-y {
+  to { background-position: 0 32px; }
 }

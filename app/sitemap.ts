@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { HARDWARE, MODELS } from "@/data";
+import { LESSONS } from "@/components/learn/lessons";
 import { POPULAR_HF_REPOS } from "@/lib/hf/popular";
 import { hardwareSlug } from "@/lib/slugs";
 
@@ -12,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const entry = (path: string, priority: number): MetadataRoute.Sitemap[number] => ({ url: `${SITE}${path}`, changeFrequency: "weekly", priority });
   return [
     ...PAGES.map((p) => entry(p, p === "" ? 1 : 0.8)),
+    ...LESSONS.map((l) => entry(`/learn/${l.slug}`, 0.7)),
     ...POPULAR_HF_REPOS.map((repo) => entry(`/hf/${repo}`, 0.6)),
     ...models.map((m) => entry(`/can-i-run/${m.id}`, 0.7)),
     ...HARDWARE.map((h) => entry(`/what-runs-on/${hardwareSlug(h)}`, 0.7)),

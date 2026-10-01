@@ -48,7 +48,7 @@ export function UserMenu({ className }: { className?: string }) {
         type="button"
         onClick={() => signIn("google")}
         className={cn(
-          "inline-flex h-9 items-center gap-1.5 rounded-xl border border-border/80 bg-card px-3 text-xs font-semibold text-foreground shadow-2xs transition hover:bg-muted/70 active:scale-[0.98] cursor-pointer",
+          "inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-xl border border-border/80 bg-card px-3 text-xs font-semibold text-foreground shadow-2xs transition hover:bg-muted/70 active:scale-[0.98] cursor-pointer",
           className,
         )}
       >
