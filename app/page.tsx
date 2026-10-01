@@ -1,7 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
-  Bot,
   Cpu,
   HardDrive,
   Layers,
@@ -10,11 +10,8 @@ import {
   Zap,
   CheckCircle2,
   XCircle,
-  ShieldCheck,
   Scale,
   BookOpen,
-  Boxes,
-  HelpCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LinkButton } from "@/components/ui/button";
@@ -71,9 +68,10 @@ export default function Home() {
   return (
     <div className="space-y-16 sm:space-y-24">
       {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border/70 hero-radial-glow subtle-grid">
+      <section className="relative overflow-hidden border-b border-border/70 subtle-grid">
         <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
-          <div className="mx-auto max-w-3xl text-center space-y-6">
+          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-12">
+          <div className="text-center space-y-6 lg:text-left">
             {/* Live Status Eyebrow Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/80 px-3.5 py-1.5 text-xs font-medium text-muted-foreground shadow-2xs backdrop-blur-md">
               <span className="flex size-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -83,19 +81,19 @@ export default function Home() {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl text-foreground">
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-[4.25rem] text-foreground">
               Will local AI{" "}
-              <span className="text-gradient-primary">actually run well</span> on your computer?
+              <span className="text-primary">actually run well</span> on your computer?
             </h1>
 
             {/* Subtitle */}
-            <p className="mx-auto max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
+            <p className="mx-auto max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed lg:mx-0">
               Don&apos;t guess if a model fits. We calculate real KV-cache headroom, agentic prompt prefill latency, and token speeds for your exact CPU, GPU, or Apple Silicon machine.
             </p>
 
             {/* Call to Actions */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-              <LinkButton href="/check" size="lg" variant="gradient">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2 lg:justify-start">
+              <LinkButton href="/check" size="lg" variant="primary">
                 <span>Check My Computer</span>
                 <ArrowRight className="size-4" />
               </LinkButton>
@@ -106,6 +104,18 @@ export default function Home() {
                 <Search className="size-4" /> Any HF Model
               </LinkButton>
             </div>
+          </div>
+          <div className="overflow-hidden rounded-3xl border border-border/70 bg-[#F7F7F5] shadow-sm">
+            <Image
+              src="/brand/editorial-capability-layers.webp"
+              width={1536}
+              height={1024}
+              alt="A computer and four colored layers representing memory, compatibility, speed, and comfort"
+              className="h-auto w-full"
+              loading="eager"
+              fetchPriority="high"
+            />
+          </div>
           </div>
 
           {/* Interactive Hardware & Model Simulator */}
@@ -187,6 +197,23 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="mx-auto mt-8 max-w-xl overflow-hidden rounded-2xl border border-border/70 bg-card">
+          <Image
+            src="/brand/fit-check.gif"
+            width={720}
+            height={360}
+            alt="Four fit checks progress from load through comfort"
+            className="h-auto w-full motion-reduce:hidden"
+            unoptimized
+          />
+          <Image
+            src="/brand/fit-check-poster.png"
+            width={720}
+            height={360}
+            alt="All four fit checks complete: comfortable"
+            className="hidden h-auto w-full motion-reduce:block"
+          />
+        </div>
       </section>
 
       {/* The 4 Capability Tiers */}
@@ -255,7 +282,8 @@ export default function Home() {
 
       {/* Popular Machines Showcase */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mx-auto max-w-3xl text-center space-y-3">
+        <div className="grid items-center gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-10">
+        <div className="max-w-3xl space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Popular Rigs
           </p>
@@ -265,6 +293,16 @@ export default function Home() {
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
             The engine’s best picks for chat and agentic coding on the most widely used local AI machines.
           </p>
+        </div>
+        <div className="overflow-hidden rounded-2xl border border-border/70 bg-[#F7F7F5]">
+          <Image
+            src="/brand/editorial-model-choice.webp"
+            width={1774}
+            height={887}
+            alt="A computer connected through a performance gauge to several model choices"
+            className="h-auto w-full"
+          />
+        </div>
         </div>
 
         <div className="mt-10">
@@ -286,9 +324,7 @@ export default function Home() {
 
           <div className="grid gap-8 md:grid-cols-3">
             <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xs space-y-3">
-              <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                <Bot className="size-5" />
-              </span>
+              <Image src="/brand/icon-compatibility.svg" width={44} height={44} alt="" className="size-11" />
               <h3 className="text-lg font-bold text-foreground">Tool- &amp; Agent-Aware</h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 An agent like Claude Code, OpenCode, or Continue makes dozens of sequential calls with large repo contexts. A simple chat app makes one. We model prompt prefill latency and context growth specifically for each tool.
@@ -296,9 +332,7 @@ export default function Home() {
             </div>
 
             <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xs space-y-3">
-              <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                <Layers className="size-5" />
-              </span>
+              <Image src="/brand/icon-memory.svg" width={44} height={44} alt="" className="size-11" />
               <h3 className="text-lg font-bold text-foreground">System Headroom-Aware</h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Your IDE, browser, Docker containers, and simulator need memory too. A model that leaves 1 GB of free RAM will cause constant swapping; one that leaves 12 GB guarantees a smooth, fluid desktop experience.
@@ -306,9 +340,7 @@ export default function Home() {
             </div>
 
             <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-2xs space-y-3">
-              <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                <Cpu className="size-5" />
-              </span>
+              <Image src="/brand/icon-speed.svg" width={44} height={44} alt="" className="size-11" />
               <h3 className="text-lg font-bold text-foreground">Benchmark-Calibrated</h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Generation and prompt processing speeds are calibrated against 76 verified llama.cpp scoreboards and MLX benchmark tables. Every measured number is labelled, and estimates are shown as honest ranges.
@@ -344,7 +376,7 @@ export default function Home() {
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <ToolCard
             href="/can-i-run"
-            icon={<HelpCircle className="size-5" />}
+            icon={<Image src="/brand/icon-comfort.svg" width={40} height={40} alt="" className="size-10" />}
             tag="Instant Answers"
             title="Can my computer run it?"
             text={`Every open model on ${HARDWARE.length} Macs, GPUs and AI PCs: verdicts for chat, coding and agents, speeds, and exact download commands for Ollama, llama.cpp and LM Studio.`}
@@ -366,7 +398,7 @@ export default function Home() {
           />
           <ToolCard
             href="/check"
-            icon={<Search className="size-5" />}
+            icon={<Image src="/brand/icon-hardware.svg" width={40} height={40} alt="" className="size-10" />}
             tag="6-Step Advisor"
             title="I don’t know which model"
             text="Answer plain-language questions about your machine and project; get instant fast, balanced, and flagship options."
@@ -408,7 +440,7 @@ export default function Home() {
           />
           <ToolCard
             href="/models"
-            icon={<Boxes className="size-5" />}
+            icon={<Image src="/brand/icon-model.svg" width={40} height={40} alt="" className="size-10" />}
             tag="Interactive Database"
             title={`Explore ${MODELS.length} curated models`}
             text="Filter by architecture, size, context, vision and license, including OSI open-source only."

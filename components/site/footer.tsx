@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Compass, Sparkles, ExternalLink, Cpu, Database } from "lucide-react";
+import Image from "next/image";
+import { Sparkles, ExternalLink, Cpu, Database } from "lucide-react";
 import { HARDWARE, MODELS, BENCHMARKS } from "@/data";
 
 export function SiteFooter() {
@@ -9,11 +10,9 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-5">
           {/* Brand & Mission */}
           <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5 font-bold tracking-tight text-foreground">
-              <span className="grid size-7 place-items-center rounded-lg bg-primary text-primary-foreground">
-                <Compass className="size-4" />
-              </span>
-              <span>Local AI Advisor</span>
+            <div>
+              <Image src="/brand/logo-horizontal.svg" width={272} height={64} alt="Local AI Advisor" className="h-10 w-auto dark:hidden" />
+              <Image src="/brand/logo-horizontal-dark.svg" width={272} height={64} alt="Local AI Advisor" className="hidden h-10 w-auto dark:block" />
             </div>
             <p className="max-w-sm text-sm text-muted-foreground leading-relaxed">
               Real-world simulation of local LLM performance. We model KV-cache expansion, OS/IDE memory reservations, agentic multi-turn latency, and benchmark calibrations so you know what actually runs well.

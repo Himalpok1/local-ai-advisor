@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { selectableModels, modelGroup, QUANTIZATIONS, RUNTIMES, TOOLS, getModel } from "@/data";
 import type { QuantId, WorkloadProfileInput } from "@/lib/schemas";
@@ -46,9 +47,23 @@ export function StackBuilder({ initial }: { initial: AppState }) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <p className="text-sm font-medium text-primary">Build my local AI stack</p>
-      <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">From hardware to coding agent, one layer at a time</h1>
-      <p className="mt-2 max-w-3xl text-muted-foreground">Choose your machine, what you’ll do and which tool you use. We pick the runtime, model and API that make the whole chain comfortable — and explain why.</p>
+      <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]">
+        <div>
+          <p className="text-sm font-medium text-primary">Build my local AI stack</p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">From hardware to coding agent, one layer at a time</h1>
+          <p className="mt-2 max-w-3xl text-muted-foreground">Choose your machine, what you’ll do and which tool you use. We pick the runtime, model and API that make the whole chain comfortable — and explain why.</p>
+        </div>
+        <div className="overflow-hidden rounded-2xl border border-border/70 bg-[#F7F7F5]">
+          <Image
+            src="/brand/illustration-local-stack.svg"
+            width={1200}
+            height={500}
+            alt="Five connected parts of a local AI stack: hardware, runtime, model, local API, and AI tool"
+            className="h-auto w-full"
+            unoptimized
+          />
+        </div>
+      </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="space-y-5">

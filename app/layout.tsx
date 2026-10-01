@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   title: { default: "Local AI Advisor — will local AI actually run well on your computer?", template: "%s · Local AI Advisor" },
   description:
     "Choose your hardware, tools and workload. Find which local AI models will be comfortable to use — not just which ones technically fit.",
+  icons: { icon: "/brand/logo-mark-128.png", apple: "/brand/logo-mark-512.png" },
 };
 
 const themeInitScript = `(function(){

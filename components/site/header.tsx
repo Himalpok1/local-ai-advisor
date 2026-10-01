@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
@@ -75,10 +76,7 @@ export function SiteHeader() {
           href="/"
           className="group flex items-center gap-2.5 font-semibold tracking-tight text-foreground transition"
         >
-          <span className="relative grid size-8 place-items-center rounded-xl bg-gradient-to-tr from-primary to-indigo-500 text-primary-foreground shadow-sm shadow-primary/20 transition group-hover:scale-105">
-            <Compass className="size-4.5 transition-transform duration-300 group-hover:rotate-45" />
-            <span className="absolute -bottom-0.5 -right-0.5 size-2 rounded-full bg-emerald-400 ring-2 ring-background" />
-          </span>
+          <Image src="/brand/logo-mark.svg" width={32} height={32} alt="" className="size-8 transition group-hover:scale-105" />
           <span className="flex flex-col">
             <span className="text-base font-bold leading-none tracking-tight">
               Local AI Advisor
@@ -148,7 +146,7 @@ export function SiteHeader() {
             <Link
               href="/check"
               onClick={() => setOpen(false)}
-              className="flex items-center justify-between rounded-xl bg-gradient-to-r from-primary to-indigo-600 p-4 text-primary-foreground shadow-md transition active:scale-[0.99]"
+              className="flex items-center justify-between rounded-xl bg-primary p-4 text-primary-foreground shadow-md transition active:scale-[0.99]"
             >
               <div className="flex items-center gap-3">
                 <span className="grid size-10 place-items-center rounded-lg bg-white/20">

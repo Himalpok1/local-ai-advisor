@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" role="img" aria-label="Five connected parts of a local AI stack"><rect width="1200" height="500" rx="28" fill="#F7F7F5"/>
+<text x="70" y="78" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="700">Your local AI stack</text>
+<text x="70" y="113" fill="#667085" font-family="Arial,Helvetica,sans-serif" font-size="17">Five connected choices, one usable setup.</text><rect x="70" y="188" width="198" height="210" rx="20" fill="white" stroke="#DDDFE8"/>
+    <rect x="94" y="215" width="52" height="52" rx="14" fill="#514BC8"/>
+    <circle cx="120" cy="241" r="9" fill="white"/>
+    <rect x="94" y="293" width="116" height="9" rx="4" fill="#E5E7ED"/>
+    <rect x="94" y="315" width="86" height="9" rx="4" fill="#E5E7ED"/>
+    <text x="94" y="370" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="700">Hardware</text><path d="M273 292h17m-7-7 7 7-7 7" fill="none" stroke="#A6AABD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="298" y="188" width="198" height="210" rx="20" fill="white" stroke="#DDDFE8"/>
+    <rect x="322" y="215" width="52" height="52" rx="14" fill="#D99B32"/>
+    <circle cx="348" cy="241" r="9" fill="white"/>
+    <rect x="322" y="293" width="116" height="9" rx="4" fill="#E5E7ED"/>
+    <rect x="322" y="315" width="86" height="9" rx="4" fill="#E5E7ED"/>
+    <text x="322" y="370" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="700">Runtime</text><path d="M501 292h17m-7-7 7 7-7 7" fill="none" stroke="#A6AABD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="526" y="188" width="198" height="210" rx="20" fill="white" stroke="#DDDFE8"/>
+    <rect x="550" y="215" width="52" height="52" rx="14" fill="#D46D5C"/>
+    <circle cx="576" cy="241" r="9" fill="white"/>
+    <rect x="550" y="293" width="116" height="9" rx="4" fill="#E5E7ED"/>
+    <rect x="550" y="315" width="86" height="9" rx="4" fill="#E5E7ED"/>
+    <text x="550" y="370" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="700">Model</text><path d="M729 292h17m-7-7 7 7-7 7" fill="none" stroke="#A6AABD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="754" y="188" width="198" height="210" rx="20" fill="white" stroke="#DDDFE8"/>
+    <rect x="778" y="215" width="52" height="52" rx="14" fill="#2C9B75"/>
+    <circle cx="804" cy="241" r="9" fill="white"/>
+    <rect x="778" y="293" width="116" height="9" rx="4" fill="#E5E7ED"/>
+    <rect x="778" y="315" width="86" height="9" rx="4" fill="#E5E7ED"/>
+    <text x="778" y="370" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="700">Local API</text><path d="M957 292h17m-7-7 7 7-7 7" fill="none" stroke="#A6AABD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="982" y="188" width="198" height="210" rx="20" fill="white" stroke="#DDDFE8"/>
+    <rect x="1006" y="215" width="52" height="52" rx="14" fill="#514BC8"/>
+    <circle cx="1032" cy="241" r="9" fill="white"/>
+    <rect x="1006" y="293" width="116" height="9" rx="4" fill="#E5E7ED"/>
+    <rect x="1006" y="315" width="86" height="9" rx="4" fill="#E5E7ED"/>
+    <text x="1006" y="370" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="700">AI tool</text></svg>

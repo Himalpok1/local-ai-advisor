@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ArrowRight, BookOpen, Cpu, FileText, Gauge } from "lucide-react";
 import { LinkButton } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -30,6 +31,17 @@ export default function LearnPage() {
             what you actually want to do with it.
           </p>
         </header>
+
+        <div className="mt-8 overflow-hidden rounded-2xl border border-border/70 bg-[#F7F7F5]">
+          <Image
+            src="/brand/illustration-four-tiers.svg"
+            width={1200}
+            height={520}
+            alt="Four levels of local AI fit: load, run, usable, and comfortable"
+            className="h-auto w-full"
+            unoptimized
+          />
+        </div>
 
         <div className="mt-6">
           <LearnTocMobile />

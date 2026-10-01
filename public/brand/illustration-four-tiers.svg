@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="Four progressive levels of local AI model fit"><rect width="1200" height="520" rx="28" fill="#F7F7F5"/>
+<text x="70" y="77" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="700">Four levels of local AI fit</text>
+<text x="70" y="112" fill="#667085" font-family="Arial,Helvetica,sans-serif" font-size="17">From physically possible to genuinely comfortable.</text><rect x="70" y="185" width="248" height="245" rx="20" fill="white" stroke="#DDDFE8"/>
+    <rect x="90" y="210" width="208" height="8" rx="4" fill="#E9EAF4"/>
+    <rect x="90" y="210" width="52" height="8" rx="4" fill="#514BC8"/>
+    <circle cx="122" cy="285" r="31" fill="#514BC8" opacity=".13"/>
+    <text x="122" y="295" text-anchor="middle" fill="#514BC8" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700">1</text>
+    <text x="90" y="355" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700">01  Load</text>
+    <text x="90" y="390" fill="#667085" font-family="Arial,Helvetica,sans-serif" font-size="17">Fits in memory</text><path d="M322 302h20m-8-8 8 8-8 8" fill="none" stroke="#A6AABD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="350" y="185" width="248" height="245" rx="20" fill="white" stroke="#DDDFE8"/>
+    <rect x="370" y="210" width="208" height="8" rx="4" fill="#E9EAF4"/>
+    <rect x="370" y="210" width="104" height="8" rx="4" fill="#D99B32"/>
+    <circle cx="402" cy="285" r="31" fill="#D99B32" opacity=".13"/>
+    <text x="402" y="295" text-anchor="middle" fill="#D99B32" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700">2</text>
+    <text x="370" y="355" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700">02  Run</text>
+    <text x="370" y="390" fill="#667085" font-family="Arial,Helvetica,sans-serif" font-size="17">Runtime works</text><path d="M602 302h20m-8-8 8 8-8 8" fill="none" stroke="#A6AABD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="630" y="185" width="248" height="245" rx="20" fill="white" stroke="#DDDFE8"/>
+    <rect x="650" y="210" width="208" height="8" rx="4" fill="#E9EAF4"/>
+    <rect x="650" y="210" width="156" height="8" rx="4" fill="#D46D5C"/>
+    <circle cx="682" cy="285" r="31" fill="#D46D5C" opacity=".13"/>
+    <text x="682" y="295" text-anchor="middle" fill="#D46D5C" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700">3</text>
+    <text x="650" y="355" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700">03  Usable</text>
+    <text x="650" y="390" fill="#667085" font-family="Arial,Helvetica,sans-serif" font-size="17">Enough speed</text><path d="M882 302h20m-8-8 8 8-8 8" fill="none" stroke="#A6AABD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="910" y="185" width="248" height="245" rx="20" fill="white" stroke="#DDDFE8"/>
+    <rect x="930" y="210" width="208" height="8" rx="4" fill="#E9EAF4"/>
+    <rect x="930" y="210" width="208" height="8" rx="4" fill="#2C9B75"/>
+    <circle cx="962" cy="285" r="31" fill="#2C9B75" opacity=".13"/>
+    <text x="962" y="295" text-anchor="middle" fill="#2C9B75" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700">4</text>
+    <text x="930" y="355" fill="#20263A" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700">04  Comfortable</text>
+    <text x="930" y="390" fill="#667085" font-family="Arial,Helvetica,sans-serif" font-size="17">Room to work</text></svg>
