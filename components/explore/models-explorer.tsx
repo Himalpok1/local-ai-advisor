@@ -5,6 +5,8 @@ import { ArrowRight, Eye, Brain, Search, Scale, RotateCcw } from "lucide-react";
 import type { Model, ToolCallingLevel } from "@/lib/schemas";
 import { fmtCtx, fmtGB, fmtParams } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { OPENNESS_LABEL, licenseOpenness, type Openness } from "@/lib/hf/licenses";
+import { OpennessBadge } from "./openness-badge";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonClass } from "@/components/ui/button";
@@ -78,6 +80,7 @@ export function ModelsExplorer({ rows }: { rows: ModelRow[] }) {
   const [fitsOn, setFitsOn] = useState(false);
   const [fitsIdx, setFitsIdx] = useState(MEMORY_STEPS.indexOf(24));
   const [sort, setSort] = useState<SortKey>("release");
+  const [openness, setOpenness] = useState<"all" | Openness>("all");
 
   const orgs = useMemo(() => [...new Set(rows.map((r) => r.model.organization))].sort(), [rows]);
   const useCases = useMemo(() => [...new Set(rows.flatMap((r) => r.model.useCases))].sort(), [rows]);
@@ -96,6 +99,7 @@ export function ModelsExplorer({ rows }: { rows: ModelRow[] }) {
       if (kind.startsWith("use:") && !m.useCases.includes(kind.slice(4))) return false;
       if (m.capabilities.coding < min) return false;
       if (fitsOn && q4GB > fitsGB) return false;
+      if (openness !== "all" && licenseOpenness(m.license) !== openness) return false;
       return true;
     });
     const by: Record<SortKey, (a: ModelRow, b: ModelRow) => number> = {
@@ -107,7 +111,7 @@ export function ModelsExplorer({ rows }: { rows: ModelRow[] }) {
       context: (a, b) => b.model.contextWindow - a.model.contextWindow,
     };
     return [...out].sort(by[sort]);
-  }, [rows, query, org, arch, visionOnly, kind, minCoding, fitsOn, fitsGB, sort]);
+  }, [rows, query, org, arch, visionOnly, kind, minCoding, fitsOn, fitsGB, sort, openness]);
 
   const reset = () => {
     setQuery("");
@@ -118,6 +122,7 @@ export function ModelsExplorer({ rows }: { rows: ModelRow[] }) {
     setMinCoding("0");
     setFitsOn(false);
     setSort("release");
+    setOpenness("all");
   };
 
   return (
@@ -182,8 +187,20 @@ export function ModelsExplorer({ rows }: { rows: ModelRow[] }) {
           <Field label="Images">
             <Switch checked={visionOnly} onChange={setVisionOnly} label="Vision-capable only" />
           </Field>
-          <Field label="Weights fit in memory" className="sm:col-span-2" hint="Weights only, at 4-bit (MXFP4 where Q4 isn't published). Context and OS need extra room.">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+          <Field label="License" hint="Open source = OSI-approved license on the weights">
+            <Select
+              ariaLabel="License openness"
+              value={openness}
+              onChange={setOpenness}
+              options={[
+                { value: "all", label: "Any license" },
+                { value: "open-source", label: OPENNESS_LABEL["open-source"] },
+                { value: "open-weights", label: OPENNESS_LABEL["open-weights"] },
+              ]}
+            />
+          </Field>
+          <Field label="Weights fit in memory" className="sm:col-span-2 lg:col-span-1" hint="Weights only, at 4-bit (MXFP4 where Q4 isn't published). Context and OS need extra room.">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4 lg:flex-col lg:items-stretch lg:gap-2">
               <Switch checked={fitsOn} onChange={setFitsOn} label={fitsOn ? `≤ ${fitsGB} GB` : "Off"} />
               <input
                 type="range"
@@ -268,6 +285,7 @@ function ModelCard({ row }: { row: ModelRow }) {
               <Brain className="size-3" aria-hidden /> Thinking
             </Badge>
           )}
+          <OpennessBadge license={m.license} />
         </div>
       </div>
 
@@ -309,6 +327,9 @@ function ModelCard({ row }: { row: ModelRow }) {
       <div className="mt-auto flex flex-col gap-3 p-5 pt-4">
         <SourceLink source={m.source} compact />
         <div className="flex flex-wrap gap-2">
+          <Link href={`/can-i-run/${m.id}`} className={buttonClass("primary", "sm")}>
+            Can my computer run it? <ArrowRight className="size-3.5" aria-hidden />
+          </Link>
           <Link href={`/hardware-for-model?m=${encodeURIComponent(m.id)}`} className={buttonClass("secondary", "sm")}>
             What hardware do I need? <ArrowRight className="size-3.5" aria-hidden />
           </Link>

@@ -7,6 +7,7 @@ import { osLabel } from "@/lib/compatibility";
 import { cn } from "@/lib/utils";
 import { Field, NumberInput, Segmented, Select, Switch } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
+import { DetectHardware } from "./detect-hardware";
 
 export interface HardwareValue {
   hardwareId?: string;
@@ -67,8 +68,18 @@ export function HardwarePicker({ value, onChange }: { value: HardwareValue; onCh
   const setCustom = (patch: Partial<CustomHardwareInput>) => onChange({ hardwareId: "custom", custom: { ...custom, ...patch }, os: (patch.os ?? custom.os) as OS });
   const selected = value.hardwareId === "custom" ? buildCustomHardware(custom) : current;
 
+  const detected = (h: HardwareConfiguration) => {
+    setTab(h.vendor as Tab);
+    if (h.vendor === "apple") {
+      setDevice(h.device);
+      setChip(h.chipKey + h.year);
+    }
+    pick(h);
+  };
+
   return (
     <div className="space-y-5">
+      <DetectHardware onPick={detected} selectedId={current?.id} />
       <div className="flex flex-wrap gap-2" role="tablist" aria-label="Hardware vendor">
         {TABS.map((t) => (
           <button

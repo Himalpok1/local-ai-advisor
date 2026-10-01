@@ -14,28 +14,36 @@ import {
   Boxes,
   Scale,
   Search,
+  HelpCircle,
+  Gauge,
+  Rss,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
 
 const NAV = [
   { href: "/check", label: "Check My Computer", icon: Compass },
-  { href: "/hardware-for-model", label: "Find Hardware", icon: Cpu },
+  { href: "/can-i-run", label: "Can I Run It?", icon: HelpCircle },
   { href: "/hugging-face", label: "Any HF Model", icon: Search },
-  { href: "/stack", label: "Build Stack", icon: Layers },
+  { href: "/new-models", label: "New Models", icon: Rss },
   { href: "/compare/models", label: "Compare", icon: Scale },
   { href: "/models", label: "Explore", icon: Boxes },
   { href: "/learn", label: "Learn", icon: BookOpen },
 ];
 
+/** Extra tools listed in the mobile drawer (the desktop bar has no room). */
+const MORE = [
+  { href: "/speed-test", label: "Browser Speed Test", icon: Gauge },
+  { href: "/hardware-for-model", label: "Find Hardware", icon: Cpu },
+  { href: "/stack", label: "Build Stack", icon: Layers },
+];
+
 export function SiteHeader() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-
-  // Close mobile drawer on route change
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  // The drawer remembers the path it was opened on, so navigating closes it without an effect.
+  const [openedOn, setOpenedOn] = useState<string | null>(null);
+  const open = openedOn === pathname;
+  const setOpen = (next: boolean) => setOpenedOn(next ? pathname : null);
 
   // Prevent background scroll when mobile drawer is open
   useEffect(() => {
@@ -51,6 +59,7 @@ export function SiteHeader() {
 
   const active = (href: string) =>
     pathname === href ||
+    (href === "/can-i-run" && (pathname.startsWith("/can-i-run/") || pathname.startsWith("/what-runs-on/"))) ||
     (href === "/compare/models" && pathname.startsWith("/compare")) ||
     (href === "/models" &&
       ["/models", "/hardware", "/tools", "/runtimes", "/methodology"].some(
@@ -152,7 +161,7 @@ export function SiteHeader() {
 
             {/* Nav list */}
             <div className="rounded-xl border border-border/70 bg-card/60 divide-y divide-border/50 overflow-hidden shadow-2xs">
-              {NAV.map((n) => {
+              {[...NAV, ...MORE].map((n) => {
                 const Icon = n.icon;
                 const isActive = active(n.href);
                 return (

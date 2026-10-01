@@ -20,7 +20,8 @@ import { cn } from "@/lib/utils";
 import { LinkButton } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { HomeDemo } from "@/components/home/home-demo";
-import { PopularRigsMatrix } from "@/components/home/popular-rigs";
+import { PopularRigsMatrix, type RigCategory } from "@/components/home/popular-rigs";
+import { rigSummary } from "@/lib/can-i-run";
 import { ComfortExplorer } from "@/components/home/comfort-explorer";
 import { BENCHMARKS, HARDWARE, MODELS, RUNTIMES, TOOLS } from "@/data";
 
@@ -52,7 +53,21 @@ const TIERS = [
   },
 ];
 
+/** Machines shown in "Popular rigs"; their picks are computed by the engine. */
+const POPULAR_RIGS: { id: string; category: RigCategory }[] = [
+  { id: "mba-m4-10c-16", category: "apple" },
+  { id: "mbp-m4-pro-20c-48", category: "apple" },
+  { id: "studio-m4-max-40c-128", category: "apple" },
+  { id: "pc-rtx-3060-12-32", category: "nvidia" },
+  { id: "pc-rtx-5070-ti-32", category: "nvidia" },
+  { id: "pc-rtx-4090-64", category: "nvidia" },
+  { id: "laptop-core-ultra-258v-32", category: "apu" },
+  { id: "strix-halo-395-128", category: "apu" },
+  { id: "dgx-spark-128", category: "apu" },
+];
+
 export default function Home() {
+  const rigs = POPULAR_RIGS.map(({ id, category }) => ({ ...rigSummary(HARDWARE.find((h) => h.id === id)!), category }));
   return (
     <div className="space-y-16 sm:space-y-24">
       {/* Hero Section */}
@@ -248,12 +263,12 @@ export default function Home() {
             What runs on popular machines?
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Jump directly into calibrated recommendations and sweet-spot models for the most widely used local AI machines.
+            The engine’s best picks for chat and agentic coding on the most widely used local AI machines.
           </p>
         </div>
 
         <div className="mt-10">
-          <PopularRigsMatrix />
+          <PopularRigsMatrix rigs={rigs} />
         </div>
       </section>
 
@@ -328,6 +343,28 @@ export default function Home() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <ToolCard
+            href="/can-i-run"
+            icon={<HelpCircle className="size-5" />}
+            tag="Instant Answers"
+            title="Can my computer run it?"
+            text={`Every open model on ${HARDWARE.length} Macs, GPUs and AI PCs: verdicts for chat, coding and agents, speeds, and exact download commands for Ollama, llama.cpp and LM Studio.`}
+            className="sm:col-span-2"
+          />
+          <ToolCard
+            href="/speed-test"
+            icon={<Zap className="size-5" />}
+            tag="Browser Benchmark"
+            title="Test my GPU's speed"
+            text="Measure your real memory bandwidth with WebGPU in five seconds, with no download, and see the speed ceiling it sets for popular models."
+          />
+          <ToolCard
+            href="/new-models"
+            icon={<Sparkles className="size-5" />}
+            tag="Release Feed"
+            title="What's new in open models"
+            text="The latest releases from Qwen, Google, Meta, Mistral, DeepSeek and more, each rated for a laptop, a gaming GPU and a big Mac. With RSS."
+          />
+          <ToolCard
             href="/check"
             icon={<Search className="size-5" />}
             tag="6-Step Advisor"
@@ -373,8 +410,8 @@ export default function Home() {
             href="/models"
             icon={<Boxes className="size-5" />}
             tag="Interactive Database"
-            title="Explore 36 curated models"
-            text="Filter dense, MoE, vision, and reasoning models by active parameter count, architecture, and context support."
+            title={`Explore ${MODELS.length} curated models`}
+            text="Filter by architecture, size, context, vision and license, including OSI open-source only."
           />
           <ToolCard
             href="/learn"
@@ -427,15 +464,17 @@ function ToolCard({
   tag,
   title,
   text,
+  className,
 }: {
   href: string;
   icon: React.ReactNode;
   tag: string;
   title: string;
   text: string;
+  className?: string;
 }) {
   return (
-    <Link href={href} className="group">
+    <Link href={href} className={cn("group", className)}>
       <Card className="flex h-full flex-col justify-between p-5 sm:p-6 transition-all duration-200 group-hover:border-primary/50 group-hover:shadow-md group-hover:-translate-y-0.5">
         <div>
           <div className="flex items-center justify-between">

@@ -1,9 +1,10 @@
 /**
  * Plain setup guidance for a recommended stack. Commands reflect each
- * project's documented interface; model names are placeholders because
- * download tags differ between registries.
+ * project's documented interface. Curated models use verified Hugging Face
+ * builds (data/downloads.ts); anything else falls back to placeholders.
  */
 import type { Recommendation } from "@/lib/schemas/results";
+import { ggufFor, mlxFor, upstreamRepo } from "@/lib/downloads";
 
 export interface SetupStep {
   title: string;
@@ -24,12 +25,20 @@ export function setupSteps(rec: Recommendation): SetupStep[] {
   const kvQuant = rec.memory.kvCacheGB > 0 && rec.runtime.supportsKvQuant;
   const steps: SetupStep[] = [];
   const model = `${rec.model.name} (${quantName}, ${rec.format.toUpperCase()})`;
+  const gguf = ggufFor(rec.model.id, rec.quant.id);
+  const ggufRef = gguf && `${gguf.repo}:${gguf.tag}`;
+  const mlx = mlxFor(rec.model.id, rec.quant.id);
+  const upstream = upstreamRepo(rec.model.id) ?? (rec.model.id.startsWith("hf:") ? rec.model.id.slice(3) : undefined);
+  /** Name the tool should request from the server; Ollama uses the pulled reference. */
+  const servedName = rec.runtime.id === "ollama" && ggufRef && gguf.files === 1 ? `hf.co/${ggufRef}` : "<model-name>";
 
   switch (rec.runtime.id) {
     case "ollama":
       steps.push(
         { title: "Install Ollama", detail: "Download from ollama.com — it runs as a background server." },
-        { title: `Download ${model}`, detail: "Find the model in the Ollama library and pull the matching quantization tag.", code: "ollama pull <model>:<tag>" },
+        ggufRef && gguf.files === 1
+          ? { title: `Download ${model}`, detail: `Pulls the ${gguf.tag} GGUF (${gguf.sizeGB} GB) straight from Hugging Face.`, code: `ollama pull hf.co/${ggufRef}` }
+          : { title: `Download ${model}`, detail: "Find the model in the Ollama library and pull the matching quantization tag.", code: "ollama pull <model>:<tag>" },
         {
           title: `Serve it with a ${Math.round(ctx / 1024)}K context`,
           detail: "Ollama's default context is small; raise it explicitly.",
@@ -40,27 +49,37 @@ export function setupSteps(rec: Recommendation): SetupStep[] {
     case "llama.cpp":
       steps.push(
         { title: "Install llama.cpp", detail: "Use a release build for your backend (Metal, CUDA, ROCm, Vulkan) or your package manager." },
-        { title: `Start llama-server with ${model}`, code: `llama-server -hf <user>/<repo>-GGUF:${quantName} -c ${ctx} -ngl 99 --jinja --port ${port}` },
+        { title: `Start llama-server with ${model}`, detail: gguf ? `Downloads ${gguf.sizeGB} GB on first run.` : undefined, code: `llama-server -hf ${ggufRef ?? `<user>/<repo>-GGUF:${quantName}`} -c ${ctx} -ngl 99 --jinja --port ${port}` },
       );
       break;
     case "mlx-lm":
       steps.push(
         { title: "Install MLX-LM", code: "pip install mlx-lm" },
-        { title: `Serve ${model}`, detail: "Use an MLX conversion (e.g. from the mlx-community organization on Hugging Face).", code: `mlx_lm.server --model <mlx-community/model-${quantName}> --port ${port}` },
+        mlx
+          ? { title: `Serve ${model}`, code: `mlx_lm.server --model ${mlx.repo} --port ${port}` }
+          : { title: `Serve ${model}`, detail: "Use an MLX conversion (e.g. from the mlx-community organization on Hugging Face).", code: `mlx_lm.server --model <mlx-community/model-${quantName}> --port ${port}` },
       );
       break;
     case "lm-studio":
       steps.push(
         { title: "Install LM Studio", detail: "Download from lmstudio.ai." },
-        { title: `Download ${model}`, detail: `In the model browser pick the ${rec.format === "mlx" ? "MLX" : "GGUF"} build at ${quantName}.` },
+        {
+          title: `Download ${model}`,
+          detail:
+            rec.format === "mlx" && mlx
+              ? `Search the model browser for ${mlx.repo}.`
+              : gguf
+                ? `Search the model browser for ${gguf.repo} and pick the ${gguf.tag} file.`
+                : `In the model browser pick the ${rec.format === "mlx" ? "MLX" : "GGUF"} build at ${quantName}.`,
+        },
         { title: "Start the local server", detail: `Developer tab → Start server (port ${port}). Set context length to ${ctx} when loading the model.` },
       );
       break;
     case "vllm":
-      steps.push({ title: "Install vLLM (Linux + GPU)", code: "pip install vllm" }, { title: `Serve ${model}`, code: `vllm serve <hf-repo> --max-model-len ${ctx}` });
+      steps.push({ title: "Install vLLM (Linux + GPU)", code: "pip install vllm" }, { title: `Serve ${model}`, code: `vllm serve ${upstream ?? "<hf-repo>"} --max-model-len ${ctx}` });
       break;
     case "sglang":
-      steps.push({ title: "Install SGLang", code: 'pip install "sglang[all]"' }, { title: `Serve ${model}`, code: `python -m sglang.launch_server --model-path <hf-repo> --context-length ${ctx} --port ${port}` });
+      steps.push({ title: "Install SGLang", code: 'pip install "sglang[all]"' }, { title: `Serve ${model}`, code: `python -m sglang.launch_server --model-path ${upstream ?? "<hf-repo>"} --context-length ${ctx} --port ${port}` });
       break;
     case "jan":
       steps.push({ title: "Install Jan", detail: "Download from jan.ai and get the model from the hub." }, { title: "Enable the Local API Server", detail: `Settings → Local API Server (port ${port}).` });
@@ -76,23 +95,23 @@ export function setupSteps(rec: Recommendation): SetupStep[] {
   const base = `http://localhost:${port}`;
   switch (rec.tool.id) {
     case "claude-code":
-      steps.push({ title: "Point Claude Code at the local server", detail: "Anthropic-compatible endpoint; set any non-empty token.", code: `ANTHROPIC_BASE_URL=${base} ANTHROPIC_AUTH_TOKEN=local claude --model <model-name>` });
+      steps.push({ title: "Point Claude Code at the local server", detail: "Anthropic-compatible endpoint; set any non-empty token.", code: `ANTHROPIC_BASE_URL=${base} ANTHROPIC_AUTH_TOKEN=local claude --model ${servedName}` });
       break;
     case "codex-cli":
       steps.push(
         rec.runtime.id === "ollama" || rec.runtime.id === "lm-studio"
-          ? { title: "Run Codex in local mode", code: `codex --oss --local-provider ${rec.runtime.id === "ollama" ? "ollama" : "lmstudio"} -m <model-name>` }
+          ? { title: "Run Codex in local mode", code: `codex --oss --local-provider ${rec.runtime.id === "ollama" ? "ollama" : "lmstudio"} -m ${servedName}` }
           : { title: "Add a custom provider to ~/.codex/config.toml", code: `[model_providers.local]\nname = "local"\nbase_url = "${base}/v1"\nwire_api = "responses"` },
       );
       break;
     case "opencode":
-      steps.push({ title: "Add the provider to opencode.json", code: `{\n  "provider": {\n    "local": {\n      "npm": "@ai-sdk/openai-compatible",\n      "options": { "baseURL": "${base}/v1" },\n      "models": { "<model-name>": {} }\n    }\n  }\n}` });
+      steps.push({ title: "Add the provider to opencode.json", code: `{\n  "provider": {\n    "local": {\n      "npm": "@ai-sdk/openai-compatible",\n      "options": { "baseURL": "${base}/v1" },\n      "models": { "${servedName}": {} }\n    }\n  }\n}` });
       break;
     case "aider":
       steps.push(
         rec.connection.api === "ollama"
-          ? { title: "Start Aider", code: `OLLAMA_API_BASE=${base} aider --model ollama_chat/<model-name>` }
-          : { title: "Start Aider", code: `OPENAI_API_BASE=${base}/v1 OPENAI_API_KEY=local aider --model openai/<model-name>` },
+          ? { title: "Start Aider", code: `OLLAMA_API_BASE=${base} aider --model ollama_chat/${servedName}` }
+          : { title: "Start Aider", code: `OPENAI_API_BASE=${base}/v1 OPENAI_API_KEY=local aider --model openai/${servedName}` },
       );
       break;
     case "pi":

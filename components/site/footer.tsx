@@ -41,6 +41,21 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link className="text-muted-foreground hover:text-foreground transition" href="/can-i-run">
+                  Can I Run It?
+                </Link>
+              </li>
+              <li>
+                <Link className="text-muted-foreground hover:text-foreground transition" href="/speed-test">
+                  Browser Speed Test
+                </Link>
+              </li>
+              <li>
+                <Link className="text-muted-foreground hover:text-foreground transition" href="/new-models">
+                  New Open Models
+                </Link>
+              </li>
+              <li>
                 <Link className="text-muted-foreground hover:text-foreground transition" href="/hardware-for-model">
                   Find Hardware for a Model
                 </Link>

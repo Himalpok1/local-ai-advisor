@@ -6,6 +6,7 @@ import { kvBytesPerToken, kvCacheGB, weightsGB } from "@/lib/memory";
 import { fmtCtx, fmtGB, fmtParams } from "@/lib/format";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { OpennessBadge } from "@/components/explore/openness-badge";
 
 const ATTENTION_LABEL = {
   full: "Standard (full attention)",
@@ -25,7 +26,10 @@ export function ModelFacts({ r }: { r: ParsedHfModel }) {
       <CardHeader>
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0">
-            <CardTitle className="truncate text-xl">{m.name}</CardTitle>
+            <CardTitle className="flex flex-wrap items-center gap-2 text-xl">
+              <span className="truncate">{m.name}</span>
+              <OpennessBadge license={m.license} />
+            </CardTitle>
             <CardDescription>
               {m.organization} · {m.license}
               {f.downloads !== undefined && ` · ${f.downloads.toLocaleString("en-US")} downloads`}

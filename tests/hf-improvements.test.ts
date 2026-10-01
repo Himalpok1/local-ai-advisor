@@ -133,14 +133,14 @@ describe("Hub access", () => {
       if (url.endsWith("chat_template.jinja")) return new Response(null, { status: 404 });
       if (url.endsWith("tokenizer_config.json")) return Response.json({ chat_template: "tools function_call" });
       if (url.includes("?search=")) return Response.json([{ id: "bartowski/model-GGUF" }]);
-      if (url.includes("bartowski")) return Response.json([{ type: "file", path: "model-Q4_K_M.gguf", size: 1234567890 }]);
+      if (url.includes("bartowski")) return Response.json([{ type: "file", path: "model-Q4_K_M.gguf", size: 5_027_782_016 }]);
       return Response.json([]);
     }));
     const { loadHfModel } = await import("@/lib/hf/fetch");
     const parsed = await loadHfModel("test/model");
     expect(parsed.facts.signals.toolCalling.signal).toBe("chat-template");
     expect(parsed.model.supportedQuantizations).toEqual(["q4"]);
-    expect(parsed.model.knownSizesGB?.q4).toBe(1234567890 / 1024 ** 3);
+    expect(parsed.model.knownSizesGB?.q4).toBe(5_027_782_016 / 1024 ** 3);
     expect(parsed.warnings.join(" ")).not.toContain("Assumes GGUF / MLX");
   });
 });
@@ -158,4 +158,14 @@ it("validates persisted hardware and workload without browser globals", () => {
   expect(readHfState(JSON.stringify({ ...saved, hardwareId: "missing" }))).toBeUndefined();
   expect(readHfState(JSON.stringify({ ...saved, workload: {} }))).toBeUndefined();
   expect(readHfState("broken json")).toBeUndefined(); expect(readHfState(null)).toBeUndefined();
+});
+
+describe("plausibleGgufSize", () => {
+  it("rejects a tiny draft model matched to a large model's name", async () => {
+    const { plausibleGgufSize } = await import("@/lib/hf/fetch");
+    // 311B at Q8 is ~330 GB; a 2.7 GB file is a speculative-decoding draft, not this model.
+    expect(plausibleGgufSize("q8", 2.7e9, 311)).toBe(false);
+    expect(plausibleGgufSize("q4", 5.0e9, 8.2)).toBe(true);
+    expect(plausibleGgufSize("q4", 20e9, 8.2)).toBe(false);
+  });
 });

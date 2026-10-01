@@ -1,5 +1,21 @@
 import "server-only";
 import { HfParseError, parseHfModel, ggufSizes, nonGenerativeReason, normalizeRepo, type HfConfig, type HfFile, type HfModelInfo, type ParsedHfModel } from "./parse";
+import { QUANTIZATIONS } from "@/data/quantizations";
+import type { QuantId } from "@/lib/schemas";
+
+/** Speculative-decoding drafts and similar companions share the main model's name but are tiny. */
+const DRAFT_REPO = /(?:^|[-_.])(DSpark|DFlash|Eagle\d*|MTP|draft|assistant)(?:$|[-_.])/i;
+
+/**
+ * A matched conversion is only trusted when its size is plausible for the
+ * model's parameter count (0.6–1.5× params × bits-per-weight).
+ */
+export function plausibleGgufSize(quant: QuantId, bytes: number, paramsB: number): boolean {
+  const bpw = QUANTIZATIONS[quant]?.bitsPerWeight.gguf;
+  if (!bpw || !paramsB) return true;
+  const ratio = bytes / ((paramsB * 1e9 * bpw) / 8);
+  return ratio >= 0.6 && ratio <= 1.5;
+}
 
 /**
  * Server-side Hugging Face Hub access. The token (HF_TOKEN) never leaves the
@@ -109,7 +125,7 @@ export async function findGgufVariants(modelName: string): Promise<ReturnType<ty
       if (!res.ok) return {};
       const list = await res.json() as HfModelInfo[];
       const preferred = new Set(["unsloth", "bartowski", "lmstudio-community", "ggml-org", "mradermacher"]);
-      const candidates = list.filter((m) => normalizeRepo(m.id) === m.id && m.id.split("/")[1].toLowerCase().includes(slug.toLowerCase()))
+      const candidates = list.filter((m) => normalizeRepo(m.id) === m.id && m.id.split("/")[1].toLowerCase().includes(slug.toLowerCase()) && (DRAFT_REPO.test(slug) || !DRAFT_REPO.test(m.id.split("/")[1])))
         .sort((a, b) => Number(preferred.has(b.id.split("/")[0])) - Number(preferred.has(a.id.split("/")[0])))
         .slice(0, 3);
       const results = await Promise.all(candidates.map(async (m) => {
@@ -187,7 +203,10 @@ export async function loadHfModel(repo: string): Promise<ParsedHfModel> {
       const parsed = parseHfModel({ repo, info, config: resolved.config, configSource: resolved.source, files });
       if (filesUnavailable) parsed.warnings.push("File listing unavailable; quantization availability and sizes could not be verified (low confidence).");
       if (!parsed.facts.isGgufRepo && !parsed.facts.isMlxRepo) {
-        const variants = await findGgufVariants(repo);
+        const found = await findGgufVariants(repo);
+        const variants = Object.fromEntries(
+          Object.entries(found).filter(([q, v]) => plausibleGgufSize(q as QuantId, v.bytes, parsed.model.parameterCount)),
+        ) as typeof found;
         const quants = Object.keys(variants) as (keyof typeof variants)[];
         if (quants.length) {
           parsed.model.supportedQuantizations = quants;
