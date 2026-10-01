@@ -87,6 +87,7 @@ export default function Home() {
           <Entry href="/stack" icon={<Layers className="size-5" />} title="Give me a complete setup" text="Hardware → runtime → model → local API → coding agent, with setup steps." />
           <Entry href="/compare/models" icon={<Sparkles className="size-5" />} title="Compare models on my machine" text="Memory, headroom, generation, prompt processing and comfort side by side." />
           <Entry href="/compare/hardware" icon={<Cpu className="size-5" />} title="Compare machines for my workload" text="Mac mini vs MacBook Pro vs Mac Studio vs RTX PC — with tradeoffs, not a single winner." />
+          <Entry href="/hugging-face" icon={<Search className="size-5" />} title="Check any Hugging Face model" text="Paste a model link — we read its real architecture and rate it for your machine, even if it came out today." />
           <Entry href="/learn" icon={<Bot className="size-5" />} title="Learn the concepts" text="Why “fits” doesn’t mean “fast”, and why a fast chat model isn’t necessarily a good coding agent." />
         </div>
         <p className="mt-10 text-sm text-muted-foreground">

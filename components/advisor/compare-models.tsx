@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import { Plus, X } from "lucide-react";
-import { MODELS, QUANTIZATIONS, TOOLS, getModel } from "@/data";
+import { selectableModels, modelGroup, QUANTIZATIONS, TOOLS, getModel } from "@/data";
 import type { QuantId, WorkloadProfileInput } from "@/lib/schemas";
 import { bestQuantFor, evaluate, recommendModels } from "@/lib/recommendations";
 import { encodeState, resolveHardware, type AppState } from "@/lib/share";
@@ -124,7 +124,7 @@ export function CompareModels({ initial, initialModels }: { initial: AppState; i
               className="w-64"
               value={""}
               onChange={(id) => id && !picks.some((p) => p.id === id) && setPicks((ps) => [...ps, { id }])}
-              options={[{ value: "", label: "Add a model…", disabled: true }, ...MODELS.filter((m) => !picks.some((p) => p.id === m.id)).map((m) => ({ value: m.id, label: m.name, group: m.organization }))]}
+              options={[{ value: "", label: "Add a model…", disabled: true }, ...selectableModels().filter((m) => !picks.some((p) => p.id === m.id)).map((m) => ({ value: m.id, label: m.name, group: modelGroup(m) }))]}
             />
           </span>
         )}

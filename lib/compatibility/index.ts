@@ -87,7 +87,8 @@ export function selectFormat(runtime: Runtime, backend: BackendSupport, model: M
   for (const f of preferred) {
     if (runtime.formats.includes(f) && model.supportedFormats.includes(f)) return f;
   }
-  return null;
+  // Multi-engine apps (e.g. LM Studio: MLX + llama.cpp) can still load other formats they support.
+  return runtime.formats.find((f) => model.supportedFormats.includes(f)) ?? null;
 }
 
 export function quantAvailable(quant: Quantization, format: ModelFormat, model: Model): boolean {

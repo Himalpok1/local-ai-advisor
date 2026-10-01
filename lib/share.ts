@@ -127,7 +127,7 @@ export function decodeState(params: URLSearchParams | Record<string, string | st
   const os = OSSchema.safeParse(get("os"));
   if (os.success) state.os = os.data;
   const m = get("m");
-  if (m && MODEL_MAP.has(m)) state.modelId = m;
+  if (m && (MODEL_MAP.has(m) || /^hf:[A-Za-z0-9][\w.-]{0,95}\/[\w.-]{1,96}$/.test(m))) state.modelId = m;
   const q = QuantIdSchema.safeParse(get("q"));
   if (q.success) state.quant = q.data;
   const rt = get("rt");

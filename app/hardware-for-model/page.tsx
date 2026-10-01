@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { HardwareSearch } from "@/components/advisor/hardware-search";
+import { GatedHardwareSearch } from "@/components/advisor/gated-views";
 import { decodeState } from "@/lib/share";
 
 export const metadata: Metadata = {
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
   const state = decodeState(params, { useCase: "agentic-coding", toolId: "opencode", repositorySize: "medium", priority: "balanced", devEnv: "normal" });
-  return <HardwareSearch initial={state} />;
+  return <GatedHardwareSearch initial={state} />;
 }

@@ -941,3 +941,30 @@ export function getModel(id: string): Model {
   if (!m) throw new Error(`Unknown model: ${id}`);
   return m;
 }
+
+/* ------------------------------------------------------------------ */
+/* Models imported live from Hugging Face (client-side registry)       */
+/* ------------------------------------------------------------------ */
+
+/** Models added at runtime (ids prefixed "hf:"). They plug into getModel() like curated ones. */
+export const EXTERNAL_MODELS: Model[] = [];
+
+export function registerModel(model: Model): Model {
+  const parsed = ModelSchema.parse(model);
+  if (!MODEL_MAP.has(parsed.id)) EXTERNAL_MODELS.push(parsed);
+  else {
+    const i = EXTERNAL_MODELS.findIndex((m) => m.id === parsed.id);
+    if (i >= 0) EXTERNAL_MODELS[i] = parsed;
+  }
+  MODEL_MAP.set(parsed.id, parsed);
+  return parsed;
+}
+
+/** Curated models plus any imported ones, for pickers. */
+export function selectableModels(): Model[] {
+  return [...MODELS, ...EXTERNAL_MODELS];
+}
+
+export function modelGroup(m: Model): string {
+  return m.id.startsWith("hf:") ? "Imported from Hugging Face" : m.organization;
+}

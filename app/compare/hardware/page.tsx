@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CompareHardware } from "@/components/advisor/compare-hardware";
+import { GatedCompareHardware } from "@/components/advisor/gated-views";
 import { decodeState } from "@/lib/share";
 import { HARDWARE_MAP } from "@/data";
 
@@ -12,5 +12,5 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
   const params = await searchParams;
   const state = decodeState(params);
   const ids = (typeof params.hws === "string" ? params.hws : "").split(",").filter((id) => HARDWARE_MAP.has(id)).slice(0, 6);
-  return <CompareHardware initial={state} initialHardware={ids} />;
+  return <GatedCompareHardware initial={state} initialHardware={ids} />;
 }

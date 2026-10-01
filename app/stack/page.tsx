@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { StackBuilder } from "@/components/advisor/stack-builder";
+import { GatedStackBuilder } from "@/components/advisor/gated-views";
 import { decodeState } from "@/lib/share";
 
 export const metadata: Metadata = {
@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 
 export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const state = decodeState(await searchParams);
-  return <StackBuilder initial={state} />;
+  return <GatedStackBuilder initial={state} />;
 }

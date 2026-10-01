@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/check", label: "Check my computer" },
   { href: "/hardware-for-model", label: "Find hardware" },
+  { href: "/hugging-face", label: "Any HF model" },
   { href: "/stack", label: "Build a stack" },
   { href: "/compare/models", label: "Compare" },
   { href: "/models", label: "Explore" },

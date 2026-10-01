@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, RotateCcw, SlidersHorizontal, Sparkles, X } from "lucide-react";
-import { MODELS, QUANTIZATIONS, RUNTIMES, TOOLS, getModel, getTool } from "@/data";
+import { selectableModels, modelGroup, QUANTIZATIONS, RUNTIMES, TOOLS, getModel, getTool } from "@/data";
 import type { HardwareConfiguration, QuantId, WorkloadProfileInput } from "@/lib/schemas";
 import { COMFORT_LABEL, COMFORT_RANK, type Recommendation } from "@/lib/schemas/results";
 import { contextSweep, describeChange, evaluate, rankRuntimes, stackFor, fitAcrossUseCases, whatIf, type EvaluateInput } from "@/lib/recommendations";
@@ -287,7 +287,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
                     const m = getModel(id);
                     update({ modelId: id, quant: m.supportedQuantizations.includes(quant) ? quant : m.supportedQuantizations.includes("q4") ? "q4" : m.supportedQuantizations[0] }, undefined, `Model → ${m.name}`);
                   }}
-                  options={MODELS.map((m) => ({ value: m.id, label: m.name, group: m.organization }))}
+                  options={selectableModels().map((m) => ({ value: m.id, label: m.name, group: modelGroup(m) }))}
                 />
               </Field>
               <Field label="Quantization">

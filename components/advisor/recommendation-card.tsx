@@ -84,7 +84,7 @@ export function RecommendationCard({
               </dd>
               <dt className="text-muted-foreground">Context</dt>
               <dd className="text-right">
-                {fmtCtx(rec.context.effective)} · up to {rec.context.maxPractical ? fmtCtx(rec.context.maxPractical) : "—"} practical
+                {fmtCtx(rec.context.effective)} · {rec.context.maxPractical ? `up to ${fmtCtx(rec.context.maxPractical)} practical` : "no size is practical here"}
               </dd>
               <dt className="text-muted-foreground">Tool support</dt>
               <dd className="text-right">{SUPPORT_LABEL[rec.connection.level]}</dd>

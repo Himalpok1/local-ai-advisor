@@ -14,6 +14,7 @@ Local AI Advisor answers *"Will this model + runtime + tool + hardware combinati
 - **Explore** the models, hardware, runtimes and AI tools databases, including a tool × runtime compatibility matrix.
 - **Learn** (`/learn`): the core concepts, with live engine-powered widgets.
 - **Methodology** (`/methodology`): how the engine works, plus the full table of benchmarks used.
+- **Check any Hugging Face model** (`/hugging-face`): search or paste any Hub model, including GGUF and MLX repos. The server reads its real config.json and file sizes (parameters, experts, attention layout, KV cache, context) and rates it with the same engine. Gated models are read through public mirrors. Capability tiers for imported models are estimated and labelled as such.
 - **Shareable URLs**: every configuration is encoded in the query string and validated with Zod on the way in.
 
 ## Architecture
@@ -64,4 +65,9 @@ npm test           # vitest — engine, search, what-if, share-URL and data-inte
 npm run typecheck
 npm run lint
 npm run build
+npm run refresh:models   # compare curated models with Hugging Face; writes research/model-refresh-<date>.md
 ```
+
+### Environment
+
+- `HF_TOKEN`: a read-only Hugging Face token, used only on the server by `/api/hf/*` for higher rate limits. The app also works without it. Locally, put it in `.env.local` (git-ignored); in production, set it in the host's environment variables.

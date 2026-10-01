@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { MODELS, QUANTIZATIONS, RUNTIMES, getModel, getTool } from "@/data";
+import { selectableModels, modelGroup, QUANTIZATIONS, RUNTIMES, getModel, getTool } from "@/data";
 import type { ComfortTarget, QuantId, WorkloadProfileInput } from "@/lib/schemas";
 import { COMFORT_LABEL, type Recommendation } from "@/lib/schemas/results";
 import { TARGET_LEVEL, recommendHardware } from "@/lib/recommendations";
@@ -58,7 +58,7 @@ export function HardwareSearch({ initial }: { initial: AppState }) {
                 ariaLabel="Model"
                 value={model.id}
                 onChange={(id) => setState((s) => ({ ...s, modelId: id, quant: undefined }))}
-                options={MODELS.map((m) => ({ value: m.id, label: `${m.name} (${fmtParams(m.parameterCount)}${m.denseOrMoE === "moe" ? `, ${fmtParams(m.activeParameterCount)} active` : ""})`, group: m.organization }))}
+                options={selectableModels().map((m) => ({ value: m.id, label: `${m.name} (${fmtParams(m.parameterCount)}${m.denseOrMoE === "moe" ? `, ${fmtParams(m.activeParameterCount)} active` : ""})`, group: modelGroup(m) }))}
               />
               <Field label="Quantization">
                 <Segmented

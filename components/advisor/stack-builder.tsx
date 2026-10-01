@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { MODELS, QUANTIZATIONS, RUNTIMES, TOOLS, getModel } from "@/data";
+import { selectableModels, modelGroup, QUANTIZATIONS, RUNTIMES, TOOLS, getModel } from "@/data";
 import type { QuantId, WorkloadProfileInput } from "@/lib/schemas";
 import { COMFORT_RANK } from "@/lib/schemas/results";
 import { bestQuantFor, evaluate, recommendModels, stackFor } from "@/lib/recommendations";
@@ -85,7 +85,7 @@ export function StackBuilder({ initial }: { initial: AppState }) {
             </CardHeader>
             <CardContent className="grid gap-4 sm:grid-cols-3">
               <Field label="Model">
-                <Select ariaLabel="Model" value={state.modelId ?? "auto"} onChange={(m) => setState((s) => ({ ...s, modelId: m === "auto" ? undefined : m, quant: undefined }))} options={[{ value: "auto", label: "Auto (best fit)" }, ...MODELS.map((m) => ({ value: m.id, label: m.name, group: m.organization }))]} />
+                <Select ariaLabel="Model" value={state.modelId ?? "auto"} onChange={(m) => setState((s) => ({ ...s, modelId: m === "auto" ? undefined : m, quant: undefined }))} options={[{ value: "auto", label: "Auto (best fit)" }, ...selectableModels().map((m) => ({ value: m.id, label: m.name, group: modelGroup(m) }))]} />
               </Field>
               <Field label="Quantization">
                 <Select

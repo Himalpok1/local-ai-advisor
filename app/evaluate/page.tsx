@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EvaluationView } from "@/components/advisor/evaluation-view";
+import { GatedEvaluation } from "@/components/advisor/gated-views";
 import { decodeState } from "@/lib/share";
 import { getModel } from "@/data";
 
@@ -11,8 +11,9 @@ export const metadata: Metadata = {
 export default async function EvaluatePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const state = decodeState(await searchParams);
   const modelId = state.modelId ?? "qwen3-coder-30b-a3b";
-  const model = getModel(modelId);
-  const quant = state.quant && model.supportedQuantizations.includes(state.quant) ? state.quant : model.supportedQuantizations.includes("q4") ? "q4" : model.supportedQuantizations[0];
+  // Hugging Face imports (hf:…) are resolved in the browser; the view falls back to a supported quant.
+  const model = modelId.startsWith("hf:") ? undefined : getModel(modelId);
+  const quant = !model ? (state.quant ?? "q4") : state.quant && model.supportedQuantizations.includes(state.quant) ? state.quant : model.supportedQuantizations.includes("q4") ? "q4" : model.supportedQuantizations[0];
   const initial = { ...state, hardwareId: state.hardwareId ?? "mbp-m4-pro-20c-48", modelId, quant };
-  return <EvaluationView key={JSON.stringify(initial)} initial={initial} />;
+  return <GatedEvaluation key={JSON.stringify(initial)} initial={initial} />;
 }

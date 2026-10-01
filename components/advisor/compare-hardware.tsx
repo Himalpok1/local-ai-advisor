@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { HARDWARE, MODELS, QUANTIZATIONS, TOOLS, getModel } from "@/data";
+import { HARDWARE, selectableModels, modelGroup, QUANTIZATIONS, TOOLS, getModel } from "@/data";
 import type { QuantId, WorkloadProfileInput } from "@/lib/schemas";
 import type { Recommendation } from "@/lib/schemas/results";
 import { bestQuantFor, evaluate } from "@/lib/recommendations";
@@ -92,7 +92,7 @@ export function CompareHardware({ initial, initialHardware }: { initial: AppStat
       <Card className="mt-6">
         <CardContent className="grid gap-4 pt-5 md:grid-cols-2 lg:grid-cols-4">
           <Field label="Model">
-            <Select ariaLabel="Model" value={model.id} onChange={(id) => setState((s) => ({ ...s, modelId: id, quant: undefined }))} options={MODELS.map((m) => ({ value: m.id, label: m.name, group: m.organization }))} />
+            <Select ariaLabel="Model" value={model.id} onChange={(id) => setState((s) => ({ ...s, modelId: id, quant: undefined }))} options={selectableModels().map((m) => ({ value: m.id, label: m.name, group: modelGroup(m) }))} />
           </Field>
           <Field label="Quantization">
             <Select ariaLabel="Quantization" value={state.quant ?? "best"} onChange={(q) => setState((s) => ({ ...s, quant: q === "best" ? undefined : (q as QuantId) }))} options={[{ value: "best", label: "Best per machine" }, ...model.supportedQuantizations.map((q) => ({ value: q, label: QUANTIZATIONS[q].label }))]} />
