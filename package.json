@@ -11,10 +11,12 @@
     "typecheck": "tsc --noEmit",
     "refresh:models": "tsx scripts/refresh-models.mts",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "new-post": "node scripts/new-post.mjs"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.3",
+    "@mdx-js/mdx": "^3.1.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.3",
     "lucide-react": "^1.49.0",
@@ -24,12 +26,15 @@
     "next-auth": "^5.0.0-beta.32",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "remark-gfm": "^4.0.1",
     "server-only": "^0.0.1",
     "tailwind-merge": "^3.7.0",
+    "yaml": "^2.9.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/mdx": "^2.0.14",
     "@types/node": "^22.20.4",
     "@types/react": "^19",
     "@types/react-dom": "^19",

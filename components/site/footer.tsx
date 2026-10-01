@@ -10,6 +10,7 @@ const COLUMNS = [
       { href: "/can-i-run", label: "Can I run it?" },
       { href: "/learn", label: "Learn local AI" },
       { href: "/learn/first-model", label: "Run your first model" },
+      { href: "/blog", label: "Blog" },
     ],
   },
   {
