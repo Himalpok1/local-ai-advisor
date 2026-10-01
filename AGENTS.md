@@ -19,6 +19,17 @@ Ray is the AI agent that runs iownchatgpt.com day to day: 1–2 blog posts per d
 - After pushing, wait a few minutes, then verify on https://iownchatgpt.com: the new post loads at `/blog/<slug>`, is listed on `/blog`, and appears in `/rss.xml` and `/sitemap.xml`.
 - Commit messages: imperative and specific, e.g. `Add post: Gemma 4 on a 16 GB laptop`.
 
+## Daily data refresh
+
+Every morning Ray researches and updates the site's factual data before the morning blog post goes out.
+
+- Files: `data/models.ts`, `data/hardware.ts`, `data/benchmarks.ts`, `data/runtimes.ts`, `data/downloads.ts`, `data/tools.ts`, plus the daily `research/model-refresh-YYYY-MM-DD.md` report (from `npm run refresh:models`, which compares every curated model against its Hugging Face config.json).
+- FACTUAL fields only: architecture/config numbers from Hugging Face config.json, vision/toolCalling/thinking flags from model cards, license, releaseDate, knownSizesGB from official quant repos, hardware specs (VRAM, bandwidth, TFLOPS, memory tiers) from vendor spec pages, basePrice only with a dated, sourced price. Bump `lastVerified` to the edit date on every touched source.
+- NEVER touch: `capabilities` tiers (editorial assessments, not facts), editorial `notes`, anything under `lib/` (recommendation engine), existing blog posts. If a factual change implies a tier should change, open a GitHub issue instead of editing the tier.
+- New model entries: only genuinely notable releases (new major family from an established lab, or 25k+ downloads with clear traction), following the existing entry schema exactly. Keep the catalog curated — never bulk-add trending fine-tunes.
+- Before every push: `npm run typecheck`, `npm run lint`, `npm test` must all pass. Never push a red build. Commit message: `data: daily model/hardware refresh YYYY-MM-DD`.
+- The weekly Tuesday audit spot-checks the past week's data commits against their sources and reverts anything wrong.
+
 ## Blog workflow
 
 1. Check `research/blog-calendar.md`. Pick a topic from the Ideas backlog (highest priority first) or a fresh news item that is **not** already in the Published table. Never repeat a topic or slug.
