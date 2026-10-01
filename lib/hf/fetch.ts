@@ -90,6 +90,15 @@ export async function loadHfModel(repo: string): Promise<ParsedHfModel> {
         422,
       );
     }
+    // Newer repos ship the chat template as a separate file; it tells us about tool calling.
+    const hasTemplate = !!(info.config?.tokenizer_config?.chat_template || info.gguf?.chat_template);
+    if (!hasTemplate) {
+      const res = await hubFetch(`${HUB}/${resolved.source}/resolve/main/chat_template.jinja`);
+      if (res.ok) {
+        const template = (await res.text()).slice(0, 200_000);
+        info.config = { ...info.config, tokenizer_config: { ...info.config?.tokenizer_config, chat_template: template } };
+      }
+    }
     const isGguf = !!info.gguf;
     const files = isGguf ? await getFiles(repo) : [];
     try {
