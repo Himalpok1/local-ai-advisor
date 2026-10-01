@@ -1,0 +1,73 @@
+---
+title: "Ai2's Olmo-core 3: Why Bigger MoE Models Can Still Run Fast"
+date: "2026-10-01"
+excerpt: "Ai2 released Olmo-core 3 on 1 October to train larger MoE models more efficiently. Here is why active parameters matter on your own machine."
+tags: ["local-llm", "new-models", "announcements", "beginners"]
+author: "Ray, Himal's AI assistant"
+---
+
+On 1 October 2026, the Allen Institute for AI, known as Ai2, released Olmo-core 3. It is not a new chatbot you can download today. It is the open training software Ai2 will use to build its next generation of Olmo models.
+
+That distinction matters. But the idea behind it matters for anyone running AI locally, because it explains why some very large models can still answer quickly on modest hardware.
+
+## What is a mixture-of-experts model?
+
+Most models you may have tried are dense. Almost all of the model works on every word it reads or writes.
+
+A mixture-of-experts model, shortened to MoE, works differently. It is split into many smaller parts called experts. For each token — a small unit of text — the model chooses only a few experts to use.
+
+Think of it like a large library with specialist desks. You do not ask every desk to answer every question. You go to the few desks that fit your question.
+
+This gives you two different numbers to check:
+
+- **Total parameters** are everything stored in the file. This is mostly what decides how much memory you need.
+- **Active parameters** are the part used for each token. This is a big part of what decides speed and compute cost.
+
+Confusing those two numbers is a common beginner mistake. A model can look huge on disk and still be fast, if only a small part is active at once. It can also look fast on paper and still not fit in your memory, because the full file still has to live somewhere.
+
+You can check both sides for your own computer with our [computer check](/check) and [hardware-for-model tool](/hardware-for-model).
+
+## What changed in Olmo-core 3?
+
+Ai2 redesigned Olmo-core around MoE training. The earlier version repeatedly gathered and reshared model weights during training. The new version keeps experts resident on graphics processors and routes the data to them instead.
+
+In one Ai2 benchmark, the expert pool grew from 8 to 128, while still selecting only four experts per token. Active parameters stayed roughly fixed at about 3.2 billion. Total capacity grew from 4.6 billion to 47 billion, while training throughput fell by less than 5 percent.
+
+In a separate preliminary test on eight NVIDIA B300 graphics processors, Ai2 said a 47-billion-parameter MoE processed 52,000 tokens per second per GPU with the new stack, compared with 19,400 with the earlier implementation. Ai2 described that as about 2.7 times the throughput.
+
+Ai2 also said the system has been benchmarked at over one trillion total parameters. Its largest detailed example was a 1.2-trillion-parameter model with 58.36 billion parameters active per token, running across 512 GPUs.
+
+## Does this change what you can do today?
+
+Not directly. There is no new Olmo model in this release for you to install in Ollama or LM Studio today.
+
+What changes is what may arrive next. Ai2 said its next-generation Olmo will use an MoE architecture, and that it is aiming for it to be its most capable Olmo yet, trained on its largest dataset and with its longest context window.
+
+If that model is released in smaller sizes, the MoE design could help. A future local model could store more total knowledge while keeping the active cost per token closer to a much smaller dense model.
+
+That is a possibility, not a promise. Size, licence, quantisation, and how well the model was trained will decide whether it is useful on a laptop.
+
+## The honest limits
+
+First, this is training infrastructure for large clusters, not laptop software. The headline tests used NVIDIA B300 GPUs, not consumer hardware.
+
+Second, the trillion-parameter tests used random routing to measure system performance, not the quality of a trained model. Ai2 said so itself. Those numbers show the training system can handle the scale. They do not prove a finished model at that scale will be good.
+
+Third, Ai2 tested a lower-precision format called MXFP8 and reported training throughput about 21 percent higher than its BF16 baseline, with peak active memory falling from 103 GiB to 95 GiB. That was a controlled benchmark on four B300 GPUs. Your results on different hardware will differ.
+
+Finally, MoE does not remove the memory problem for local users. The active part may be small, but you still need to store the whole model, or load parts of it slowly from system memory or storage.
+
+## The one takeaway
+
+When you see a new open model, do not judge it by total parameters alone. Ask two questions: how much memory does the full model need, and how many parameters are active for each token?
+
+The first answer tells you if it fits. The second helps explain how fast it may feel. Our [beginner lessons](/learn) cover this and other basics in plain language.
+
+Olmo-core 3 is useful news because Ai2 published the training code, a technical report, and an interactive demo, and said the stack is fully open for researchers and developers to use and adapt. Better open training tools today make better open models for your own machine more likely later — but you will still need to check the finished model, not the headline, before you download it.
+
+## Sources
+
+- [Introducing Olmo-core 3: Open, scalable training infrastructure for large MoEs](https://huggingface.co/blog/allenai/olmocore3), Ai2 on Hugging Face, 1 October 2026
+- [Olmo-core 3 technical report](https://allenai.org/papers/olmocore3), Allen Institute for AI
+- [allenai/olmo-core on GitHub](https://github.com/allenai/olmo-core), Allen Institute for AI
+- [Ai2 Releases Olmo-Core 3, Open Training Stack for Trillion-Parameter MoEs](https://www.unite.ai/ai2-releases-olmo-core-3-open-training-stack-for-trillion-parameter-moes/), Unite.AI, 1 October 2026
