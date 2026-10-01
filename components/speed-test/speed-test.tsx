@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import { ArrowRight, Gauge, Loader2, Play, TriangleAlert } from "lucide-react";
 import { MODEL_MAP } from "@/data";
 import type { HardwareConfiguration } from "@/lib/schemas";
@@ -19,12 +19,16 @@ const SAMPLE_MODELS = ["qwen3.5-4b", "qwen3.5-9b", "gpt-oss-20b", "qwen3.6-35b-a
 
 const bandwidthOf = (h: HardwareConfiguration) => (h.gpu ? h.gpu.bandwidthGBs : h.systemRamBandwidthGBs);
 
+const noSubscribe = () => () => {};
+
 export function SpeedTest() {
   const [hw, setHw] = useState<HardwareConfiguration>();
   const [state, setState] = useState<"idle" | "running" | "done" | "error">("idle");
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState<BandwidthResult>();
   const [error, setError] = useState<string>();
+  // The server can't know, so it (and hydration) assume support; the real answer follows on the client.
+  const hasWebgpu = useSyncExternalStore(noSubscribe, webgpuAvailable, () => true);
 
   const start = async () => {
     setState("running");
@@ -79,7 +83,7 @@ export function SpeedTest() {
             <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden /> {error}
           </p>
         )}
-        {state === "idle" && !webgpuAvailable() && (
+        {state === "idle" && !hasWebgpu && (
           <p className="text-sm text-muted-foreground">This browser doesn&apos;t expose WebGPU, so the test can&apos;t run here. Recent Chrome, Edge and Safari support it.</p>
         )}
 
