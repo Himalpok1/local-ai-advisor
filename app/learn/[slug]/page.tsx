@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const lesson = getLesson(slug);
   if (!lesson) return {};
-  return { title: `${lesson.title} · Learn`, description: lesson.summary };
+  return { title: `${lesson.title} · Learn`, description: lesson.summary, alternates: { canonical: `/learn/${lesson.slug}` } };
 }
 
 export default async function LessonPage({ params }: { params: Promise<{ slug: string }> }) {

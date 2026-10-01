@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Clock, Compass, Cpu, HelpCircle, Laptop, ListChecks, Lock, MessageSquare, ShoppingCart, Sparkles, WifiOff } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,6 +12,9 @@ import { LESSONS, TOTAL_MINUTES } from "@/components/learn/lessons";
 import { TOOL_GROUPS } from "@/components/site/nav";
 import { rigSummary } from "@/lib/can-i-run";
 import { HARDWARE, MODELS } from "@/data";
+import { JsonLd, siteGraph } from "@/components/seo/json-ld";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 /** Machines shown in "Popular computers"; their picks are computed by the engine. */
 const POPULAR_RIGS: { id: string; category: RigCategory }[] = [
@@ -43,6 +47,7 @@ export default function Home() {
 
   return (
     <div className="space-y-20 sm:space-y-28">
+      <JsonLd data={siteGraph({ models: MODELS.length, computers: HARDWARE.length })} />
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="glow-primary pointer-events-none absolute inset-0" aria-hidden />

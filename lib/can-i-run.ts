@@ -20,13 +20,16 @@ export interface WorkloadPreset {
   workload: WorkloadProfileInput;
 }
 
-/** The everyday workloads each page rates, lightest first. */
+/**
+ * The everyday workloads each page rates, lightest first. Chat and documents assume a browser with a few
+ * tabs alongside (devEnv "light"); the coding workloads assume an editor, dev server and terminal ("normal").
+ */
 export const WORKLOADS: WorkloadPreset[] = [
-  { key: "chat", label: "Chat", phrase: "chat", workload: { useCase: "casual-chat", toolId: "open-webui", devEnv: "normal" } },
+  { key: "chat", label: "Chat", phrase: "chat", workload: { useCase: "casual-chat", toolId: "open-webui", devEnv: "light" } },
   { key: "coding", label: "Coding questions", phrase: "coding questions", workload: { useCase: "coding-questions", toolId: "continue", devEnv: "normal" } },
   { key: "repo", label: "Coding in a repository", phrase: "coding in a repository", workload: { useCase: "coding-repo", toolId: "aider", repositorySize: "medium", devEnv: "normal" } },
   { key: "agent", label: "Agentic coding", phrase: "agentic coding", workload: { useCase: "agentic-coding", toolId: "opencode", repositorySize: "medium", devEnv: "normal" } },
-  { key: "docs", label: "Long documents (64K)", phrase: "64K-token documents", workload: { useCase: "long-doc-qa", toolId: "open-webui", desiredContextWindow: 65536, devEnv: "normal" } },
+  { key: "docs", label: "Long documents (64K)", phrase: "64K-token documents", workload: { useCase: "long-doc-qa", toolId: "open-webui", desiredContextWindow: 65536, devEnv: "light" } },
 ];
 
 export const CHAT = WORKLOADS[0];
@@ -105,7 +108,7 @@ const COMFORT_LABEL_LOWER: Record<ComfortLevel, string> = {
   comfortable: "comfortable",
   acceptable: "acceptable",
   borderline: "borderline",
-  "technically-runs": "too slow",
+  "technically-runs": "not recommended",
   "does-not-fit": "doesn't fit",
   unsupported: "unsupported",
 };
@@ -113,6 +116,45 @@ const COMFORT_LABEL_LOWER: Record<ComfortLevel, string> = {
 /** Link into the interactive evaluation with the same inputs. */
 export function evaluateHref(rec: Recommendation, preset: WorkloadPreset): string {
   return `/evaluate?${encodeState({ hardwareId: rec.hardware.id, modelId: rec.model.id, quant: rec.quant.id, workload: preset.workload })}`;
+}
+
+/* ------------------------------------------------------------------ */
+/* When it doesn't fit                                                 */
+/* ------------------------------------------------------------------ */
+
+export interface MemoryGap {
+  /** Memory the model needs at its smallest quantization (weights, context cache, runtime). */
+  neededGB: number;
+  /** Memory left for AI after the OS, other apps and the chat app. */
+  availableGB: number;
+  shortByGB: number;
+  osGB: number;
+  appsGB: number;
+  toolGB: number;
+}
+
+/** The arithmetic behind a "doesn't fit" verdict, from the engine's own memory breakdown. */
+export function memoryGap(rec: Recommendation): MemoryGap {
+  const m = rec.memory;
+  return {
+    neededGB: m.inferencePeakGB,
+    availableGB: m.availableForInferenceGB,
+    shortByGB: Math.max(0, m.inferencePeakGB - m.availableForInferenceGB),
+    osGB: m.osReserveGB,
+    appsGB: m.devEnvReserveGB,
+    toolGB: m.toolOverheadGB,
+  };
+}
+
+/** Chat with every other app closed: the most a machine can do for this model. */
+export const CHAT_APPS_CLOSED: WorkloadPreset = { ...CHAT, workload: { ...CHAT.workload, devEnv: "none" } };
+
+/** Smaller models from the same family that are usable for chat on this machine, largest first. */
+export function smallerSiblings(model: Model, hardware: HardwareConfiguration): Recommendation[] {
+  return MODELS.filter((m) => m.family === model.family && m.id !== model.id && !m.referenceOnly && m.parameterCount < model.parameterCount)
+    .map((m) => rate(m, hardware, CHAT))
+    .filter((r) => usable(r.level))
+    .sort((a, b) => b.model.parameterCount - a.model.parameterCount);
 }
 
 /** Models a page can link to, newest first. */

@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   title: "Methodology",
   description:
     "How Local AI Advisor decides whether a model runs comfortably: the 17-step evaluation pipeline, comfort levels, per-use-case weights, performance and memory models, confidence rules and the verified benchmark data behind it.",
+  alternates: { canonical: "/methodology" },
 };
 
 const PIPELINE: { step: string; detail: string }[] = [

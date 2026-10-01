@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Model catalog",
   description:
     "Browse the open-weight models Local AI Advisor knows about: parameters, MoE vs dense, context window, vision, tool calling, 4-bit size, license and sources.",
+  alternates: { canonical: "/models" },
 };
 
 /** Reference 4-bit quant: Q4 when published, otherwise native MXFP4 (gpt-oss), else the smallest supported. */

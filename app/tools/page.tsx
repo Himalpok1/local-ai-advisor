@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "AI tools",
   description:
     "Claude Code, Codex CLI, OpenCode, Cline, Continue, Open WebUI and more: how each AI tool connects to local runtimes, and how demanding its workload is.",
+  alternates: { canonical: "/tools" },
 };
 
 const CATEGORY_LABEL: Record<AITool["category"], string> = {

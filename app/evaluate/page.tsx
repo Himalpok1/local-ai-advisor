@@ -6,6 +6,8 @@ import { getModel } from "@/data";
 export const metadata: Metadata = {
   title: "Detailed evaluation",
   description: "Will this model + runtime + tool + hardware combination be comfortable for your workload? Full breakdown with what-if controls.",
+  // Every combination of inputs is a URL here; the /can-i-run answer pages are the indexable versions.
+  robots: { index: false, follow: true },
 };
 
 export default async function EvaluatePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {

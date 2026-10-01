@@ -35,6 +35,13 @@ const COLUMNS = [
   },
 ];
 
+const LEGAL_LINKS = [
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+];
+
 export function SiteFooter() {
   return (
     <footer className="mt-20 border-t border-border/60 bg-muted/30 sm:mt-28">
@@ -65,7 +72,16 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="mt-10 flex flex-col gap-2 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:justify-between">
-          <p>© {new Date().getFullYear()} Local AI Advisor · Never sponsored.</p>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+            <p>© {new Date().getFullYear()} Local AI Advisor · Never sponsored.</p>
+            <nav aria-label="Site information" className="flex flex-wrap gap-x-4 gap-y-1">
+              {LEGAL_LINKS.map((l) => (
+                <Link key={l.href} href={l.href} className="underline-offset-2 hover:text-foreground hover:underline">
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
           <p>
             Speeds are estimates calibrated on public benchmarks. <Link href="/methodology" className="underline-offset-2 hover:underline">See how</Link>.
           </p>

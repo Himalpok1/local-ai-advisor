@@ -7,6 +7,7 @@ import { hfSummary } from "@/lib/hf/summary";
 import { HfError } from "@/lib/hf/fetch";
 import { normalizeRepo } from "@/lib/hf/parse";
 import { POPULAR_HF_REPOS } from "@/lib/hf/popular";
+import { OG_BASE } from "@/lib/og";
 
 export const dynamic = "force-static";
 export const revalidate = 21600;
@@ -32,7 +33,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       title: `${parsed.model.name}: ${parsed.model.parameterCount}B — ${verdict}`,
       description: `Estimated ${verdict.toLowerCase()} for repository coding on a MacBook Pro M4 Pro 48GB. Native context, weight sizes and capability signals from Hugging Face.`,
       alternates: { canonical: `/hf/${repo}` },
-      openGraph: { images: [{ url: `/hf/${repo}/opengraph-image`, width: 1200, height: 630 }] },
+      openGraph: { type: "website", ...OG_BASE, url: `/hf/${repo}` },
     };
   } catch { return { title: repo, robots: { index: false }, alternates: { canonical: `/hf/${repo}` } }; }
 }

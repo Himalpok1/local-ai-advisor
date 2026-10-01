@@ -381,3 +381,9 @@ label {
 .blog-prose h3[id] {
   scroll-margin-top: 5rem;
 }
+/* Buttons placed inside prose keep their own look. */
+.blog-prose .not-prose a {
+  color: var(--primary-foreground);
+  text-decoration: none;
+  font-weight: 600;
+}

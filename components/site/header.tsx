@@ -18,7 +18,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-lg">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
         <Link href="/" className="group flex shrink-0 items-center gap-2.5 rounded-lg font-semibold tracking-tight text-foreground">
-          <Image src="/brand/logo-mark.svg" width={32} height={32} alt="" className="size-8 transition-transform group-hover:-rotate-6 group-hover:scale-105" />
+          <Image src="/brand/logo-mark.svg" width={32} height={32} alt="" loading="eager" className="size-8 transition-transform group-hover:-rotate-6 group-hover:scale-105" />
           <span className="whitespace-nowrap text-[15px] font-bold leading-none sm:text-base">Local AI Advisor</span>
         </Link>
 

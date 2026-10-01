@@ -5,6 +5,7 @@ import { decodeState } from "@/lib/share";
 export const metadata: Metadata = {
   title: "What hardware do I need?",
   description: "Pick a model, tool and workload; see which computers deliver a comfortable experience — grouped by your target, not by whether the model merely loads.",
+  alternates: { canonical: "/hardware-for-model" },
 };
 
 export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {

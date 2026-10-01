@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "Inference runtimes",
   description:
     "Ollama, llama.cpp, LM Studio, MLX-LM, vLLM and more: which platforms and GPU backends each supports, which APIs they expose, and how well they handle concurrent requests.",
+  alternates: { canonical: "/runtimes" },
 };
 
 const OSES: OS[] = ["macos", "linux", "windows"];

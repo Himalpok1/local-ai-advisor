@@ -7,7 +7,7 @@ import { POPULAR_HF_REPOS } from "@/lib/hf/popular";
 import { hardwareSlug } from "@/lib/slugs";
 
 const SITE = "https://iownchatgpt.com";
-const PAGES = ["", "/check", "/can-i-run", "/new-models", "/speed-test", "/community", "/hardware-for-model", "/stack", "/hugging-face", "/compare/models", "/compare/hardware", "/models", "/hardware", "/runtimes", "/tools", "/learn", "/methodology", "/blog"];
+const PAGES = ["", "/check", "/can-i-run", "/new-models", "/speed-test", "/community", "/hardware-for-model", "/stack", "/hugging-face", "/compare/models", "/compare/hardware", "/models", "/hardware", "/runtimes", "/tools", "/learn", "/methodology", "/blog", "/about", "/contact", "/privacy", "/terms"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const models = MODELS.filter((m) => !m.referenceOnly);

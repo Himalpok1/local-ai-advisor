@@ -8,6 +8,7 @@ import { QuantIdSchema } from "@/lib/schemas";
 export const metadata: Metadata = {
   title: "Compare models for my hardware",
   description: "Compare local AI models on your own machine for your own workload: memory, headroom, generation, prompt processing, context and comfort rating.",
+  alternates: { canonical: "/compare/models" },
 };
 
 export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {

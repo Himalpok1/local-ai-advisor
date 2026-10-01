@@ -1,4 +1,4 @@
-import { HARDWARE, MODELS, getModel, getTool } from "@/data";
+import { HARDWARE, MODELS, QUANTIZATIONS, getModel, getTool } from "@/data";
 import type { ComfortTarget, HardwareConfiguration, OS, QuantId, UseCaseId, WorkloadProfileInput } from "@/lib/schemas";
 import { COMFORT_RANK, type ComfortLevel, type ContextPoint, type Recommendation, type WhatIfSuggestion } from "@/lib/schemas/results";
 import { getUseCase } from "@/lib/workloads/profiles";
@@ -17,14 +17,30 @@ export function capabilityFor(rec: Recommendation): number {
   return effectiveCapability(rec.model, rec.quant.qualityLoss, getUseCase(rec.useCase));
 }
 
-/** Evaluate every quant of a model and keep the best one for this workload. */
+/**
+ * Is `a` a better pick than `b` for the same model? The comfort level decides first, then the overall
+ * rank. When nothing fits, the smallest file wins: it's the closest to fitting, so its memory figure is
+ * the honest one to quote.
+ */
+export function betterQuant(a: Recommendation, b: Recommendation): boolean {
+  const byLevel = COMFORT_RANK[a.level] - COMFORT_RANK[b.level];
+  if (byLevel !== 0) return byLevel > 0;
+  if (a.level === "does-not-fit" || a.level === "unsupported") return a.memory.inferencePeakGB < b.memory.inferencePeakGB;
+  return a.rankValue > b.rankValue || (a.rankValue === b.rankValue && a.quant.qualityLoss < b.quant.qualityLoss);
+}
+
+const usableLevel = (r: Recommendation) => COMFORT_RANK[r.level] >= COMFORT_RANK.acceptable;
+
+/**
+ * Evaluate every quant of a model and keep the best one for this workload. 4-bit is the quality floor
+ * (see /learn/quantization): a 3-bit file is only picked when no 4-bit-or-better version is usable.
+ */
 export function bestQuantFor(base: Omit<EvaluateInput, "quant">, quants = candidateQuants(base.modelId)): Recommendation {
-  let best: Recommendation | null = null;
-  for (const q of quants) {
-    const r = evaluate({ ...base, quant: q });
-    if (!best || r.rankValue > best.rankValue || (r.rankValue === best.rankValue && r.quant.qualityLoss < best.quant.qualityLoss)) best = r;
-  }
-  return best!;
+  const all = quants.map((q) => evaluate({ ...base, quant: q }));
+  const floor = QUANTIZATIONS.q4.qualityLoss;
+  const preferred = all.filter((r) => r.quant.qualityLoss <= floor && usableLevel(r));
+  const pool = preferred.length ? preferred : all;
+  return pool.reduce((best, r) => (betterQuant(r, best) ? r : best));
 }
 
 export interface ModelSearchResult {

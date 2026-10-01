@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { HARDWARE, MODELS } from "@/data";
 import {
   CHAT,
+  CHAT_APPS_CLOSED,
   FEATURED_HARDWARE_IDS,
   WORKLOADS,
   blocked,
@@ -14,6 +15,7 @@ import {
   hardwareGroup,
   hardwareHref,
   hardwareSlug,
+  memoryGap,
   memoryLine,
   modelBySlug,
   modelHref,
@@ -23,6 +25,7 @@ import {
 } from "@/lib/can-i-run";
 import { runCommands } from "@/lib/downloads";
 import { recommendHardware, recommendModels } from "@/lib/recommendations";
+import { COMFORT_RANK } from "@/lib/schemas/results";
 import { fmtCtx, fmtGB, fmtSec, fmtUSD } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
@@ -31,6 +34,7 @@ import { ComfortBadge, COMFORT_STYLE } from "@/components/advisor/comfort";
 import { RunCommands } from "@/components/advisor/run-commands";
 import { OpennessBadge } from "@/components/explore/openness-badge";
 import { Breadcrumbs, FaqJsonLd, Section, headroomOf, quantOf, speedOf } from "@/components/can-i-run/parts";
+import { DoesNotFit } from "@/components/can-i-run/doesnt-fit";
 
 type Props = { params: Promise<{ model: string; hardware: string }> };
 
@@ -53,9 +57,16 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const { model, hardware, results, answer } = await load(props);
   const chat = results[0].rec;
   const speed = speedOf(chat);
+  const gap = memoryGap(chat);
+  const description =
+    chat.level === "does-not-fit"
+      ? `No: ${model.name} needs about ${fmtGB(gap.neededGB)} but ${hardware.name} has about ${fmtGB(gap.availableGB)} free for AI. See smaller models that fit and the cheapest machines that run it.`
+      : blocked(chat.level)
+        ? `${answer.text}. See which models run well on ${hardware.name} and which machines support ${model.name}.`
+        : `${answer.text}. About ${speed} for chat at ${quantOf(chat)}. Rated for chat, coding and agents, with setup commands.`;
   return {
     title: `Can ${hardware.name} run ${model.name}?`,
-    description: `${answer.text}. ${speed !== "—" ? `About ${speed} for chat at ${quantOf(chat)}. ` : ""}Engine-rated for chat, coding and agentic workloads, with download commands for Ollama, llama.cpp and LM Studio.`,
+    description,
     alternates: { canonical: canIRunHref(model, hardware) },
   };
 }
@@ -72,6 +83,11 @@ export default async function Page(props: Props) {
   const others = recommendModels({ hardware, workload: CHAT.workload })
     .all.filter((r) => r.model.id !== model.id && usable(r.level))
     .slice(0, 6);
+  const closedApps = others.length
+    ? []
+    : recommendModels({ hardware, workload: CHAT_APPS_CLOSED.workload })
+        .all.filter((r) => r.model.id !== model.id && COMFORT_RANK[r.level] >= COMFORT_RANK.borderline)
+        .slice(0, 3);
   const cheaper = recommendHardware({ modelId: model.id, workload: CHAT.workload, target: "comfortable" })
     .meetsTarget.filter((r) => r.hardware.id !== hardware.id)
     .slice(0, 6);
@@ -114,56 +130,65 @@ export default async function Page(props: Props) {
         </div>
       </Card>
 
-      <Section title="How it rates for each workload" intro="Same model and machine, different jobs. Agents and long documents send far bigger prompts than chat, so they need much more speed and memory.">
-        <div className="overflow-x-auto rounded-xl border">
-          <table className="w-full min-w-[640px] text-sm">
-            <thead className="bg-muted/60 text-left text-xs text-muted-foreground">
-              <tr>
-                <th className="px-4 py-2.5 font-medium">Workload</th>
-                <th className="px-4 py-2.5 font-medium">Verdict</th>
-                <th className="px-4 py-2.5 font-medium">Quant</th>
-                <th className="px-4 py-2.5 font-medium">Generation</th>
-                <th className="px-4 py-2.5 font-medium">First reply</th>
-                <th className="px-4 py-2.5 font-medium">Context</th>
-                <th className="px-4 py-2.5 font-medium" />
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {results.map(({ preset, rec }) => (
-                <tr key={preset.key}>
-                  <td className="px-4 py-3 font-medium">
-                    {preset.label}
-                    <span className="block text-xs font-normal text-muted-foreground">with {rec.tool.name}</span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <ComfortBadge level={rec.level} size="sm" />
-                  </td>
-                  <td className="px-4 py-3 tabular-nums">{blocked(rec.level) ? "—" : quantOf(rec)}</td>
-                  <td className="px-4 py-3 tabular-nums">{speedOf(rec)}</td>
-                  <td className="px-4 py-3 tabular-nums">{!blocked(rec.level) && rec.performance ? fmtSec(rec.performance.coldPromptSec) : "—"}</td>
-                  <td className="px-4 py-3 tabular-nums">{blocked(rec.level) ? "—" : fmtCtx(rec.context.effective)}</td>
-                  <td className="px-4 py-3 text-right">
-                    <Link href={evaluateHref(rec, preset)} className="inline-flex items-center gap-1 text-primary hover:underline">
-                      Details <ArrowRight className="size-3.5" aria-hidden />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          {chat.performance?.basis === "measured"
-            ? "Speeds come from measured benchmarks for this chip."
-            : chat.performance?.basis === "calibrated"
-              ? "Speeds are estimates calibrated against measured benchmarks on similar hardware."
-              : "Speeds are bandwidth-based estimates; no direct benchmark exists for this pair."}{" "}
-          “First reply” is the time to read the workload’s opening prompt.{" "}
-          <Link href="/methodology" className="underline">
-            How we calculate
-          </Link>
+      {chat.level === "does-not-fit" && <DoesNotFit model={model} hardware={hardware} chat={chat} siblings={siblings} />}
+
+      {results.every((r) => blocked(r.rec.level)) ? (
+        <p className="text-sm text-muted-foreground">
+          The same applies to every workload we rate (chat, coding questions, coding in a repository, agentic coding and long documents): they all need at least as much memory as
+          chat.
         </p>
-      </Section>
+      ) : (
+        <Section title="How it rates for each workload" intro="Same model and machine, different jobs. Agents and long documents send far bigger prompts than chat, so they need much more speed and memory.">
+          <div className="overflow-x-auto rounded-xl border">
+            <table className="w-full min-w-[640px] text-sm">
+              <thead className="bg-muted/60 text-left text-xs text-muted-foreground">
+                <tr>
+                  <th className="px-4 py-2.5 font-medium">Workload</th>
+                  <th className="px-4 py-2.5 font-medium">Verdict</th>
+                  <th className="px-4 py-2.5 font-medium">Quant</th>
+                  <th className="px-4 py-2.5 font-medium">Generation</th>
+                  <th className="px-4 py-2.5 font-medium">First reply</th>
+                  <th className="px-4 py-2.5 font-medium">Context</th>
+                  <th className="px-4 py-2.5 font-medium" />
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {results.map(({ preset, rec }) => (
+                  <tr key={preset.key}>
+                    <td className="px-4 py-3 font-medium">
+                      {preset.label}
+                      <span className="block text-xs font-normal text-muted-foreground">with {rec.tool.name}</span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <ComfortBadge level={rec.level} size="sm" />
+                    </td>
+                    <td className="px-4 py-3 tabular-nums">{blocked(rec.level) ? "—" : quantOf(rec)}</td>
+                    <td className="px-4 py-3 tabular-nums">{speedOf(rec)}</td>
+                    <td className="px-4 py-3 tabular-nums">{!blocked(rec.level) && rec.performance ? fmtSec(rec.performance.coldPromptSec) : "—"}</td>
+                    <td className="px-4 py-3 tabular-nums">{blocked(rec.level) ? "—" : fmtCtx(rec.context.effective)}</td>
+                    <td className="px-4 py-3 text-right">
+                      <Link href={evaluateHref(rec, preset)} className="inline-flex items-center gap-1 text-primary hover:underline">
+                        Details <ArrowRight className="size-3.5" aria-hidden />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {chat.performance?.basis === "measured"
+              ? "Speeds come from measured benchmarks for this chip."
+              : chat.performance?.basis === "calibrated"
+                ? "Speeds are estimates calibrated against measured benchmarks on similar hardware."
+                : "Speeds are bandwidth-based estimates; no direct benchmark exists for this pair."}{" "}
+            “First reply” is the time to read the workload’s opening prompt.{" "}
+            <Link href="/methodology" className="underline">
+              How we calculate
+            </Link>
+          </p>
+        </Section>
+      )}
 
       {commands.length > 0 && (
         <Section
@@ -174,7 +199,7 @@ export default async function Page(props: Props) {
         </Section>
       )}
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <Section title={`Other models for ${hardware.name}`} intro="The best-rated models for chat on this machine.">
           {others.length ? (
             <ul className="divide-y rounded-xl border">
@@ -191,7 +216,24 @@ export default async function Page(props: Props) {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-muted-foreground">No catalog model is usable for chat on this machine.</p>
+            <p className="text-sm text-muted-foreground">
+              Nothing runs well next to other apps on this machine.
+              {closedApps.length > 0 && (
+                <>
+                  {" "}
+                  With everything else closed, try{" "}
+                  {closedApps.map((r, i) => (
+                    <span key={r.model.id}>
+                      {i > 0 && (i === closedApps.length - 1 ? " or " : ", ")}
+                      <Link href={canIRunHref(r.model, hardware)} className="text-primary hover:underline">
+                        {r.model.name}
+                      </Link>
+                    </span>
+                  ))}
+                  ; expect it to feel tight.
+                </>
+              )}
+            </p>
           )}
           <Link href={hardwareHref(hardware)} className={buttonClass("outline", "sm")}>
             Everything {hardware.name} can run <ArrowRight className="size-3.5" aria-hidden />

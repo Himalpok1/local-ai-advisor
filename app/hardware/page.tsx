@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Hardware catalog",
   description:
     "Compare Macs, GPUs and AI mini PCs by the specs that matter for local AI: usable memory, memory bandwidth, GPU compute, OS support and whether verified benchmarks exist.",
+  alternates: { canonical: "/hardware" },
 };
 
 export default function HardwarePage() {

@@ -6,6 +6,7 @@ import { HARDWARE_MAP } from "@/data";
 export const metadata: Metadata = {
   title: "Compare hardware for my workload",
   description: "See how different Macs, PCs and AI boxes handle the same model and workload — with tradeoffs, not an opaque winner.",
+  alternates: { canonical: "/compare/hardware" },
 };
 
 export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {

@@ -4,6 +4,7 @@ import type { Recommendation } from "@/lib/schemas/results";
 import { fmtGB, fmtTps } from "@/lib/format";
 import { blocked } from "@/lib/can-i-run";
 import { cn } from "@/lib/utils";
+import { JsonLd, breadcrumbList } from "@/components/seo/json-ld";
 
 export function speedOf(rec: Recommendation): string {
   return !blocked(rec.level) && rec.performance ? fmtTps(rec.performance.perStreamGenerationTps, rec.performance.basis) : "—";
@@ -20,6 +21,7 @@ export function headroomOf(rec: Recommendation): string {
 export function Breadcrumbs({ items }: { items: { href?: string; label: string }[] }) {
   return (
     <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
+      <JsonLd data={breadcrumbList(items)} />
       <ol className="flex flex-wrap items-center gap-1">
         {items.map((it, i) => (
           <li key={i} className="flex items-center gap-1">
@@ -52,12 +54,12 @@ export function Section({ title, intro, children, className }: { title: string; 
   );
 }
 
-/** Structured data so search engines can show the answer directly. */
+/** FAQPage structured data for the page's one question. Google no longer shows FAQ rich results, but the markup stays valid and matches visible text. */
 export function FaqJsonLd({ items }: { items: { q: string; a: string }[] }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: items.map((i) => ({ "@type": "Question", name: i.q, acceptedAnswer: { "@type": "Answer", text: i.a } })),
   };
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} />;
+  return <JsonLd data={data} />;
 }

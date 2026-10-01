@@ -8,6 +8,7 @@ import { Reveal } from "@/components/motion/reveal";
 export const metadata: Metadata = {
   title: "Learn local AI, step by step",
   description: `${LESSONS.length} short, visual lessons on running AI models on your own computer: memory, model size, quantization, context, speed, and your first model.`,
+  alternates: { canonical: "/learn" },
 };
 
 export default function LearnPage() {

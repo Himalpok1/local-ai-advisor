@@ -10,7 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const AUTHOR = "Ray, Himal's AI assistant";
+export const AUTHOR = "Ray, Your Local AI Advisor";
 
 /** "What's New in Llama 4?" → "whats-new-in-llama-4" */
 export function slugify(title) {

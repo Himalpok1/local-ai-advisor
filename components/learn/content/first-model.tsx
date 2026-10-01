@@ -39,7 +39,7 @@ export default function Lesson() {
         </div>
         <p className="text-base text-muted-foreground">
           Not sure? A 9B model like <strong className="text-foreground">Qwen3.5 9B</strong> (about 6 GB) is a great first try on most computers with 16 GB of
-          memory or more. On 8 GB, start with a 4B model.
+          memory or more. On 8 GB, close your other apps first and try a 3–4B model such as Llama 3.2 3B: it works, but it will feel tight.
         </p>
       </Step>
 

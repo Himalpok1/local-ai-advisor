@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { HARDWARE } from "@/data";
-import { AGENT, CHAT, blocked, canIRunHref, catalogModels, hardwareBySlug, hardwareHref, hardwareSlug, memoryLine, rate, usable } from "@/lib/can-i-run";
+import { AGENT, CHAT, CHAT_APPS_CLOSED, blocked, canIRunHref, catalogModels, hardwareBySlug, hardwareHref, hardwareSlug, memoryLine, rate, usable } from "@/lib/can-i-run";
 import { licenseOpenness } from "@/lib/hf/licenses";
 import { COMFORT_LABEL, COMFORT_RANK, type ComfortLevel } from "@/lib/schemas/results";
 import { fmtUSD } from "@/lib/format";
@@ -50,6 +50,14 @@ export default async function Page(props: Props) {
   const good = rows.filter((r) => usable(r.chat.level));
   const agentGood = rows.filter((r) => usable(r.agent.level)).sort((a, b) => b.agent.rankValue - a.agent.rankValue);
   const openGood = good.filter((r) => licenseOpenness(r.model.license) === "open-source");
+  // On small machines nothing may fit next to other apps; show what fits with everything else closed.
+  const closedApps = good.length
+    ? []
+    : rows
+        .map((r) => rate(r.model, hardware, CHAT_APPS_CLOSED))
+        .filter((r) => COMFORT_RANK[r.level] >= COMFORT_RANK.borderline)
+        .sort((a, b) => COMFORT_RANK[b.level] - COMFORT_RANK[a.level] || b.rankValue - a.rankValue)
+        .slice(0, 6);
 
   return (
     <div className="mx-auto max-w-6xl space-y-10 px-4 py-10 sm:px-6">
@@ -99,6 +107,24 @@ export default async function Page(props: Props) {
           </Card>
         ))}
       </div>
+
+      {!good.length && closedApps.length > 0 && (
+        <Card className="border-primary/30 bg-primary/5 p-5 sm:p-6">
+          <p className="font-semibold">Close your other apps and these will run</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            The ratings below assume a browser with a few tabs is open next to your chat app. With nothing else running, {hardware.name} has enough room for:
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {closedApps.map((r) => (
+              <li key={r.model.id}>
+                <Link href={canIRunHref(r.model, hardware)} className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-sm font-medium hover:border-primary/50">
+                  {r.model.name} <span className="text-muted-foreground">{quantOf(r)}</span> <ComfortBadge level={r.level} size="sm" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
 
       {GROUPS.map((g) => {
         const items = rows.filter((r) => g.levels.includes(r.chat.level));

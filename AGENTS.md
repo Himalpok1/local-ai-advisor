@@ -52,7 +52,7 @@ Every morning Ray researches and updates the site's factual data before the morn
 | `date` | `"YYYY-MM-DD"` | A real date, identical to the date in the filename. |
 | `excerpt` | quoted string | 1–160 characters. One sentence used on `/blog`, in RSS, search results and social cards. |
 | `tags` | `["a", "b"]` | 1–6 unique tags, lowercase-kebab-case (e.g. `local-llm`, `new-models`, `hardware`, `apps`, `beginners`). Reuse existing tags before inventing new ones. |
-| `author` | quoted string | Always `"Ray, Himal's AI assistant"` (rendered as the byline "By Ray, Himal's AI assistant"). |
+| `author` | quoted string | Always `"Ray, Your Local AI Advisor"` (rendered as the byline "By Ray, Your Local AI Advisor"). |
 
 Invalid frontmatter fails `npm test` and `npm run build` with the file and field named in the error.
 
@@ -69,7 +69,7 @@ Invalid frontmatter fails `npm test` and `npm run build` with the file and field
 - **Honest about local AI.** Say what it can and can't do: model quality vs. big cloud models, speed, memory needed, setup effort. "Runs on a laptop" means comfortably usable, not "technically loads".
 - **No hype.** No "game-changer", "revolutionary", "insane". No unverified benchmark claims; no rumors presented as fact.
 - **Every factual claim is cited** in the final `## Sources` section as a list of links (`- [Title](https://…), publisher`). Prefer primary sources: model cards, official release posts, docs, papers. Use this site's own tools (`/check`, `/can-i-run`, `/hardware-for-model`) for "will it run" answers rather than guessing.
-- **Byline** is always "By Ray, Himal's AI assistant" (set via `author`).
+- **Byline** is always "By Ray, Your Local AI Advisor" (set via `author`).
 - **Length:** 400–1,200 words. One clear takeaway per post.
 
 ## Model data
@@ -84,3 +84,14 @@ Invalid frontmatter fails `npm test` and `npm run build` with the file and field
 
 - `HF_TOKEN` is server-only. In production it is set in Hostinger hPanel environment variables; in GitHub Actions it is the `HF_TOKEN` repository secret. Never expose it to client code (no `NEXT_PUBLIC_` prefix), logs or posts.
 - Never commit secrets or `.env*` files (they are gitignored), never paste tokens into posts, issues or commit messages, and never print them in command output.
+
+## SEO checks (claude-seo skill)
+
+The [claude-seo](https://github.com/AgriciDaniel/claude-seo) skills (v2.4.1) are installed in `~/.claude/skills/seo*` on the dev machine. Their Python tools need `CLAUDE_SEO_PYTHON` (set in `~/.claude/settings.json`); `"$HOME/.claude/skills/seo/scripts/claude-seo" doctor` should print `Runtime: ready`.
+
+- **Every new post, after it is live:** run `/seo-page https://iownchatgpt.com/blog/<slug>`. Fix anything it flags in the post (title ≤ 60 characters reads best in results, excerpt ≤ 160, sources cited, internal links to `/check` or `/can-i-run`). Never add keyword stuffing or invented facts to satisfy a checker.
+- **Draft polish (optional):** `/seo-content` on the draft flags AI-typical phrasing and readability issues. The blog content standards above still win.
+- **New page types or structured data:** `/seo-schema <url>` to validate JSON-LD. Shared helpers are in `components/seo/json-ld.tsx`.
+- **Monthly:** run `/seo-audit https://iownchatgpt.com` and save the summary as `research/seo-audit-YYYY-MM-DD.md`, with findings in `research/seo-audit-YYYY-MM-DD/`. Compare scores with the previous report (`research/seo-audit-2026-10-01.md` is the baseline). Turn "Still open" items into GitHub issues; fix code-only items, and leave hosting, Search Console, AdSense and policy decisions to Himal.
+- Topic ideas from the audit's search-intent gaps (`seo-audit-*/sxo.md`) go into the Ideas backlog in `research/blog-calendar.md`.
+- The same rules apply as everywhere else: never edit curated data files to chase a score, and engine changes need tests in `tests/`.

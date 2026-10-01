@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { MobileTabBar } from "@/components/site/mobile-tab-bar";
 import { Providers } from "@/components/site/providers";
+import { OG_BASE } from "@/lib/og";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"] });
@@ -20,6 +21,9 @@ export const metadata: Metadata = {
   description:
     "Choose your hardware, tools and workload. Find which local AI models will be comfortable to use — not just which ones technically fit.",
   icons: { icon: "/brand/logo-mark-128.png", apple: "/brand/logo-mark-512.png" },
+  // Pages inherit these; Next.js fills og:title/og:description from each page's own title and description.
+  openGraph: { type: "website", ...OG_BASE },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {

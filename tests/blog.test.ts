@@ -14,7 +14,7 @@ const valid = {
   date: "2026-10-01",
   excerpt: "A small model that runs on a 16 GB laptop.",
   tags: ["local-llm", "new-models"],
-  author: "Ray, Himal's AI assistant",
+  author: "Ray, Your Local AI Advisor",
 };
 
 const source = (fm: Record<string, unknown>, body = "Hello **world**.\n\n## Sources\n\n- [A](https://example.com)\n") =>
@@ -128,7 +128,7 @@ describe("new-post scaffolder", () => {
     const finished = contents.replaceAll(DRAFT_MARKER, "Done");
     const p = parsePost(filename, finished);
     expect(p.title).toBe("Gemma 4 on a MacBook Air");
-    expect(p.author).toBe("Ray, Himal's AI assistant");
+    expect(p.author).toBe("Ray, Your Local AI Advisor");
     expect(p.content.trimEnd()).toMatch(/## Sources\n\n- .+$/);
   });
 
@@ -184,5 +184,17 @@ describe("published content", () => {
     expect(urls.has(`${SITE_URL}/blog`)).toBe(true);
     for (const p of posts) expect(urls.has(`${SITE_URL}/blog/${p.slug}`)).toBe(true);
     for (const existing of ["", "/check", "/learn", "/methodology", "/new-models"]) expect(urls.has(`${SITE_URL}${existing}`)).toBe(true);
+  });
+});
+
+describe("llms.txt", () => {
+  it("is Markdown with an H1, links to the tools, lessons and latest posts", async () => {
+    const { buildLlmsTxt } = await import("@/lib/llms-txt");
+    const txt = buildLlmsTxt();
+    expect(txt.startsWith("# Local AI Advisor\n")).toBe(true);
+    expect(txt).toContain(`](${SITE_URL}/check)`);
+    expect(txt).toContain(`](${SITE_URL}/learn/`);
+    for (const p of getAllPosts().slice(0, 10)) expect(txt).toContain(`](${SITE_URL}/blog/${p.slug})`);
+    expect(txt).not.toMatch(/\]\(\//);
   });
 });

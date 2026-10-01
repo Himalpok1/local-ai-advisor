@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 import { ArrowLeft, ArrowRight, Check, Clock, PartyPopper, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { LESSONS, PARTS, TOTAL_MINUTES, lessonForAnchor, type Lesson } from "./lessons";
+import { LESSONS, PARTS, TOTAL_MINUTES, lessonForAnchor, lessonIndex, type Lesson } from "./lessons";
 import { useLearnProgress } from "./progress";
 
 /** Thin bar under the header that fills as you read the lesson. */
@@ -195,7 +195,7 @@ export function LessonFinish({ lesson, next, prev }: { lesson: Lesson; next?: Le
       <div className="rounded-3xl border border-border/70 bg-card p-5 shadow-sm sm:p-6">
         {next ? (
           <>
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Up next · lesson {LESSONS.indexOf(next) + 1}</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Up next · lesson {lessonIndex(next.slug) + 1}</p>
             <p className="mt-1 text-xl font-bold tracking-tight">{next.title}</p>
             <p className="mt-1 text-sm text-muted-foreground">{next.summary}</p>
             <button
