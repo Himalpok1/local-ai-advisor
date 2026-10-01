@@ -86,7 +86,7 @@ export function CheckFlow({ initial, startWithResults }: { initial: AppState; st
 
           <Card className="mt-6 p-5 sm:p-6">
             {visibleSteps[step].id === "hardware" && (
-              <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} />
+              <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} workload={state.workload} applyDefaultRig={!initial.hardwareId} />
             )}
             {visibleSteps[step].id === "usecase" && <UseCasePicker value={state.workload} onChange={setWorkload} />}
             {visibleSteps[step].id === "tool" && (
@@ -171,7 +171,7 @@ function Results({
           <EditChip label="Workload" value={workloadLabel(state.workload)} onClick={() => edit("workload")} />
           <EditChip label="Tool" value={tool.name} onClick={() => edit("tool")} />
           <EditChip label="Priority" value={state.workload.priority ?? "balanced"} onClick={() => edit("priority")} />
-          <ShareButton />
+          <ShareButton saveLabel={hardware ? `What ${hardware.name} runs for ${workloadLabel(state.workload)}` : undefined} />
         </div>
         <p className="mt-3 text-sm text-muted-foreground">
           {hardwareSpecLine(hardware)} · {res.all.length} models evaluated · {usable} usable for this workload ·{" "}

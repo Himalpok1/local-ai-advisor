@@ -2,11 +2,13 @@
 import { useMemo, useState } from "react";
 import { Apple, Cpu, Laptop, Monitor, Wrench } from "lucide-react";
 import { HARDWARE, buildCustomHardware, type CustomHardwareInput } from "@/data";
-import type { HardwareConfiguration, OS } from "@/lib/schemas";
+import type { HardwareConfiguration, OS, WorkloadProfileInput } from "@/lib/schemas";
 import { osLabel } from "@/lib/compatibility";
 import { cn } from "@/lib/utils";
 import { Field, NumberInput, Segmented, Select, Switch } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
+import { MyRigsBar } from "@/components/me/my-rigs-bar";
+import type { DecodedRig } from "@/lib/me/shared";
 import { DetectHardware } from "./detect-hardware";
 
 export interface HardwareValue {
@@ -37,7 +39,21 @@ export function hardwareSpecLine(h: HardwareConfiguration): string {
   return `${h.systemRamGB} GB RAM · ${h.systemRamBandwidthGBs} GB/s · CPU only`;
 }
 
-export function HardwarePicker({ value, onChange }: { value: HardwareValue; onChange: (v: HardwareValue) => void }) {
+/**
+ * `workload` is saved along with the hardware when the user saves it as a rig.
+ * `applyDefaultRig` selects the signed-in user's default rig once it loads.
+ */
+export function HardwarePicker({
+  value,
+  onChange,
+  workload,
+  applyDefaultRig,
+}: {
+  value: HardwareValue;
+  onChange: (v: HardwareValue) => void;
+  workload?: WorkloadProfileInput;
+  applyDefaultRig?: boolean;
+}) {
   const current = value.hardwareId && value.hardwareId !== "custom" ? HARDWARE.find((h) => h.id === value.hardwareId) : undefined;
   const initialTab: Tab = value.hardwareId === "custom" ? "custom" : current ? (current.vendor === "custom" ? "custom" : (current.vendor as Tab)) : "apple";
   const [tab, setTab] = useState<Tab>(initialTab);
@@ -77,8 +93,23 @@ export function HardwarePicker({ value, onChange }: { value: HardwareValue; onCh
     pick(h);
   };
 
+  const pickRig = ({ state, hardware }: DecodedRig) => {
+    if (state.hardwareId === "custom") {
+      setTab("custom");
+      onChange({ hardwareId: "custom", custom: state.custom, os: state.os ?? state.custom?.os });
+      return;
+    }
+    setTab(hardware.vendor === "custom" ? "custom" : (hardware.vendor as Tab));
+    if (hardware.vendor === "apple") {
+      setDevice(hardware.device);
+      setChip(hardware.chipKey + hardware.year);
+    }
+    onChange({ hardwareId: hardware.id, os: state.os && hardware.os.includes(state.os) ? state.os : hardware.os[0] });
+  };
+
   return (
     <div className="space-y-5">
+      <MyRigsBar value={value} workload={workload} onPick={pickRig} applyDefault={applyDefaultRig} />
       <DetectHardware onPick={detected} selectedId={current?.id} />
       <div className="flex flex-wrap gap-2" role="tablist" aria-label="Hardware vendor">
         {TABS.map((t) => (

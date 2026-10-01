@@ -214,7 +214,7 @@ export function matchBenchmarks(c: PerfContext, benchmarks: Benchmark[], models:
   };
 }
 
-function engineFamily(runtimeId: string): string {
+export function engineFamily(runtimeId: string): string {
   if (["llama.cpp", "ollama", "lm-studio", "jan", "localai", "lemonade", "koboldcpp"].includes(runtimeId)) return "llama.cpp";
   if (runtimeId.startsWith("mlx")) return "mlx";
   return runtimeId;

@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { LogIn, LogOut } from "lucide-react";
+import { Bell, Gauge, HardDrive, LogIn, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function Avatar({ name, image, className }: { name?: string | null; image?: string | null; className?: string }) {
@@ -21,6 +22,7 @@ export function UserMenu({ className }: { className?: string }) {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const unread = useUnreadAlerts(session?.user?.id);
 
   useEffect(() => {
     if (!open) return;
@@ -62,11 +64,16 @@ export function UserMenu({ className }: { className?: string }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        aria-label="Account menu"
+        aria-label={unread ? `Account menu, ${unread} new model${unread === 1 ? "" : "s"} for your rigs` : "Account menu"}
         aria-expanded={open}
-        className="flex size-9 items-center justify-center rounded-full ring-2 ring-transparent transition hover:ring-border cursor-pointer"
+        className="relative flex size-9 items-center justify-center rounded-full ring-2 ring-transparent transition hover:ring-border cursor-pointer"
       >
         <Avatar name={name} image={image} className="size-8 text-sm" />
+        {unread > 0 && (
+          <span className="absolute -right-1 -top-1 grid min-w-4.5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold leading-4.5 text-primary-foreground ring-2 ring-background">
+            {unread > 9 ? "9+" : unread}
+          </span>
+        )}
       </button>
       {open && (
         <div className="absolute right-0 top-11 w-60 overflow-hidden rounded-xl border border-border/70 bg-card shadow-lg">
@@ -77,6 +84,18 @@ export function UserMenu({ className }: { className?: string }) {
               <p className="truncate text-xs text-muted-foreground">{email}</p>
             </div>
           </div>
+          <nav className="border-b border-border/60 py-1" aria-label="Account">
+            <MenuLink href="/me" icon={<HardDrive className="size-4" />} onClick={() => setOpen(false)}>
+              My rigs &amp; saved
+            </MenuLink>
+            <MenuLink href="/me#alerts" icon={<Bell className="size-4" />} onClick={() => setOpen(false)}>
+              New models for my rigs
+              {unread > 0 && <span className="ml-auto rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-foreground">{unread}</span>}
+            </MenuLink>
+            <MenuLink href="/community/submit" icon={<Gauge className="size-4" />} onClick={() => setOpen(false)}>
+              Report a speed
+            </MenuLink>
+          </nav>
           <button
             type="button"
             onClick={() => signOut()}
@@ -89,4 +108,30 @@ export function UserMenu({ className }: { className?: string }) {
       )}
     </div>
   );
+}
+
+function MenuLink({ href, icon, onClick, children }: { href: string; icon: React.ReactNode; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <Link href={href} onClick={onClick} className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground transition hover:bg-muted/60 hover:text-foreground">
+      {icon}
+      {children}
+    </Link>
+  );
+}
+
+/** Unread new-model alerts for the signed-in user's rigs (rating runs on the server). */
+function useUnreadAlerts(userId: string | undefined): number {
+  const [state, setState] = useState<{ userId?: string; unread: number }>({ unread: 0 });
+  useEffect(() => {
+    if (!userId) return;
+    let live = true;
+    fetch("/api/me/alerts", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : { unread: 0 }))
+      .then((d: { unread: number }) => live && setState({ userId, unread: d.unread }))
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, [userId]);
+  return state.userId === userId ? state.unread : 0;
 }

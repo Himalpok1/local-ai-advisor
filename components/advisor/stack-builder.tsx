@@ -72,7 +72,7 @@ export function StackBuilder({ initial }: { initial: AppState }) {
               <CardTitle className="text-base">Hardware</CardTitle>
             </CardHeader>
             <CardContent>
-              <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} />
+              <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} workload={state.workload} />
             </CardContent>
           </Card>
           <Card>
@@ -134,7 +134,7 @@ export function StackBuilder({ initial }: { initial: AppState }) {
                 <CardContent className="pt-5">
                   <StackDiagram layers={stackFor(rec)} order="bottom-up" />
                   <div className="mt-4 flex flex-wrap gap-2">
-                    <ShareButton />
+                    <ShareButton saveLabel={`Stack: ${rec.model.name} on ${rec.hardware.name}`} />
                     <Link href={recHref(rec, state.workload, state.custom, !!state.runtimeId)} className="inline-flex h-8 items-center gap-1.5 rounded-lg border bg-card px-3 text-sm font-medium hover:bg-muted">
                       Full analysis & what-if <ArrowRight className="size-4" />
                     </Link>

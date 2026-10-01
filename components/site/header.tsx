@@ -18,6 +18,7 @@ import {
   HelpCircle,
   Gauge,
   Rss,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
@@ -36,6 +37,7 @@ const NAV = [
 /** Extra tools listed in the mobile drawer (the desktop bar has no room). */
 const MORE = [
   { href: "/speed-test", label: "Browser Speed Test", icon: Gauge },
+  { href: "/community", label: "Community Speeds", icon: Users },
   { href: "/hardware-for-model", label: "Find Hardware", icon: Cpu },
   { href: "/stack", label: "Build Stack", icon: Layers },
 ];

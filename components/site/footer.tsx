@@ -50,6 +50,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link className="text-muted-foreground hover:text-foreground transition" href="/community">
+                  Community Speeds
+                </Link>
+              </li>
+              <li>
                 <Link className="text-muted-foreground hover:text-foreground transition" href="/new-models">
                   New Open Models
                 </Link>

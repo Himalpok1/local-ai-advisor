@@ -238,7 +238,7 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
                 <CardTitle className="text-base">Your hardware & workload</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} />
+                <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} workload={state.workload} />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Use case">
                     <Select ariaLabel="Use case" value={state.workload.useCase} onChange={(u) => setWorkload(defaultsForUseCase(u, state.workload))} options={USE_CASE_LIST.map((u) => ({ value: u.id, label: u.label, group: u.group }))} />

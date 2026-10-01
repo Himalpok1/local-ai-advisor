@@ -77,12 +77,12 @@ export function CompareModels({ initial, initialModels }: { initial: AppState; i
           <Field label="Context" className="md:col-span-2">
             <Segmented ariaLabel="Context" size="sm" value={state.workload.desiredContextWindow ?? 0} onChange={(c) => setWorkload({ desiredContextWindow: c || undefined })} options={[{ value: 0, label: "Auto" }, ...CONTEXT_STEPS.filter((c) => c >= 8192).map((c) => ({ value: c, label: fmtCtx(c) }))]} />
           </Field>
-          <div className="flex items-end justify-end md:col-span-2">
-            <ShareButton />
+          <div className="flex flex-wrap items-end justify-end gap-2 md:col-span-2">
+            <ShareButton saveLabel={`Model comparison on ${hardware.name}`} />
           </div>
           {editHw && (
             <div className="rounded-xl border p-4 md:col-span-2 lg:col-span-4">
-              <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} />
+              <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} workload={state.workload} />
               <Button className="mt-4" size="sm" onClick={() => setEditHw(false)}>
                 Done
               </Button>

@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, RotateCcw, SlidersHorizontal, Sparkles, X } from "lucide-react";
-import { selectableModels, modelGroup, QUANTIZATIONS, RUNTIMES, TOOLS, getModel, getTool } from "@/data";
+import { selectableModels, modelGroup, BENCHMARKS, QUANTIZATIONS, RUNTIMES, TOOLS, getModel, getTool } from "@/data";
 import type { HardwareConfiguration, QuantId, WorkloadProfileInput } from "@/lib/schemas";
 import { COMFORT_LABEL, COMFORT_RANK, type Recommendation } from "@/lib/schemas/results";
 import { contextSweep, describeChange, evaluate, rankRuntimes, stackFor, fitAcrossUseCases, whatIf, type EvaluateInput } from "@/lib/recommendations";
@@ -29,6 +29,7 @@ import { ShareButton } from "./share-button";
 import { HardwarePicker, hardwareSpecLine } from "./hardware-picker";
 import { workloadLabel } from "./workload-form";
 import { quantName } from "./recommendation-card";
+import { CommunitySpeedsCard, useCommunitySpeeds } from "@/components/community/community-speeds";
 
 const MAIN_GAUGES = ["memory", "generation", "prefill", "context", "tool", "suitability"] as const;
 const EXTRA_GAUGES = ["runtime", "concurrency", "stability"] as const;
@@ -41,9 +42,12 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
   const hardware = resolveHardware(state) as HardwareConfiguration;
   const model = getModel(state.modelId!);
   const quant: QuantId = model.supportedQuantizations.includes(state.quant!) ? state.quant! : model.supportedQuantizations.includes("q4") ? "q4" : model.supportedQuantizations[0];
+  const community = useCommunitySpeeds(state.hardwareId);
+  // Setups that enough people measured join the verified benchmarks (curated rows still win direct matches).
+  const benchmarks = useMemo(() => (community.benchmarks.length ? [...BENCHMARKS, ...community.benchmarks] : undefined), [community.benchmarks]);
   const input: EvaluateInput = useMemo(
-    () => ({ hardware, modelId: model.id, quant, runtimeId: state.runtimeId, os: state.os, workload: state.workload }),
-    [hardware, model.id, quant, state.runtimeId, state.os, state.workload],
+    () => ({ hardware, modelId: model.id, quant, runtimeId: state.runtimeId, os: state.os, workload: state.workload, benchmarks }),
+    [hardware, model.id, quant, state.runtimeId, state.os, state.workload, benchmarks],
   );
   const rec = useMemo(() => evaluate(input), [input]);
   const suggestions = useMemo(() => whatIf(input, rec), [input, rec]);
@@ -101,7 +105,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
           <Tier ok={rec.tiers.canRunComfortably} label={`Comfortable for ${USE_CASES[state.workload.useCase].phrase}`} hint="The rating that matters" strong />
         </div>
         <div className="mt-5 flex flex-wrap gap-2">
-          <ShareButton />
+          <ShareButton saveLabel={`${model.name} on ${hardware.name}`} />
           <Link href={`/stack?${encodeState({ ...state, quant })}`} className="inline-flex h-8 items-center gap-1.5 rounded-lg border bg-card px-3 text-sm font-medium hover:bg-muted">
             View as stack <ArrowRight className="size-4" />
           </Link>
@@ -218,6 +222,15 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
                 </p>
               </CardContent>
             </Card>
+          )}
+
+          {state.hardwareId !== "custom" && !model.id.startsWith("hf:") && rec.tiers.canLoad && (
+            <CommunitySpeedsCard
+              stats={community.stats}
+              modelId={model.id}
+              chipName={hardware.name}
+              reportHref={`/community/submit?${encodeState({ hardwareId: state.hardwareId, os, modelId: model.id, quant, runtimeId: rec.runtime.id, workload: state.workload })}`}
+            />
           )}
 
           <Card>
@@ -379,7 +392,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
                 <X className="size-5" />
               </button>
             </div>
-            <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => update({ hardwareId: v.hardwareId, custom: v.custom, os: v.os }, undefined, "Hardware changed")} />
+            <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => update({ hardwareId: v.hardwareId, custom: v.custom, os: v.os }, undefined, "Hardware changed")} workload={state.workload} />
             <div className="mt-6 flex justify-end">
               <Button onClick={() => setEditHardware(false)}>Done</Button>
             </div>

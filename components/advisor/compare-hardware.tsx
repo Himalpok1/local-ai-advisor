@@ -114,8 +114,8 @@ export function CompareHardware({ initial, initialHardware }: { initial: AppStat
               options={[{ value: "", label: "Choose hardware…", disabled: true }, ...HARDWARE.filter((h) => !hwIds.includes(h.id)).map((h) => ({ value: h.id, label: h.name, group: h.device }))]}
             />
           </Field>
-          <div className="flex items-end justify-end">
-            <ShareButton />
+          <div className="flex flex-wrap items-end justify-end gap-2">
+            <ShareButton saveLabel={`Hardware comparison for ${model.name}`} />
           </div>
         </CardContent>
       </Card>

@@ -153,7 +153,9 @@ export function HardwareSearch({ initial }: { initial: AppState }) {
                 {res.overBudget ? ` · ${res.overBudget} hidden by budget` : ""}
               </p>
             </div>
-            <ShareButton />
+            <div className="flex flex-wrap gap-2">
+              <ShareButton saveLabel={`Hardware for ${model.name}`} />
+            </div>
           </div>
           <Group title={`Meets your ${target === "usable" ? "minimum" : COMFORT_LABEL[TARGET_LEVEL[target]].toLowerCase()} target`} description="Cheapest first." recs={res.meetsTarget} workload={state.workload} empty="No machine in the database meets this target. Try a smaller model, shorter context or a lighter workload." highlight />
           {target !== "usable" && <Group title="Meets the acceptable target" description="Usable, with noticeable compromises for this workload." recs={res.meetsAcceptable} workload={state.workload} />}
