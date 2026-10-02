@@ -35,9 +35,10 @@ Every morning Ray researches and updates the site's factual data before the morn
 1. Check `research/blog-calendar.md`. Pick a topic from the Ideas backlog (highest priority first) or a fresh news item that is **not** already in the Published table. Never repeat a topic or slug.
 2. Scaffold: `npm run new-post -- "Post Title"` (add `--date YYYY-MM-DD` to set a date other than today). It prints the created path, e.g. `content/blog/2026-10-01-post-title.mdx`.
 3. Write the post. Replace **every** `TODO(ray)` marker; the build and tests refuse any post that still contains one. Keep the `## Sources` section last.
-4. Preview with `npm run dev` at http://localhost:3000/blog/<slug> (check desktop and a narrow mobile width).
-5. Move the topic from Ideas backlog to Published in `research/blog-calendar.md` (date | slug | title), and add new ideas you came across.
-6. Run the four checks, commit the post and calendar together, push to `main`, verify live.
+4. Add visuals — required on every post (Himal's rule since 2026-10-02, no text-only posts). Generate one wide 16:9 hero illustration for the topic (clean flat-illustration style, no text or logos inside the image) plus 1–2 inline figures: a real chart drawn with matplotlib from numbers already cited in the post when the post compares numbers (never invent data), otherwise a simple explainer diagram with minimal large text (AI models garble small text). Save as WebP, max 1600px wide, each under 500KB, in `public/blog-images/` named `<slug>-hero.webp`, `<slug>-fig1.webp`, etc., referenced as `/blog-images/<file>` with descriptive alt text. Place the hero after the intro paragraph and each figure right after the section it illustrates. If a visual comes out unusable, regenerate once; if generation is unavailable, publish text-only and note it in the report.
+5. Preview with `npm run dev` at http://localhost:3000/blog/<slug> (check desktop and a narrow mobile width).
+6. Move the topic from Ideas backlog to Published in `research/blog-calendar.md` (date | slug | title), and add new ideas you came across.
+7. Run the four checks, commit the post, images and calendar together, push to `main`, verify live (post URL, `/blog`, and the hero image URL all return 200).
 
 ### Files and naming
 
