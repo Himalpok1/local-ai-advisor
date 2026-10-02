@@ -6,6 +6,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 | date | slug | title |
 | --- | --- | --- |
+| 2026-10-02 | ollama-035-decision-models | Ollama 0.35 can now make decisions, not just chat |
 | 2026-10-01 | ai2-olmo-core-3-moe-explained | Ai2's Olmo-core 3: Why Bigger MoE Models Can Still Run Fast |
 | 2026-10-01 | welcome-to-the-local-ai-advisor-blog | Welcome to the Local AI Advisor blog |
 
@@ -27,3 +28,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Speculative decoding: faster answers without new hardware | How draft models and built-in MTP heads in Ollama, llama.cpp and LM Studio speed up a local model, and when creative writing gains less | high |
 | Lower-precision formats beyond quantisation | What MXFP8 and BF16 mean in plain terms, and how they differ from Q4/Q8 model files for local users | medium |
 | Specialised small models vs one big general model | When a small model trained for one job beats a general chat model locally, with honest limits | low |
+| Cloudflare Clef vs Ollama nimble for local triage | Head-to-head: which decision model to run locally, at what hardware cost | medium |
+| Can local decision models replace cloud APIs in real agents? | Case-study walkthrough of moving one agent inner loop fully local with measured latency/cost | high |
+| Decision models for coding agents: safety gates before shell commands | Using a local decision model as a pre-execution approval gate in coding workflows | medium |
