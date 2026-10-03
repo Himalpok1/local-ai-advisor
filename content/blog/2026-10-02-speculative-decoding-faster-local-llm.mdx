@@ -10,6 +10,8 @@ Your graphics card did not get faster this month. Your answers might have anyway
 
 Over the last few weeks, the software that runs local models got measurably quicker — not because anyone released a bigger model, but because the engines learned a trick called speculative decoding. If you use Ollama or LM Studio, there is a good chance a free speedup is sitting in an update you have not installed yet.
 
+![A small robot intern drafting pages while a larger robot manager approves whole stacks at speed](/blog-images/speculative-decoding-faster-local-llm-hero.webp)
+
 ## What speculative decoding actually is
 
 A normal language model writes one token at a time. Each step depends on the previous one, so the biggest cost is waiting: the GPU finishes one token, then starts the next. This is why generation feels slow even on a fast card.
@@ -18,11 +20,15 @@ Speculative decoding changes the order of work. A much smaller, faster "draft" m
 
 Think of it as an intern drafting a reply and a manager signing off on whole paragraphs at a time. Checking is far cheaper than writing from scratch — provided the draft is usually right.
 
+![Diagram: a small draft model proposes tokens and the large model verifies them in one pass, keeping or replacing each](/blog-images/speculative-decoding-faster-local-llm-fig1.webp)
+
 The number that decides everything is the acceptance rate: what share of the draft's guesses survive. When output is predictable — code, form letters, lists, answers that follow a pattern — acceptance is high and the speedup is large. When the output is open-ended and creative, the draft guesses wrong more often, each rejection costs a little, and the gains shrink.
 
 ## It already landed on your machine
 
 At IFA 2026, NVIDIA said new optimisation work makes local agents up to 1.9x faster on llama.cpp, attributing the gains to optimised kernels, improved speculative decoding, and faster prompt prefill. The important caveat: the headline 1.9x figure applies to one model, framework, and GPU combination; the remaining tests ranged from 1.2x to 1.5x. The consumer GPU in the benchmark was an RTX 5090.
+
+![Bar chart of NVIDIA-reported llama.cpp speedups: 1.9x on the best-tested combination, 1.2x to 1.5x on the others](/blog-images/speculative-decoding-faster-local-llm-fig2.webp)
 
 What matters for you is distribution. NVIDIA said the updates are available through the llama.cpp and vLLM backends — and through LM Studio and Ollama, the two apps most beginners actually use. Most people meet these optimisations as an app update, not as a compiled kernel.
 
