@@ -5,6 +5,8 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 ## Published
 
 | date | slug | title |
+| 2026-10-03 | tensorfold-faster-local-llm-exact | TensorFold: faster local LLM answers with identical output |
+
 | --- | --- | --- |
 | 2026-10-02 | speculative-decoding-faster-local-llm | Speculative decoding: free speed for your local LLM |
 | 2026-10-02 | ollama-035-decision-models | Ollama 0.35 can now make decisions, not just chat |
@@ -34,3 +36,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Open weights does not mean runs on your PC | Why new open-weight releases like DeepSeek V4.1 Flash are not always runnable locally yet; the vLLM/llama.cpp/Ollama architecture-gate explained honestly | medium |
 | Qwen-Image-2.1: the new #1 open image model | Text-to-image and editing in one 7B-class model with day-0 ComfyUI support; what VRAM it needs, and the Qwen Research License catch for commercial use | medium |
 | transformers now runs GGUF quants | Hugging Face packed-inference path for GGUF in Python: what it means for fine-tuning and introspection, the narrow arch coverage, and why llama.cpp still wins for day-to-day serving | low |
+| POCKET-Darwin-180B: can a 180B model really run on a laptop? | 4-bit GGUF, 111 GB, ~3B active params via MoE; what "runs on a laptop" actually means here | medium |
+| Budget VRAM rigs: dual RTX 2080 Ti + NVLink as a 44 GB local serving box | Old GPUs joined by NVLink for 27B-class models; used-market math vs one new card | medium |
+| Why your second reply is faster: prompt caching explained | How engines keep conversation prefixes so follow-ups skip reprocessing | low |
