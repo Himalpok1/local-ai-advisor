@@ -12,6 +12,8 @@ That is how writer Logeshwaran put it this week: most of what people ask AI agen
 
 This week, local AI got a proper filing clerk. Ollama 0.35 shipped with **decision models**: small models that return a choice, a probability, or a score instead of text. They run entirely on your own machine.
 
+![A robot clerk sorting glowing document cards into three trays](/blog-images/ollama-035-decision-models-hero.webp)
+
 ## What a decision model actually is
 
 A normal chat model answers everything by writing tokens, one at a time. A decision model does something narrower. You hand it a block of text (called a state) and a set of typed questions. It answers each one in a single round trip, with no streaming and no retries.
@@ -24,6 +26,8 @@ The questions come in three shapes:
 
 Because the output is a small structured payload rather than a paragraph of reasoning, a single call costs about four output tokens. An independent explainer reported four output tokens on a typical triage call — that is why these models answer so quickly.
 
+![Diagram: text goes into a decision model, which answers choice, yes-or-no, and score questions as structured data](/blog-images/ollama-035-decision-models-fig1.webp)
+
 ## What shipped on September 28
 
 Ollama 0.35 adds a new `/v1/systemone` endpoint built on TypeSafe AI's Jev API. Three open-weight decision models ship at launch:
@@ -31,6 +35,8 @@ Ollama 0.35 adds a new `/v1/systemone` endpoint built on TypeSafe AI's Jev API. 
 - **nimble** — 9B parameters from Bespoke Labs, a 9.5 GB download at Q8_0.
 - **tev1** — 4B parameters from Together AI, a 4.5 GB download.
 - **tev1:0.8b** — 0.8B parameters from Together AI, an 812 MB download.
+
+![Bar chart of decision model download sizes: nimble 9.5 GB, tev1 4.5 GB, tev1:0.8b 812 MB](/blog-images/ollama-035-decision-models-fig2.webp)
 
 The headline number comes from Ollama's own library page: nimble averaged **91 milliseconds per decision** running locally on a MacBook Pro M5 Max. An independent write-up measured the same model about 4.4x slower on an M5 Pro, which is a useful reminder that your machine decides the real number. The tiny 0.8B model is the interesting one for modest hardware: under a gigabyte, so it fits on almost any laptop with room to spare.
 
