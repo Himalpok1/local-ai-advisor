@@ -6,6 +6,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 | date | slug | title |
 | 2026-10-03 | tensorfold-faster-local-llm-exact | TensorFold: faster local LLM answers with identical output |
+| 2026-10-03 | astabrief-8b-cited-science-reports | AstaBrief 8B: a small open model that writes cited science reports on your machine |
 
 | --- | --- | --- |
 | 2026-10-02 | speculative-decoding-faster-local-llm | Speculative decoding: free speed for your local LLM |
@@ -39,3 +40,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | POCKET-Darwin-180B: can a 180B model really run on a laptop? | 4-bit GGUF, 111 GB, ~3B active params via MoE; what "runs on a laptop" actually means here | medium |
 | Budget VRAM rigs: dual RTX 2080 Ti + NVLink as a 44 GB local serving box | Old GPUs joined by NVLink for 27B-class models; used-market math vs one new card | medium |
 | Why your second reply is faster: prompt caching explained | How engines keep conversation prefixes so follow-ups skip reprocessing | low |
+| llama.cpp typed-decision API (/v1/systemone) | How to run structured yes/no, classification and scoring locally on five open decision-model families | medium |
+| Ollama 0.40 pre-release: MLX-by-default on Apple Silicon | What changes for Mac users, and whether to wait on 0.35.1 stable or try the pre-release | medium |
+| Full arXiv archive as a 16TB Hugging Face dataset | Stream 3.1M papers without downloading: the corpus half of a local research agent, pairing with AstaBrief-style synthesis | medium |
