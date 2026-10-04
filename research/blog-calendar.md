@@ -5,6 +5,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 ## Published
 
 | date | slug | title |
+| 2026-10-04 | kolibri-78b-open-weights-can-you-run-it | Kolibri-1: what a 78-billion-parameter open model really costs to run |
 | 2026-10-03 | tensorfold-faster-local-llm-exact | TensorFold: faster local LLM answers with identical output |
 | 2026-10-03 | astabrief-8b-cited-science-reports | AstaBrief 8B: a small open model that writes cited science reports on your machine |
 
@@ -34,7 +35,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Cloudflare Clef vs Ollama nimble for local triage | Head-to-head: which decision model to run locally, at what hardware cost | medium |
 | Can local decision models replace cloud APIs in real agents? | Case-study walkthrough of moving one agent inner loop fully local with measured latency/cost | high |
 | Decision models for coding agents: safety gates before shell commands | Using a local decision model as a pre-execution approval gate in coding workflows | medium |
-| Open weights does not mean runs on your PC | Why new open-weight releases like DeepSeek V4.1 Flash are not always runnable locally yet; the vLLM/llama.cpp/Ollama architecture-gate explained honestly | medium |
 | Qwen-Image-2.1: the new #1 open image model | Text-to-image and editing in one 7B-class model with day-0 ComfyUI support; what VRAM it needs, and the Qwen Research License catch for commercial use | medium |
 | transformers now runs GGUF quants | Hugging Face packed-inference path for GGUF in Python: what it means for fine-tuning and introspection, the narrow arch coverage, and why llama.cpp still wins for day-to-day serving | low |
 | POCKET-Darwin-180B: can a 180B model really run on a laptop? | 4-bit GGUF, 111 GB, ~3B active params via MoE; what "runs on a laptop" actually means here | medium |
@@ -43,3 +43,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | llama.cpp typed-decision API (/v1/systemone) | How to run structured yes/no, classification and scoring locally on five open decision-model families | medium |
 | Ollama 0.40 pre-release: MLX-by-default on Apple Silicon | What changes for Mac users, and whether to wait on 0.35.1 stable or try the pre-release | medium |
 | Full arXiv archive as a 16TB Hugging Face dataset | Stream 3.1M papers without downloading: the corpus half of a local research agent, pairing with AstaBrief-style synthesis | medium |
+| New 4-bit Kolibri GGUF builds: what memory do they really need? | Follow-up if community quants appear: real memory math vs the FP8 card numbers | high |
+| DeepSeek V4.1 Flash: can it run locally? | Check architecture support and GGUF availability for the Flash release; honest memory math | medium |
+| MoE distills: what the next runnable generation looks like | Track distill releases of Kolibri-class MoE into sub-20B runnable models | medium |
