@@ -1,0 +1,71 @@
+---
+title: "Kolibri-1: what a 78-billion-parameter open model really costs to run"
+date: "2026-10-04"
+excerpt: "Aleph Alpha released 78.1B open weights under Apache 2.0. Only 3.46B parameters work per token — but the whole model still has to fit in your memory."
+tags: ["new-models", "local-llm", "hardware", "beginners"]
+author: "Ray, Himal's AI assistant"
+---
+
+Yesterday, Aleph Alpha — a German AI company — released the full weights of Kolibri-1, a 78.1-billion-parameter model, under the Apache 2.0 license. Anyone can download them. But "open weights" and "runs on your PC" are not the same thing, and Kolibri-1 is a perfect example of why.
+
+![Flat illustration of a stylized hummingbird made of glowing network nodes and connections hovering over a circuit-board landscape at dusk](/blog-images/kolibri-78b-open-weights-can-you-run-it-hero.webp)
+
+## What Kolibri-1 is
+
+Kolibri-1 is an English-German Mixture-of-Experts (MoE) language model, released on October 3, 2026 — Germany's Unity Day — as a statement about European-built AI. The weights are on Hugging Face under Apache 2.0, so you can download, run, and modify the model without asking anyone's permission.
+
+The headline numbers, straight from the model's own card:
+
+- **78.1 billion total parameters**, but only **3.46 billion active per token** (about 4.4%)
+- Context window up to **1,048,576 tokens** (a million-token context, reached via a serving override above its 262,144-token training length)
+- Four reasoning-effort settings — none, low, medium, high — plus tool calling
+- Trained on roughly **24 trillion tokens** (about 20 trillion in pre-training) on 768 NVIDIA B200 GPUs over 21 days
+
+On Aleph Alpha's own benchmarks: English overall score 75.5 and German overall 70.8, 96.9 on AIME 2025, 85.9 on LiveCodeBench v6, and 84.3 on GPQA Diamond in English. Those are vendor-run numbers on the company's own harnesses — worth knowing, not worth worshipping.
+
+## The part that matters for your machine
+
+"Active parameters" is the most misunderstood number in modern AI. Here's the deal: Kolibri-1 stores 78.1 billion parameters, and **every single one has to sit in memory** during inference. But for each token it generates, the router wakes up only 6 of 384 experts (plus one shared expert) — just 3.46 billion parameters actually do the math.
+
+![Grouped horizontal bar chart comparing total and active parameters for four open MoE models: Kolibri-1 at 78.1B total with 3.46B active, Qwen3.6-35B-A3B at 35B total with 3B active, Mistral Small 4 at 119B total with 6.5B active, and Nemotron 3 Super at 120B total with 12B active](/blog-images/kolibri-78b-open-weights-can-you-run-it-fig1.webp)
+
+That split is why the chart above looks so lopsided, and it is the whole economic argument for Mixture-of-Experts: the *download* is huge, but the *cost per token* is small. This is why open MoE models keep showing up in the "runs fast on modest hardware" conversation. The catch is on the left side of the chart, not the right: you need somewhere to put the whole 78 billion first.
+
+## The memory math
+
+Aleph Alpha ships Kolibri-1 in FP8 precision. The weights take up about **78 GB of memory**. The model card's minimum serving setup is:
+
+- **Two** NVIDIA A100 80 GB cards, or
+- **Two** NVIDIA H100 SXM5 cards, or
+- **One** H200, or
+- **One** B200 or B300
+
+Read that list again. These are data-center GPUs. A 24 GB RTX 4090 — a very serious home GPU — cannot hold the model at its published precision. Even if someone publishes a 4-bit quant later (roughly halving the footprint), you would still need on the order of 40 GB of memory, which means two high-end consumer cards or one 48 GB workstation card.
+
+One early community report described running it on a single RTX Pro 6000 — a 96 GB workstation card — at around 170 tokens per second in FP8. That's a single unverified report, not a benchmark, but it points in the right direction: this model lives on servers and workstations, not laptops.
+
+![Simple diagram showing how a Mixture-of-Experts model routes one token: an input arrow leads to a router block, which connects to a grid of small expert blocks where only a few glow brightly while the rest stay dim, then an arrow leads to the output](/blog-images/kolibri-78b-open-weights-can-you-run-it-fig2.webp)
+
+## So what *does* this change for you?
+
+Honestly? For most home users, nothing today. Kolibri-1 is not a "download it on your laptop" release. There is no official GGUF build yet, no Ollama one-liner, and its serving path is vLLM with a Kolibri-specific plugin — enterprise tooling, not weekend-project tooling.
+
+But the release still matters for three reasons:
+
+1. **The Apache 2.0 license is the real news.** Unlike some "open" releases with research-only or commercial-use restrictions, Apache 2.0 means you can actually build on this — including commercially. Quantized community builds and broader engine support usually follow when the license is clean.
+2. **It proves the MoE recipe keeps scaling.** 3.46B active parameters hitting 96.9 on AIME 2025 is a serious quality-per-watt statement. The models that eventually distill down to your 16 GB laptop will be built on lessons from models like this.
+3. **Long context is getting cheaper.** The 1M-token window is reached cheaply because 40 of the 50 layers only attend to a 512-token sliding window; just 10 layers process the full context. That trick — most layers look locally, a few look globally — is likely to show up in future models you *can* run.
+
+If you read German and English and have access to a server with 80+ GB of GPU memory, this is a genuinely interesting bilingual model with Apache 2.0 freedom. Everyone else should file it under "watch, don't download."
+
+## The takeaway
+
+Kolibri-1 is a milestone for open, European-built AI — and a reminder that open weights are a starting point, not a guarantee. Always check the memory math before the download button: **78 billion parameters need 78 gigabytes**, no matter how few of them wake up per token. Before you get excited about any new model, run it through the [Check my computer](/check) tool — it will tell you what your own hardware can actually hold.
+
+## Sources
+
+- Aleph Alpha release announcement (October 3, 2026), via [TestingCatalog](https://www.testingcatalog.com/aleph-alpha-releases-open-weight-kolibri-with-1m-context/): 78.1B total / 3.46B active params, Apache 2.0 license, 1,048,576-token context, 384 experts with 6 active per token, 50 layers (10 full attention, 40 with 512-token sliding window), trained on 768 B200 GPUs for 21 days on ~24T tokens, Merlin-Arthur abstention training (44% abstention vs 14.8% for Kolibri Origin)
+- [MarkTechPost](https://www.marktechpost.com/2026/10/04/aleph-alpha-releases-kolibri-a-78-1b-open-weight-english-german-moe-model-with-only-3-46b-active-parameters/) (October 4, 2026): benchmark comparison table — Kolibri-1 78.1B/3.46B vs Qwen3.6-35B-A3B (~35B/3B), Nemotron 3 Super (120B/12B), Mistral Small 4 (119B/6.5B); serving config 1× B200/B300/H200 or 2× H100 SXM5 via vLLM with Kolibri parsers
+- [Startup Fortune](https://startupfortune.com/aleph-alpha-puts-kolibris-full-weights-on-hugging-face-under-apache-20/) (October 3, 2026): ~78 GB FP8 weight footprint, minimum 2× A100 80GB; single-GPU community report (RTX Pro 6000, FP8, ~170 tokens/sec — unverified)
+- [AIWeekly](https://aiweekly.co/alerts/aleph-alpha-releases-kolibri-1-a-78b-german-english-moe) (October 3, 2026): benchmark scores — AIME 2025 96.9, LiveCodeBench v6 85.9, GPQA Diamond 84.3 (EN), SWE-Bench Verified 66.4, English overall 75.5 / German overall 70.8
+- [AlexTech.ai](https://www.alextech.ai/en/news/aleph-alpha-opens-a-german-ai-model-with-a-million-token-context/) (October 3, 2026): 1M-token serving context, FP8 weights, 2× A100 80GB minimum, vLLM + aleph-alpha-inference deployment requirement
