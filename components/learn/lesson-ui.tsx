@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 export function Step({ n, id, title, children }: { n: number; id?: string; title: React.ReactNode; children: React.ReactNode }) {
   return (
     <Reveal as="section" id={id} className="relative scroll-mt-24 pb-10 pl-11 last:pb-2 sm:pl-14">
-      <span className="absolute left-[15px] top-9 bottom-0 w-0.5 bg-border sm:left-[19px]" aria-hidden />
-      <span className="absolute left-0 top-0 grid size-8 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-brutal sm:size-10 sm:text-base">
+      <span className="absolute left-[15px] top-9 bottom-0 w-0.5 bg-ink sm:left-[19px]" aria-hidden />
+      <span className="absolute left-0 top-0 grid size-8 place-items-center rounded-full border-2 border-ink bg-primary text-sm font-extrabold text-on-fill shadow-brutal-sm sm:size-10 sm:text-base">
         {n}
       </span>
       <h2 className="pt-0.5 text-xl font-bold tracking-tight text-balance sm:pt-1.5 sm:text-2xl">{title}</h2>
@@ -22,12 +22,12 @@ export function Step({ n, id, title, children }: { n: number; id?: string; title
 /** "Think of it like…" — an everyday comparison. */
 export function Analogy({ children, title = "Think of it like this" }: { children: React.ReactNode; title?: string }) {
   return (
-    <div className="flex gap-3 rounded-2xl border-2 border-amber-500/25 bg-amber-500/[0.07] p-4">
-      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400">
+    <div className="flex gap-3 rounded-2xl border-2 border-ink bg-primary/25 p-4 shadow-brutal-sm">
+      <span className="grid size-9 shrink-0 place-items-center rounded-xl border-2 border-ink bg-primary text-on-fill">
         <Lightbulb className="size-5" />
       </span>
       <div className="min-w-0 text-base leading-relaxed">
-        <p className="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">{title}</p>
+        <p className="text-xs font-extrabold uppercase tracking-wider">{title}</p>
         <div className="mt-1 space-y-2">{children}</div>
       </div>
     </div>
@@ -37,9 +37,9 @@ export function Analogy({ children, title = "Think of it like this" }: { childre
 /** The one thing to remember from a lesson. */
 export function KeyIdea({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <Reveal className={cn("relative overflow-hidden rounded-2xl bg-primary p-5 text-primary-foreground shadow-brutal-lg sm:p-7", className)}>
-      <span className="absolute -right-8 -top-8 size-32 rounded-full bg-white/10" aria-hidden />
-      <span className="absolute -bottom-10 right-16 size-20 rounded-full bg-white/5" aria-hidden />
+    <Reveal className={cn("relative overflow-hidden rounded-2xl border-2 border-ink bg-sticker-green p-5 text-on-fill shadow-brutal-lg sm:p-7", className)}>
+      <span className="absolute -right-8 -top-8 size-32 rounded-full border-2 border-ink bg-primary" aria-hidden />
+      <span className="absolute -bottom-10 right-16 size-20 rounded-full border-2 border-ink bg-sticker-pink" aria-hidden />
       <p className="relative flex items-center gap-2 text-xs font-semibold uppercase tracking-wider opacity-90">
         <Sparkles className="size-4" /> Remember this
       </p>

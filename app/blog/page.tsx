@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Eyebrow } from "@/components/art/sticker";
 import { ArrowRight, Newspaper, Rss } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatPostDate, getAllPosts } from "@/lib/blog";
@@ -18,9 +19,7 @@ export default function BlogIndexPage() {
       <div className="relative mx-auto max-w-4xl px-4 pb-6 pt-8 sm:px-6 sm:pt-14">
         <header className="flex animate-fade-up flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-primary/15 px-3 py-1 text-xs font-semibold text-link">
-              <Newspaper className="size-3.5" /> Blog
-            </p>
+            <Eyebrow color="green"><Newspaper className="size-3.5" /> Blog</Eyebrow>
             <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-balance sm:text-5xl">Local AI, in plain language</h1>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground text-pretty">
               The latest in AI and local LLMs, explained for beginners. Honest about what runs well on your own computer, and with sources for every claim.
@@ -38,7 +37,7 @@ export default function BlogIndexPage() {
           <ol className="mt-10 space-y-4 sm:mt-14">
             {posts.map((p) => (
               <li key={p.slug}>
-                <article className="group relative rounded-2xl border-2 border-ink bg-card p-5 shadow-brutal-sm transition hover:border-ink hover:shadow-brutal sm:p-7">
+                <article className="group relative rounded-2xl border-2 border-ink bg-card p-5 shadow-brutal transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-brutal-lg sm:p-7">
                   <p className="text-sm text-muted-foreground">
                     <time dateTime={p.date}>{formatPostDate(p.date)}</time> · {p.readingMinutes} min read
                   </p>

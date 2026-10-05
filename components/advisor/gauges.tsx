@@ -40,7 +40,7 @@ export function DimensionGauges({ dims, compact, keys }: { dims: DimensionResult
               </span>
               <span className="text-xs text-muted-foreground">{LEVEL_TEXT[d.level]}</span>
             </div>
-            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted" role="meter" aria-valuemin={0} aria-valuemax={4} aria-valuenow={Math.round(d.score)} aria-label={`${d.label}: ${LEVEL_TEXT[d.level]}`}>
+            <div className="mt-2 h-3 overflow-hidden rounded-full border-[1.5px] border-ink bg-muted" role="meter" aria-valuemin={0} aria-valuemax={4} aria-valuenow={Math.round(d.score)} aria-label={`${d.label}: ${LEVEL_TEXT[d.level]}`}>
               <div className={cn("h-full rounded-full", LEVEL_COLOR[d.level])} style={{ width: `${pct}%` }} />
             </div>
             <p className="mt-1.5 truncate text-xs text-muted-foreground" title={d.summary}>

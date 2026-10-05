@@ -73,7 +73,7 @@ export function SpeedTest() {
         </div>
 
         {state === "running" && (
-          <div role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} className="h-2 overflow-hidden rounded-full bg-muted">
+          <div role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} className="h-3 overflow-hidden rounded-full border-[1.5px] border-ink bg-muted">
             <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${Math.max(4, progress * 100)}%` }} />
           </div>
         )}

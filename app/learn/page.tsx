@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Eyebrow } from "@/components/art/sticker";
 import { BookOpen, Sparkles } from "lucide-react";
 import { CoursePath, CourseProgress, LegacyAnchorRedirect } from "@/components/learn/course-ui";
 import { GLOSSARY, LESSONS, TOTAL_MINUTES } from "@/components/learn/lessons";
@@ -17,9 +18,7 @@ export default function LearnPage() {
       <LegacyAnchorRedirect />
       <div className="relative mx-auto max-w-5xl px-4 pb-6 pt-8 sm:px-6 sm:pt-14">
         <header className="max-w-2xl animate-fade-up">
-          <p className="inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-primary/15 px-3 py-1 text-xs font-semibold text-link">
-            <BookOpen className="size-3.5" /> Free course · no sign-up
-          </p>
+          <Eyebrow color="green"><BookOpen className="size-3.5" /> Free course · no sign-up</Eyebrow>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-balance sm:text-5xl">Learn local AI, one step at a time</h1>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground text-pretty">
             {LESSONS.length} bite-sized lessons with animations and a quick question at the end of each. No jargon you haven’t been introduced to. About{" "}

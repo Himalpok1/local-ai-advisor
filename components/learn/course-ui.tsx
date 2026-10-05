@@ -34,7 +34,7 @@ export function CourseProgress() {
     <div className="flex flex-wrap items-center gap-4">
       <div className="relative size-16 shrink-0">
         <svg viewBox="0 0 64 64" className="size-16 -rotate-90" aria-hidden>
-          <circle cx="32" cy="32" r={r} fill="none" strokeWidth="7" className="stroke-muted" />
+          <circle cx="32" cy="32" r={r} fill="none" strokeWidth="7" className="stroke-ink/15" />
           <motion.circle
             cx="32"
             cy="32"
@@ -42,7 +42,7 @@ export function CourseProgress() {
             fill="none"
             strokeWidth="7"
             strokeLinecap="round"
-            className="stroke-primary"
+            className="stroke-ink"
             strokeDasharray={c}
             initial={false}
             animate={{ strokeDashoffset: c * (1 - pct) }}
@@ -118,7 +118,7 @@ export function CoursePath() {
                     <span
                       className={cn(
                         "grid size-11 shrink-0 place-items-center rounded-2xl text-base font-bold transition-colors",
-                        isDone ? "bg-comfortable text-white" : isNext ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground group-hover:bg-primary/25 group-hover:text-link",
+                        isDone ? "border-2 border-ink bg-fill-comfortable text-on-fill" : isNext ? "border-2 border-ink bg-primary text-on-fill" : "border-2 border-ink bg-card text-muted-foreground group-hover:bg-primary/25 group-hover:text-link",
                       )}
                     >
                       {isDone ? <Check className="size-5" strokeWidth={3} /> : n}
@@ -126,7 +126,7 @@ export function CoursePath() {
                     <span className="min-w-0 flex-1">
                       <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                         <span className="font-bold leading-snug">{l.title}</span>
-                        {isNext && <span className="rounded-full bg-primary/25 px-2 py-0.5 text-[11px] font-semibold text-link">{done.length ? "Up next" : "Start here"}</span>}
+                        {isNext && <span className="rounded-full border-[1.5px] border-ink bg-sticker-pink px-2 py-0.5 text-[11px] font-extrabold text-on-fill">{done.length ? "Up next" : "Start here"}</span>}
                       </span>
                       <span className="mt-1 block text-sm text-muted-foreground">{l.summary}</span>
                       <span className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
@@ -164,13 +164,13 @@ export function LessonOutline({ current }: { current: string }) {
                 aria-current={isCurrent ? "page" : undefined}
                 className={cn(
                   "flex items-center gap-2.5 rounded-xl px-2.5 py-2 transition-colors",
-                  isCurrent ? "bg-primary/25 font-semibold text-link" : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  isCurrent ? "bg-primary/25 font-bold text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 )}
               >
                 <span
                   className={cn(
                     "grid size-6 shrink-0 place-items-center rounded-full text-[11px] font-bold",
-                    isDone ? "bg-comfortable text-white" : isCurrent ? "bg-primary text-primary-foreground" : "bg-muted",
+                    isDone ? "border-2 border-ink bg-fill-comfortable text-on-fill" : isCurrent ? "border-2 border-ink bg-primary text-on-fill" : "bg-muted",
                   )}
                 >
                   {isDone ? <Check className="size-3.5" strokeWidth={3} /> : i + 1}

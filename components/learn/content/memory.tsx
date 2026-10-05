@@ -36,9 +36,9 @@ export default function Lesson() {
         <AnimatedBars
           title="How fast each kind of memory can be read"
           bars={[
-            { label: "Desktop RAM (DDR5)", value: 80, display: "≈80 GB/s", className: "bg-slate-400 dark:bg-slate-500" },
-            { label: "MacBook Pro M4 Pro", value: 273, display: "≈273 GB/s", className: "bg-sky-500" },
-            { label: "Mac Studio M4 Max", value: 546, display: "≈546 GB/s", className: "bg-violet-500" },
+            { label: "Desktop RAM (DDR5)", value: 80, display: "≈80 GB/s", className: "bg-sticker-teal" },
+            { label: "MacBook Pro M4 Pro", value: 273, display: "≈273 GB/s", className: "bg-sticker-blue" },
+            { label: "Mac Studio M4 Max", value: 546, display: "≈546 GB/s", className: "bg-sticker-orange" },
             { label: "RTX 4090 graphics card", value: 1008, display: "≈1,008 GB/s", className: "bg-primary" },
           ]}
           caption="Faster memory means the model can be “re-read” more times per second, which means more words per second."

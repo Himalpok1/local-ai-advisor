@@ -92,7 +92,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {(newer || older) && (
         <nav aria-label="More posts" className="mt-12 grid gap-3 sm:grid-cols-2">
           {older ? (
-            <Link href={`/blog/${older.slug}`} className="group rounded-2xl border-2 border-ink bg-card p-4 transition hover:border-ink">
+            <Link href={`/blog/${older.slug}`} className="press group rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm">
               <span className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <ArrowLeft className="size-3.5" /> Older
               </span>
@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <span className="hidden sm:block" />
           )}
           {newer && (
-            <Link href={`/blog/${newer.slug}`} className="group rounded-2xl border-2 border-ink bg-card p-4 text-right transition hover:border-ink">
+            <Link href={`/blog/${newer.slug}`} className="press group rounded-2xl border-2 border-ink bg-card p-4 text-right shadow-brutal-sm">
               <span className="flex items-center justify-end gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Newer <ArrowRight className="size-3.5" />
               </span>
@@ -112,7 +112,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </nav>
       )}
 
-      <aside className="mt-10 rounded-2xl border-2 border-ink bg-primary/15 p-5 sm:p-6">
+      <aside className="mt-10 rounded-2xl border-2 border-ink bg-primary/30 p-5 shadow-brutal sm:p-6">
         <p className="text-lg font-bold tracking-tight">Will it run on your computer?</p>
         <p className="mt-1 text-sm text-muted-foreground">Answer a few questions and see which local AI models will feel comfortable on your hardware.</p>
         <Link

@@ -19,7 +19,7 @@ function GapBars({ needed, available }: { needed: number; available: number }) {
       {rows.map((r) => (
         <div key={r.label} className="grid grid-cols-[6.5rem_minmax(0,1fr)_4rem] items-center gap-3 text-sm">
           <span className="text-muted-foreground">{r.label}</span>
-          <span className="h-3 overflow-hidden rounded-full bg-muted">
+          <span className="h-3.5 overflow-hidden rounded-full border-[1.5px] border-ink bg-muted">
             <span className={`block h-full rounded-full ${r.className}`} style={{ width: `${Math.max(2, (r.value / max) * 100)}%` }} />
           </span>
           <span className="text-right font-medium tabular-nums">{fmtGB(r.value)}</span>

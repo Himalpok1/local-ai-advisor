@@ -6,7 +6,7 @@ import { Cpu, MemoryStick, MonitorSmartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FigureCaption } from "./prose";
 
-const STRIPES = "bg-[repeating-linear-gradient(135deg,var(--c-technical)_0_6px,color-mix(in_oklch,var(--c-technical)_55%,transparent)_6px_12px)]";
+const STRIPES = "bg-[repeating-linear-gradient(135deg,var(--f-technical)_0_6px,var(--f-borderline)_6px_12px)]";
 
 function Segment({ gb, scale, className, label }: { gb: number; scale: number; className: string; label: string }) {
   return (
@@ -33,21 +33,21 @@ export function FitsFigure() {
       label: "What a “does it fit?” check sees",
       verdict: "Fits ✓",
       verdictClass: "text-comfortable",
-      segments: [{ gb: 23, label: "Model 23 GB", className: "bg-primary/70 text-primary-foreground" }],
+      segments: [{ gb: 23, label: "Model 23 GB", className: "bg-primary text-primary-foreground" }],
     },
     {
       label: "What your computer actually runs",
       verdict: "8 GB over → swap, stutter",
       verdictClass: "text-technical",
       segments: [
-        { gb: 23, label: "Model 23 GB", className: "bg-primary/70 text-primary-foreground" },
-        { gb: 1, label: "", className: "bg-muted-foreground/30" },
-        { gb: 8, label: "OS + IDE + browser 9 GB", className: cn(STRIPES, "text-white") },
+        { gb: 23, label: "Model 23 GB", className: "bg-primary text-primary-foreground" },
+        { gb: 1, label: "", className: "bg-muted" },
+        { gb: 8, label: "OS + IDE + browser 9 GB", className: cn(STRIPES, "text-on-fill") },
       ],
     },
   ];
   return (
-    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-5">
       <div className="space-y-5">
         {rows.map((r) => (
           <div key={r.label}>
@@ -56,7 +56,7 @@ export function FitsFigure() {
               <span className={cn("text-xs font-semibold", r.verdictClass)}>{r.verdict}</span>
             </div>
             <div className="relative">
-              <div className="flex h-8 overflow-hidden rounded-md bg-muted">
+              <div className="flex h-8 overflow-hidden rounded-md border-2 border-ink bg-muted">
                 {r.segments.map((s, i) => (
                   <Segment key={i} gb={s.gb} scale={scale} className={s.className} label={s.label} />
                 ))}
@@ -98,7 +98,7 @@ export function SpillFigure() {
   const rows = [0, 0.1, 0.25, 0.5].map((s) => ({ spill: s, tps: spillTps(modelGB, s, vram, ram) }));
   const max = rows[0].tps;
   return (
-    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-5">
       <p className="mb-3 text-sm font-medium">Generation speed ceiling vs. how much of the model spilled out of VRAM</p>
       <div className="space-y-2.5" role="list">
         {rows.map((r) => (
@@ -138,14 +138,14 @@ export function AgentStepsFigure() {
   });
   const max = Math.max(...models.map((m) => m.total));
   return (
-    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-5">
       <p className="text-sm font-medium">One agent step = read the prompt (prefill) + write the reply (generation)</p>
       <div className="mt-1 flex flex-wrap gap-4 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-primary/75" /> Prefill of {step.promptTokens.toLocaleString("en-US")} new tokens
+          <span className="size-2.5 rounded-sm bg-primary" /> Prefill of {step.promptTokens.toLocaleString("en-US")} new tokens
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-primary/30" /> Generating {step.outputTokens} tokens
+          <span className="size-2.5 rounded-sm bg-sticker-blue" /> Generating {step.outputTokens} tokens
         </span>
       </div>
       <div className="mt-4 space-y-4">
@@ -158,8 +158,8 @@ export function AgentStepsFigure() {
               </span>
             </div>
             <div className="flex h-6 w-full overflow-hidden rounded bg-muted" aria-label={`${Math.round(m.total)} seconds per step`}>
-              <div className="h-full bg-primary/75" style={{ width: `${(m.pre / max) * 100}%` }} title={`Prefill ≈${Math.round(m.pre)} s`} />
-              <div className="h-full bg-primary/30" style={{ width: `${(m.genSec / max) * 100}%` }} title={`Generation ≈${Math.round(m.genSec)} s`} />
+              <div className="h-full bg-primary" style={{ width: `${(m.pre / max) * 100}%` }} title={`Prefill ≈${Math.round(m.pre)} s`} />
+              <div className="h-full bg-sticker-blue" style={{ width: `${(m.genSec / max) * 100}%` }} title={`Generation ≈${Math.round(m.genSec)} s`} />
             </div>
             <div className="mt-1 flex justify-between text-xs tabular-nums">
               <span className="text-muted-foreground">≈{Math.round(m.total)} s per step</span>
@@ -214,7 +214,7 @@ export function MemoryPoolsFigure() {
         </p>
         <Pool title="Unified memory" size="e.g. 48 GB · ~270 GB/s" className="bg-accent/60">
           <div className="mt-2 flex h-7 overflow-hidden rounded text-[11px] font-medium">
-            <div className="flex w-3/4 items-center justify-center bg-primary/65 text-primary-foreground">GPU may use ≈75%</div>
+            <div className="flex w-3/4 items-center justify-center bg-primary text-primary-foreground">GPU may use ≈75%</div>
             <div className="flex w-1/4 items-center justify-center bg-muted-foreground/25">OS & apps</div>
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
@@ -237,7 +237,7 @@ export function MoeFigure() {
   const experts = 16;
   const active = new Set([3, 10]);
   return (
-    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-5">
       <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:gap-6">
         <div className="flex shrink-0 flex-col items-center gap-1 text-xs text-muted-foreground">
           <span className="rounded-md border-2 bg-muted px-2 py-1 font-mono text-foreground">“def”</span>
@@ -250,7 +250,7 @@ export function MoeFigure() {
               key={i}
               className={cn(
                 "grid size-8 place-items-center rounded-md border-2 text-[10px] font-medium sm:size-9",
-                active.has(i) ? "border-ink bg-primary/70 text-primary-foreground" : "bg-muted text-muted-foreground",
+                active.has(i) ? "border-ink bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
               )}
             >
               E{i + 1}
@@ -277,14 +277,14 @@ export function MoeFigure() {
 
 export function TtftFigure() {
   const parts = [
-    { label: "Load model (first request only)", sec: 6, className: "bg-muted-foreground/30" },
-    { label: "Prefill: read your prompt", sec: 8, className: "bg-primary/75" },
-    { label: "Stream the answer", sec: 10, className: "bg-primary/30" },
+    { label: "Load model (first request only)", sec: 6, className: "bg-muted" },
+    { label: "Prefill: read your prompt", sec: 8, className: "bg-primary" },
+    { label: "Stream the answer", sec: 10, className: "bg-sticker-blue" },
   ];
   const total = parts.reduce((s, p) => s + p.sec, 0);
   const ttft = parts[0].sec + parts[1].sec;
   return (
-    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-5">
       <div className="relative">
         <div className="flex h-8 overflow-hidden rounded-md">
           {parts.map((p) => (

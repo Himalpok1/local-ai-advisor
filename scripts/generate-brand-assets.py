@@ -1,4 +1,4 @@
-"""Generate the Local AI Advisor vector and animated brand assets."""
+"""LEGACY (indigo) brand asset generator. Superseded by generate-neobrutal-brand.py for the logos and stack illustration; running this overwrites them with the old look."""
 
 from pathlib import Path
 from xml.etree import ElementTree

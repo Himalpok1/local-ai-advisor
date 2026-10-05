@@ -53,7 +53,7 @@ export function StackBuilder({ initial }: { initial: AppState }) {
           <h1 className="mt-1 text-2xl font-extrabold tracking-tight sm:text-4xl">From hardware to coding agent, one layer at a time</h1>
           <p className="mt-2 max-w-3xl text-muted-foreground">Choose your machine, what you’ll do and which tool you use. We pick the runtime, model and API that make the whole chain comfortable — and explain why.</p>
         </div>
-        <div className="overflow-hidden rounded-2xl border-2 border-ink bg-[#F7F7F5]">
+        <div className="overflow-hidden rounded-2xl border-2 border-ink bg-muted">
           <Image
             src="/brand/illustration-local-stack.svg"
             width={1200}

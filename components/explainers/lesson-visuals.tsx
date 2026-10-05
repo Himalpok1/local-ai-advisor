@@ -32,7 +32,7 @@ export function AnimatedBars({ title, bars, caption, className }: { title?: stri
               </span>
               <span className="shrink-0 font-mono text-xs font-semibold tabular-nums">{b.display}</span>
             </div>
-            <div className="h-3 overflow-hidden rounded-full bg-muted">
+            <div className="h-3.5 overflow-hidden rounded-full border-[1.5px] border-ink bg-muted">
               <motion.div
                 className={cn("h-full rounded-full", b.className ?? "bg-primary")}
                 initial={reduce ? false : { width: 0 }}
@@ -115,7 +115,7 @@ export function MoeAnimated() {
 }
 
 const SENTENCE = ["Local", " models", " run", " on", " your", " own", " comp", "uter", ",", " even", " offline", "!"];
-const CHIP_COLORS = ["bg-sky-500/15 text-sky-700 dark:text-sky-300", "bg-violet-500/15 text-violet-700 dark:text-violet-300", "bg-amber-500/15 text-amber-700 dark:text-amber-300", "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"];
+const CHIP_COLORS = ["bg-sticker-blue text-on-fill", "bg-sticker-pink text-on-fill", "bg-primary text-on-fill", "bg-sticker-green text-on-fill"];
 
 /** Shows how a sentence is split into tokens, one chip at a time. */
 export function TokenChips() {
@@ -154,10 +154,10 @@ export function ContextFill() {
   const inView = useInView(ref, { once: true, margin: "-15% 0px" });
   const reduce = useReducedMotion();
   const parts = [
-    { label: "Instructions", k: 2, className: "bg-slate-400 dark:bg-slate-500" },
+    { label: "Instructions", k: 2, className: "bg-sticker-teal" },
     { label: "Your messages", k: 3, className: "bg-primary" },
-    { label: "Its replies", k: 5, className: "bg-sky-500" },
-    { label: "A pasted file", k: 12, className: "bg-amber-500" },
+    { label: "Its replies", k: 5, className: "bg-sticker-blue" },
+    { label: "A pasted file", k: 12, className: "bg-primary" },
   ];
   const capacity = 32;
   const show = inView || reduce;

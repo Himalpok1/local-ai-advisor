@@ -50,7 +50,7 @@ export function QuickCheck({ question, options }: { question: string; options: Q
                 <span
                   className={cn(
                     "grid size-6 shrink-0 place-items-center rounded-full border-2 text-xs font-bold",
-                    showRight ? "border-ink bg-comfortable text-white" : showWrong ? "border-ink bg-technical text-white" : "border-ink",
+                    showRight ? "border-ink bg-fill-comfortable text-on-fill" : showWrong ? "border-ink bg-fill-technical text-on-fill" : "border-ink",
                   )}
                 >
                   {showRight ? <CheckCircle2 className="size-4" /> : showWrong ? <XCircle className="size-4" /> : String.fromCharCode(65 + i)}

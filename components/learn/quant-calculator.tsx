@@ -64,7 +64,7 @@ export function QuantCalculator() {
               <span className="flex items-center gap-2">
                 <span className="h-5 flex-1 rounded bg-muted">
                   <span
-                    className={cn("block h-full rounded transition-all", active ? "bg-primary/80" : "bg-primary/35")}
+                    className={cn("block h-full rounded transition-all", active ? "bg-primary" : "bg-sticker-blue")}
                     style={{ width: `${Math.max(2, (gb / max) * 100)}%` }}
                   />
                 </span>

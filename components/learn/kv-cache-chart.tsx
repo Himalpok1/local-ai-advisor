@@ -82,10 +82,10 @@ export function KvCacheChart() {
 
       <div className="mb-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-primary/75" /> {model.name}, FP16 KV
+          <span className="size-2.5 rounded-sm bg-primary" /> {model.name}, FP16 KV
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-primary/35" /> {model.name}, Q8 KV
+          <span className="size-2.5 rounded-sm bg-sticker-blue" /> {model.name}, Q8 KV
         </span>
         {showRef && (
           <span className="flex items-center gap-1.5">
@@ -100,8 +100,8 @@ export function KvCacheChart() {
             <span className="text-right font-mono text-sm tabular-nums">{fmtCtx(r.ctx)}</span>
             {r.supported ? (
               <div className="space-y-1">
-                <Bar width={pct(r.f16)} className="bg-primary/75" value={fmtGB(r.f16)} label={`FP16 KV at ${fmtCtx(r.ctx)}`} />
-                <Bar width={pct(r.q8)} className="bg-primary/35" value={fmtGB(r.q8)} label={`Q8 KV at ${fmtCtx(r.ctx)}`} />
+                <Bar width={pct(r.f16)} className="bg-primary" value={fmtGB(r.f16)} label={`FP16 KV at ${fmtCtx(r.ctx)}`} />
+                <Bar width={pct(r.q8)} className="bg-sticker-blue" value={fmtGB(r.q8)} label={`Q8 KV at ${fmtCtx(r.ctx)}`} />
                 {showRef && (
                   <Bar
                     width={pct(r.ref)}

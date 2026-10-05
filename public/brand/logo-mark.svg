@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Local AI Advisor mark"><rect width="64" height="64" rx="14.72" fill="#514BC8"/>
-<path d="M14.72 35.84h10.24m3.84 0h10.24m3.84 0h7.04" stroke="white" stroke-width="5.44" stroke-linecap="round"/>
-<path d="M14.72 24.32h21.76" stroke="white" stroke-opacity=".78" stroke-width="4.48" stroke-linecap="round"/>
-<circle cx="47.36" cy="23.68" r="5.76" fill="#2C9B75" stroke="white" stroke-width="2.24"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Local AI Advisor mark"><rect x="6" y="6" width="54" height="54" rx="14" fill="#171410"/>
+<rect x="2" y="2" width="54" height="54" rx="14" fill="#FFCF1F" stroke="#171410" stroke-width="4"/>
+<path d="M13 37h9m4 0h9m4 0h4" stroke="#171410" stroke-width="5" stroke-linecap="round"/>
+<path d="M13 25h19" stroke="#171410" stroke-opacity=".7" stroke-width="4" stroke-linecap="round"/>
+<circle cx="42" cy="24" r="5.5" fill="#2EE88C" stroke="#171410" stroke-width="3"/></svg>

@@ -3,13 +3,13 @@ import { fmtGB } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const SEGMENTS = [
-  { key: "osReserveGB", label: "Reserved for OS", color: "bg-slate-400 dark:bg-slate-500" },
-  { key: "devEnvReserveGB", label: "Other apps / dev environment", color: "bg-sky-400" },
-  { key: "toolOverheadGB", label: "AI tool", color: "bg-violet-400" },
-  { key: "runtimeOverheadGB", label: "Runtime overhead & buffers", color: "bg-amber-400" },
+  { key: "osReserveGB", label: "Reserved for OS", color: "bg-sticker-teal" },
+  { key: "devEnvReserveGB", label: "Other apps / dev environment", color: "bg-sticker-blue" },
+  { key: "toolOverheadGB", label: "AI tool", color: "bg-sticker-orange" },
+  { key: "runtimeOverheadGB", label: "Runtime overhead & buffers", color: "bg-primary" },
   { key: "weightsGB", label: "Model weights", color: "bg-primary" },
-  { key: "kvCacheGB", label: "KV cache (context)", color: "bg-fuchsia-500" },
-  { key: "visionEncoderGB", label: "Vision encoder", color: "bg-teal-500" },
+  { key: "kvCacheGB", label: "KV cache (context)", color: "bg-sticker-pink" },
+  { key: "visionEncoderGB", label: "Vision encoder", color: "bg-sticker-green" },
 ] as const;
 
 function Bar({ parts, total, label }: { parts: { label: string; value: number; color: string }[]; total: number; label: string }) {
@@ -24,9 +24,9 @@ function Bar({ parts, total, label }: { parts: { label: string; value: number; c
           {fmtGB(used)} of {fmtGB(total)} {over ? "— over capacity" : `· ${fmtGB(total - used)} free`}
         </span>
       </div>
-      <div className="relative flex h-4 overflow-hidden rounded-md bg-muted" role="img" aria-label={`${label}: ${fmtGB(used)} used of ${fmtGB(total)}`}>
+      <div className="relative flex h-5 overflow-hidden rounded-md border-2 border-ink bg-muted" role="img" aria-label={`${label}: ${fmtGB(used)} used of ${fmtGB(total)}`}>
         {parts.map((p) => (
-          <div key={p.label} className={cn("h-full border-r-2 border-background/60", p.color)} style={{ width: `${(p.value / scale) * 100}%` }} title={`${p.label}: ${fmtGB(p.value)}`} />
+          <div key={p.label} className={cn("h-full border-r-2 border-ink", p.color)} style={{ width: `${(p.value / scale) * 100}%` }} title={`${p.label}: ${fmtGB(p.value)}`} />
         ))}
         {over && <div className="absolute inset-y-0 border-l-2 border-ink" style={{ left: `${(total / scale) * 100}%` }} />}
       </div>
@@ -40,15 +40,15 @@ export function MemoryBreakdownView({ m }: { m: MemoryBreakdown & { gpuResidentG
     const f = m.gpuOffloadFraction;
     const gpuParts = [
       { label: "Model weights (in VRAM)", value: m.weightsGB * f, color: "bg-primary" },
-      { label: "KV cache", value: m.kvCacheGB * f, color: "bg-fuchsia-500" },
-      { label: "Runtime overhead", value: m.runtimeOverheadGB, color: "bg-amber-400" },
-      { label: "Vision encoder", value: m.visionEncoderGB * f, color: "bg-teal-500" },
+      { label: "KV cache", value: m.kvCacheGB * f, color: "bg-sticker-pink" },
+      { label: "Runtime overhead", value: m.runtimeOverheadGB, color: "bg-primary" },
+      { label: "Vision encoder", value: m.visionEncoderGB * f, color: "bg-sticker-green" },
     ];
     const ramParts = [
-      { label: "Reserved for OS", value: m.osReserveGB, color: "bg-slate-400 dark:bg-slate-500" },
-      { label: "Other apps", value: m.devEnvReserveGB, color: "bg-sky-400" },
-      { label: "AI tool", value: m.toolOverheadGB, color: "bg-violet-400" },
-      { label: "Spilled model layers", value: (m.weightsGB + m.kvCacheGB + m.visionEncoderGB) * (1 - f), color: "bg-primary/60" },
+      { label: "Reserved for OS", value: m.osReserveGB, color: "bg-sticker-teal" },
+      { label: "Other apps", value: m.devEnvReserveGB, color: "bg-sticker-blue" },
+      { label: "AI tool", value: m.toolOverheadGB, color: "bg-sticker-orange" },
+      { label: "Spilled model layers", value: (m.weightsGB + m.kvCacheGB + m.visionEncoderGB) * (1 - f), color: "bg-primary" },
     ];
     return (
       <div className="space-y-4">
@@ -79,7 +79,7 @@ function Legend() {
     <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
       {SEGMENTS.map((s) => (
         <span key={s.key} className="flex items-center gap-1.5">
-          <span className={cn("size-2.5 rounded-sm", s.color)} />
+          <span className={cn("size-3 rounded-sm border-[1.5px] border-ink", s.color)} />
           {s.label}
         </span>
       ))}

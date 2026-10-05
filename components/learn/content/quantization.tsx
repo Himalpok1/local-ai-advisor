@@ -27,10 +27,10 @@ export default function Lesson() {
         <AnimatedBars
           title="Size of the same 9B model"
           bars={[
-            { label: "FP16 / BF16", value: 18, display: "≈18 GB", note: "full precision", className: "bg-slate-400 dark:bg-slate-500" },
-            { label: "Q8", value: 9.5, display: "≈9.5 GB", note: "practically no loss", className: "bg-sky-500" },
+            { label: "FP16 / BF16", value: 18, display: "≈18 GB", note: "full precision", className: "bg-sticker-teal" },
+            { label: "Q8", value: 9.5, display: "≈9.5 GB", note: "practically no loss", className: "bg-sticker-blue" },
             { label: "Q4", value: 5.7, display: "≈5.7 GB", note: "the sweet spot", className: "bg-primary" },
-            { label: "Q3", value: 4.7, display: "≈4.7 GB", note: "starts to hurt", className: "bg-amber-500" },
+            { label: "Q3", value: 4.7, display: "≈4.7 GB", note: "starts to hurt", className: "bg-primary" },
           ]}
           caption="Sizes of the real Qwen3.5 9B downloads. Q4 is about a third of full size."
         />

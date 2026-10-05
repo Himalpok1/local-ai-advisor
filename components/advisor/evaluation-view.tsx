@@ -384,7 +384,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
       </div>
 
       {editHardware && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4" role="dialog" aria-modal="true" aria-label="Change hardware" onClick={() => setEditHardware(false)}>
+        <div className="fixed inset-0 z-50 grid place-items-center bg-ink/50 p-4" role="dialog" aria-modal="true" aria-label="Change hardware" onClick={() => setEditHardware(false)}>
           <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border-2 bg-background p-6 shadow-brutal-lg" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-semibold">Change hardware</h2>
