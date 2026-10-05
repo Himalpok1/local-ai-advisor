@@ -100,7 +100,7 @@ export default function Home() {
             <Sticker color="pink" rotate={5} className="absolute -right-5 bottom-24 hidden animate-float [animation-delay:1.5s] lg:inline-flex">
               <WifiOff className="size-4" /> Works offline
             </Sticker>
-            <BurstBadge className="absolute -bottom-[4.75rem] right-2 size-24 rotate-12 sm:right-6 sm:size-28" shapeClassName="text-sticker-orange">
+            <BurstBadge className="absolute -bottom-[6.5rem] right-2 size-24 rotate-12 sm:right-6 sm:size-28" shapeClassName="text-sticker-orange">
               100%
               <br />
               free
