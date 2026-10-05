@@ -5,6 +5,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 ## Published
 
 | date | slug | title |
+| 2026-10-05 | dwarfstar-4-local-inference-engine | DwarfStar 4: a narrow engine that runs big MoE models on your own machine |
 | 2026-10-04 | nvidia-dgx-spark-64gb-4999-worth-it | NVIDIA's $4,999 DGX Spark 64GB: what a cheaper local-AI box actually buys you |
 | 2026-10-04 | kolibri-78b-open-weights-can-you-run-it | Kolibri-1: what a 78-billion-parameter open model really costs to run |
 | 2026-10-03 | tensorfold-faster-local-llm-exact | TensorFold: faster local LLM answers with identical output |
@@ -50,3 +51,4 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Reflection's first open-weight model is coming | Nvidia-backed 'DeepSeek of the West' per Axios Oct 4; what a Western frontier open model could mean for local runners | high |
 | Qwen3.8 27B: the new default local agent model? | NVIDIA's clustering benchmark + TensorFold day-1 model; what it costs to run (VRAM math, quants) | medium |
 | What Strix Halo boxes mean for CUDA-free local AI | 128GB AMD mini-PCs at $2,959-3,649 vs DGX Spark; honest limits (no CUDA, slower prefill) with /compare/hardware | medium |
+| DwarfStar PRO mode: how far does the 512GB Mac go? | What the experimental DeepSeek V4 PRO support unlocks on a 512GB Mac Studio vs the Flash models | medium |
