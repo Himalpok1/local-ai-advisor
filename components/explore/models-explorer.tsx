@@ -235,7 +235,7 @@ export function ModelsExplorer({ rows }: { rows: ModelRow[] }) {
             id="model-sort"
             value={sort}
             onChange={(e) => setSort(e.target.value as SortKey)}
-            className="h-8 rounded-lg border-2 bg-card px-2 text-sm focus-visible:outline-2 focus-visible:outline-ring"
+            className="h-9 max-w-[11rem] cursor-pointer rounded-full border-2 border-ink bg-card px-3 text-sm font-semibold shadow-brutal-sm"
           >
             {SORTS.map((s) => (
               <option key={s.value} value={s.value}>

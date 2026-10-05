@@ -95,11 +95,11 @@ export function CompareModels({ initial, initialModels }: { initial: AppState; i
         {picks.map((p, i) => {
           const m = getModel(p.id);
           return (
-            <span key={p.id} className="inline-flex items-center gap-1 rounded-lg border-2 bg-card py-1 pl-3 pr-1 text-sm">
+            <span key={p.id} className="inline-flex items-center gap-1 rounded-full border-2 border-ink bg-card py-1 pl-3 pr-1 text-sm font-bold">
               {m.name}
               <select
                 aria-label={`Quantization for ${m.name}`}
-                className="ml-1 rounded bg-muted px-1 py-0.5 text-xs"
+                className="ml-1 cursor-pointer rounded-full border-[1.5px] border-ink bg-muted px-2 py-0.5 text-xs font-semibold"
                 value={p.quant ?? "best"}
                 onChange={(e) => setPicks((ps) => ps.map((x, j) => (j === i ? { ...x, quant: e.target.value === "best" ? undefined : (e.target.value as QuantId) } : x)))}
               >
