@@ -1,6 +1,6 @@
 # Model catalog refresh — 2026-10-05
 
-Compared 36 curated models with their Hugging Face config.json. 13 need a look.
+Compared 37 curated models with their Hugging Face config.json. 13 need a look.
 
 | Model | Repo | Result | Downloads |
 |---|---|---|---|
@@ -40,20 +40,21 @@ Compared 36 curated models with their Hugging Face config.json. 13 need a look.
 | Phi-4 (14B) | microsoft/phi-4 | ✓ matches | 426,836 |
 | DeepSeek-R1-0528-Qwen3-8B | deepseek-ai/DeepSeek-R1-0528-Qwen3-8B | ⚠ config native 32768, rope-extended 131072 (catalog 131072) | 682,235 |
 | DeepSeek-V4-Flash (284B-A13B) | deepseek-ai/DeepSeek-V4-Flash | ⚠ config native 65536, rope-extended 1048576 (catalog 1048576) | 1,014,357 |
+| Kolibri-1 (78B-A3.5B) | Aleph-Alpha/Kolibri-1 | ✓ matches | 2,453 |
 
 ## Trending text-generation models not in the catalog
 
 - [Qwen/Qwen3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B) — 30,037,022 downloads, 1734 likes
-- [meta-llama/Llama-3.2-1B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct) — 7,494,880 downloads, 1785 likes
-- [zai-org/GLM-5.3](https://huggingface.co/zai-org/GLM-5.3) — 1,436,511 downloads, 2096 likes
-- [meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) — 927,792 downloads, 5210 likes
-- [deepseek-ai/DeepSeek-V4.1-Flash](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash) — 869,321 downloads, 4107 likes
-- [meta-llama/Llama-3.1-8B](https://huggingface.co/meta-llama/Llama-3.1-8B) — 632,999 downloads, 2600 likes
-- [autotrust/JEV-9B](https://huggingface.co/autotrust/JEV-9B) — 305,502 downloads, 110 likes
+- [meta-llama/Llama-3.2-1B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct) — 7,494,880 downloads, 1787 likes
+- [zai-org/GLM-5.3](https://huggingface.co/zai-org/GLM-5.3) — 1,436,511 downloads, 2098 likes
+- [meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) — 927,792 downloads, 5213 likes
+- [deepseek-ai/DeepSeek-V4.1-Flash](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash) — 869,321 downloads, 4109 likes
+- [meta-llama/Llama-3.1-8B](https://huggingface.co/meta-llama/Llama-3.1-8B) — 632,999 downloads, 2601 likes
+- [autotrust/JEV-9B](https://huggingface.co/autotrust/JEV-9B) — 305,502 downloads, 117 likes
 - [ornith-ai/Ornith-1.5-35B-A3B](https://huggingface.co/ornith-ai/Ornith-1.5-35B-A3B) — 266,845 downloads, 693 likes
 - [autotrust/JEV-27B](https://huggingface.co/autotrust/JEV-27B) — 134,153 downloads, 46 likes
-- [Cactus-Compute/needle3](https://huggingface.co/Cactus-Compute/needle3) — 111,473 downloads, 294 likes
-- [dealignai/GLM-5.3-CYBERSECURITY-FP8](https://huggingface.co/dealignai/GLM-5.3-CYBERSECURITY-FP8) — 92,804 downloads, 615 likes
+- [Cactus-Compute/needle3](https://huggingface.co/Cactus-Compute/needle3) — 111,473 downloads, 295 likes
+- [dealignai/GLM-5.3-CYBERSECURITY-FP8](https://huggingface.co/dealignai/GLM-5.3-CYBERSECURITY-FP8) — 92,804 downloads, 616 likes
 - [XiaomiMiMo/MiMo-V2.6-Pro-RL](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL) — 86,278 downloads, 652 likes
 - [XiaomiMiMo/MiMo-V2.6-Flash-RL](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-RL) — 52,380 downloads, 538 likes
 - [XingChen-AGI/Xing4.0-29B-A4B](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B) — 50,497 downloads, 1832 likes
