@@ -11,10 +11,10 @@ const ANSWER =
 const CHARS_PER_TOKEN = 4;
 
 const SPEEDS = [
-  { tps: 3, label: "3 tok/s", feel: "Painful", note: "Slower than you read. You'll go and make a coffee.", tone: "text-technical" },
-  { tps: 10, label: "10 tok/s", feel: "Readable", note: "About reading speed. Fine for chat.", tone: "text-borderline" },
-  { tps: 30, label: "30 tok/s", feel: "Fast", note: "Faster than you read. Feels like ChatGPT.", tone: "text-comfortable" },
-  { tps: 80, label: "80 tok/s", feel: "Instant", note: "What coding agents want: they read nothing, just wait.", tone: "text-excellent" },
+  { tps: 3, label: "3 tok/s", feel: "Painful", note: "Slower than you read. You'll go and make a coffee." },
+  { tps: 10, label: "10 tok/s", feel: "Readable", note: "About reading speed. Fine for chat." },
+  { tps: 30, label: "30 tok/s", feel: "Fast", note: "Faster than you read. Feels like ChatGPT." },
+  { tps: 80, label: "80 tok/s", feel: "Instant", note: "What coding agents want: they read nothing, just wait." },
 ];
 
 /**
@@ -59,9 +59,9 @@ export function SpeedFeel({ className, initial = 1 }: { className?: string; init
   const elapsed = (shown / ANSWER.length) * total;
 
   return (
-    <div ref={ref} className={cn("overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-brutal-sm", className)}>
+    <div ref={ref} className={cn("overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-brutal", className)}>
       <div className="border-b-2 border-ink p-4 sm:p-5">
-        <div role="radiogroup" aria-label="Generation speed" className="grid grid-cols-4 gap-1 rounded-2xl bg-muted p-1">
+        <div role="radiogroup" aria-label="Generation speed" className="grid grid-cols-4 gap-1 rounded-2xl border-2 border-ink bg-muted p-1">
           {SPEEDS.map((x, i) => (
             <button
               key={x.tps}
@@ -73,25 +73,25 @@ export function SpeedFeel({ className, initial = 1 }: { className?: string; init
                 run(i);
               }}
               className={cn(
-                "flex min-h-11 cursor-pointer flex-col items-center justify-center rounded-xl px-1 py-1.5 text-center transition",
-                speed === i ? "bg-card shadow-brutal-sm" : "text-muted-foreground hover:text-foreground",
+                "flex min-h-11 cursor-pointer flex-col items-center justify-center rounded-xl border-2 px-1 py-1.5 text-center transition",
+                speed === i ? "border-ink bg-primary text-on-fill" : "border-transparent text-muted-foreground hover:bg-card hover:text-foreground",
               )}
             >
               <span className="text-sm font-bold tabular-nums">{x.label}</span>
-              <span className={cn("text-[11px] font-semibold", speed === i ? x.tone : "")}>{x.feel}</span>
+              <span className="text-[11px] font-bold">{x.feel}</span>
             </button>
           ))}
         </div>
       </div>
       <div className="space-y-3 p-4 sm:p-5">
-        <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-md bg-primary px-3.5 py-2 text-sm text-primary-foreground">How can I save money on groceries?</div>
-        <div className="min-h-[9.5rem] rounded-2xl rounded-bl-md bg-muted px-3.5 py-2.5 text-sm leading-relaxed sm:min-h-[7.5rem]" aria-live="off">
+        <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-md border-2 border-ink bg-primary px-3.5 py-2 text-sm font-medium text-on-fill">How can I save money on groceries?</div>
+        <div className="min-h-[9.5rem] rounded-2xl rounded-bl-md border-2 border-ink bg-muted px-3.5 py-2.5 text-sm leading-relaxed sm:min-h-[7.5rem]" aria-live="off">
           {shown === 0 && !running ? <span className="text-muted-foreground">Press play to watch the answer appear.</span> : ANSWER.slice(0, shown)}
-          {running && <span className="ml-0.5 inline-block h-4 w-1.5 translate-y-0.5 animate-blink bg-primary" aria-hidden />}
+          {running && <span className="ml-0.5 inline-block h-4 w-1.5 translate-y-0.5 animate-blink bg-ink" aria-hidden />}
         </div>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm">
-            <span className={cn("font-semibold", s.tone)}>{s.feel}.</span> <span className="text-muted-foreground">{s.note}</span>
+            <span className="rounded-full border-[1.5px] border-ink bg-primary px-2 py-0.5 text-xs font-extrabold text-on-fill">{s.feel}</span> <span className="text-muted-foreground">{s.note}</span>
           </p>
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs tabular-nums text-muted-foreground">
@@ -100,7 +100,7 @@ export function SpeedFeel({ className, initial = 1 }: { className?: string; init
             <button
               type="button"
               onClick={() => run(speed)}
-              className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-xl border-2 border-ink bg-card px-3 text-sm font-medium transition hover:bg-muted active:scale-95"
+              className="press inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-full border-2 border-ink bg-card px-4 text-sm font-bold shadow-brutal-sm"
             >
               {shown > 0 ? <RotateCcw className="size-4" /> : <Play className="size-4" />}
               {shown > 0 ? "Replay" : "Play"}

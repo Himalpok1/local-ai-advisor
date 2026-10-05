@@ -28,7 +28,7 @@ export function PopularRigsMatrix({ rigs }: { rigs: (RigSummary & { category: Ri
   return (
     <div className="space-y-6">
       <div className="flex justify-center">
-        <div className="no-scrollbar inline-flex max-w-full items-center gap-1.5 overflow-x-auto rounded-2xl border-2 border-ink bg-muted/70 p-1.5 shadow-brutal-sm">
+        <div className="no-scrollbar inline-flex max-w-full items-center gap-1.5 overflow-x-auto rounded-full border-2 border-ink bg-card p-1.5 shadow-brutal-sm">
           {CATEGORIES.map((c) => {
             const Icon = c.icon;
             const active = tab === c.id;
@@ -38,11 +38,11 @@ export function PopularRigsMatrix({ rigs }: { rigs: (RigSummary & { category: Ri
                 type="button"
                 onClick={() => setTab(c.id)}
                 className={cn(
-                  "flex shrink-0 cursor-pointer select-none items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition",
-                  active ? "bg-card font-semibold text-foreground shadow-brutal-sm ring-1 ring-border/50" : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+                  "flex shrink-0 cursor-pointer select-none items-center gap-2 rounded-full border-2 px-4 py-2 text-sm font-bold transition",
+                  active ? "border-ink bg-primary text-on-fill" : "border-transparent text-foreground hover:bg-muted",
                 )}
               >
-                <Icon className={cn("size-4", active ? "text-link" : "text-muted-foreground")} />
+                <Icon className="size-4" />
                 <span>{c.label}</span>
               </button>
             );
@@ -54,11 +54,11 @@ export function PopularRigsMatrix({ rigs }: { rigs: (RigSummary & { category: Ri
         {filtered.map((rig) => (
           <div
             key={rig.id}
-            className="flex w-[85%] shrink-0 snap-center flex-col justify-between rounded-2xl border-2 border-ink bg-card p-5 shadow-brutal-sm transition-all duration-200 hover:border-ink hover:shadow-brutal sm:w-80 sm:p-6 md:w-auto"
+            className="flex w-[85%] shrink-0 snap-center flex-col justify-between rounded-2xl border-2 border-ink bg-card p-5 shadow-brutal sm:w-80 sm:p-6 md:w-auto"
           >
             <div>
               <div className="flex items-start justify-between gap-2">
-                <span className="inline-flex items-center rounded-lg bg-primary/25 px-2.5 py-1 text-xs font-semibold text-link">{rig.memory}</span>
+                <span className="inline-flex items-center rounded-full border-2 border-ink bg-primary px-2.5 py-0.5 text-xs font-bold text-on-fill">{rig.memory}</span>
                 {rig.price && <span className="text-xs text-muted-foreground">≈{fmtUSD(rig.price)}</span>}
               </div>
               <h3 className="mt-3 text-lg font-bold leading-snug tracking-tight text-foreground">{rig.name}</h3>
@@ -75,12 +75,12 @@ export function PopularRigsMatrix({ rigs }: { rigs: (RigSummary & { category: Ri
             <div className="mt-6 flex flex-col gap-2 border-t-2 border-ink pt-4">
               <Link
                 href={rig.href}
-                className="flex min-h-11 items-center justify-between rounded-xl bg-muted/70 px-3.5 py-2 text-sm font-semibold text-foreground transition-all duration-150 hover:bg-primary hover:text-primary-foreground"
+                className="flex min-h-11 items-center justify-between rounded-xl border-2 border-ink bg-card px-3.5 py-2 text-sm font-bold text-foreground transition-colors hover:bg-primary hover:text-on-fill"
               >
                 <span>Everything it can run</span>
                 <ArrowRight className="size-3.5" />
               </Link>
-              <Link href={rig.checkHref} className="inline-flex min-h-10 items-center px-1 text-sm font-medium text-link hover:underline">
+              <Link href={rig.checkHref} className="inline-flex min-h-10 items-center px-1 text-sm font-semibold text-link underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary hover:text-on-fill">
                 Check it for what I want to do
               </Link>
             </div>
@@ -96,15 +96,16 @@ export function PopularRigsMatrix({ rigs }: { rigs: (RigSummary & { category: Ri
 
 function Pick({ label, pick }: { label: string; pick?: RigPick }) {
   return (
-    <div className="rounded-xl border-2 border-ink bg-muted/40 p-3">
+    <div className="rounded-xl border-2 border-ink bg-muted p-3">
       <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</p>
       {pick ? (
         <>
           <Link href={pick.href} className="mt-0.5 block text-sm font-bold text-foreground hover:underline">
             {pick.model} <span className="font-normal text-muted-foreground">· {pick.quant}</span>
           </Link>
-          <p className={cn("mt-1 text-xs font-medium", COMFORT_STYLE[pick.level].text)}>
-            {COMFORT_LABEL[pick.level]} · {pick.speed}
+          <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground/80">
+            <span className={cn("rounded-full border-[1.5px] border-ink px-2 py-0.5 font-bold", COMFORT_STYLE[pick.level].chip)}>{COMFORT_LABEL[pick.level]}</span>
+            {pick.speed}
           </p>
         </>
       ) : (

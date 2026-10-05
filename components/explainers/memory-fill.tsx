@@ -26,10 +26,10 @@ const SCENARIOS: Scenario[] = [
     key: "big",
     tab: "A model that’s too big",
     parts: [
-      { label: "System", gb: 4, className: "bg-slate-400 dark:bg-slate-500" },
-      { label: "Your apps", gb: 3, className: "bg-sky-400 dark:bg-sky-500" },
+      { label: "System", gb: 4, className: "bg-sticker-teal" },
+      { label: "Your apps", gb: 3, className: "bg-sticker-blue" },
       { label: "Model", gb: 9.5, className: "bg-primary" },
-      { label: "Chat memory", gb: 1.5, className: "bg-amber-400" },
+      { label: "Chat memory", gb: 1.5, className: "bg-sticker-pink" },
     ],
     verdict: "It “fits”… but your computer crawls",
     detail: "The model squeezes out your apps. The computer starts swapping to disk and everything, including the AI, slows to a crawl.",
@@ -39,10 +39,10 @@ const SCENARIOS: Scenario[] = [
     key: "right",
     tab: "The right-sized model",
     parts: [
-      { label: "System", gb: 4, className: "bg-slate-400 dark:bg-slate-500" },
-      { label: "Your apps", gb: 3, className: "bg-sky-400 dark:bg-sky-500" },
+      { label: "System", gb: 4, className: "bg-sticker-teal" },
+      { label: "Your apps", gb: 3, className: "bg-sticker-blue" },
       { label: "Model", gb: 5.5, className: "bg-primary" },
-      { label: "Chat memory", gb: 1, className: "bg-amber-400" },
+      { label: "Chat memory", gb: 1, className: "bg-sticker-pink" },
     ],
     verdict: "Runs smoothly, with room to spare",
     detail: "Everything fits with a few GB left over, so the AI is fast and your other apps stay snappy.",
@@ -65,8 +65,8 @@ export function MemoryFill({ className }: { className?: string }) {
   const play = inView || reduce;
 
   return (
-    <div ref={ref} className={cn("rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-6", className)}>
-      <div role="tablist" aria-label="Scenario" className="grid grid-cols-2 gap-1 rounded-2xl bg-muted p-1">
+    <div ref={ref} className={cn("rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal sm:p-6", className)}>
+      <div role="tablist" aria-label="Scenario" className="grid grid-cols-2 gap-1 rounded-full border-2 border-ink bg-card p-1">
         {SCENARIOS.map((x, i) => (
           <button
             key={x.key}
@@ -75,8 +75,8 @@ export function MemoryFill({ className }: { className?: string }) {
             type="button"
             onClick={() => setIdx(i)}
             className={cn(
-              "min-h-11 cursor-pointer rounded-xl px-2 text-sm font-semibold transition",
-              idx === i ? "bg-card text-foreground shadow-brutal-sm" : "text-muted-foreground hover:text-foreground",
+              "min-h-11 cursor-pointer rounded-full border-2 px-2 text-sm font-bold transition",
+              idx === i ? "border-ink bg-primary text-on-fill" : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             {x.tab}
@@ -92,11 +92,11 @@ export function MemoryFill({ className }: { className?: string }) {
       </div>
 
       <div className="relative mt-2">
-        <div className="flex h-12 overflow-hidden rounded-xl bg-muted" key={s.key}>
+        <div className="flex h-12 overflow-hidden rounded-xl border-2 border-ink bg-muted" key={s.key}>
           {s.parts.map((p, i) => (
             <motion.div
               key={p.label}
-              className={cn("flex h-full items-center justify-center overflow-hidden whitespace-nowrap border-r-2 border-card text-[11px] font-semibold text-white last:border-r-0", p.className)}
+              className={cn("flex h-full items-center justify-center overflow-hidden whitespace-nowrap border-r-2 border-ink text-[11px] font-bold text-on-fill last:border-r-0", p.className)}
               initial={reduce ? false : { width: 0 }}
               animate={{ width: play ? `${(p.gb / scale) * 100}%` : 0 }}
               transition={{ duration: 0.6, delay: reduce ? 0 : 0.15 + i * 0.45, ease: [0.22, 1, 0.36, 1] }}
@@ -107,11 +107,11 @@ export function MemoryFill({ className }: { className?: string }) {
           ))}
         </div>
         {/* The physical limit of the machine. */}
-        <div className="pointer-events-none absolute -bottom-2 -top-2 w-0.5 rounded bg-foreground" style={{ left: `${(INSTALLED / scale) * 100}%` }} aria-hidden />
+        <div className="pointer-events-none absolute -bottom-2 -top-2 w-0.5 rounded bg-ink" style={{ left: `${(INSTALLED / scale) * 100}%` }} aria-hidden />
         {!s.ok && (
           <motion.div
             key={`over-${s.key}`}
-            className="pointer-events-none absolute inset-y-0 right-0 rounded-r-xl bg-[repeating-linear-gradient(135deg,transparent_0_6px,rgb(0_0_0/0.25)_6px_12px)]"
+            className="pointer-events-none absolute inset-y-0 right-0 rounded-r-xl bg-[repeating-linear-gradient(135deg,transparent_0_6px,var(--ink)_6px_8px)]"
             style={{ width: `${((used - INSTALLED) / scale) * 100}%` }}
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: play ? 1 : 0 }}
@@ -124,7 +124,7 @@ export function MemoryFill({ className }: { className?: string }) {
       <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
         {s.parts.map((p) => (
           <li key={p.label} className="flex items-center gap-1.5">
-            <span className={cn("size-2.5 rounded-sm", p.className)} />
+            <span className={cn("size-3 rounded-sm border-[1.5px] border-ink", p.className)} />
             {p.label} · {p.gb} GB
           </li>
         ))}
@@ -135,12 +135,12 @@ export function MemoryFill({ className }: { className?: string }) {
         initial={reduce ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: play ? 1 : 0, y: play ? 0 : 8 }}
         transition={{ delay: reduce ? 0 : 2, duration: 0.4 }}
-        className={cn("mt-4 flex gap-3 rounded-2xl p-3.5", s.ok ? "bg-comfortable/10" : "bg-technical/10")}
+        className={cn("mt-4 flex gap-3 rounded-2xl p-3.5", s.ok ? "border-2 border-ink bg-fill-comfortable text-on-fill" : "border-2 border-ink bg-fill-technical text-on-fill")}
       >
-        {s.ok ? <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-comfortable" /> : <TriangleAlert className="mt-0.5 size-5 shrink-0 text-technical" />}
+        {s.ok ? <CheckCircle2 className="mt-0.5 size-5 shrink-0" /> : <TriangleAlert className="mt-0.5 size-5 shrink-0" />}
         <div>
           <p className="font-semibold">{s.verdict}</p>
-          <p className="mt-0.5 text-sm text-muted-foreground">{s.detail}</p>
+          <p className="mt-0.5 text-sm text-on-fill/80">{s.detail}</p>
         </div>
       </motion.div>
     </div>

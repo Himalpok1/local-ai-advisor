@@ -235,10 +235,18 @@ input[type="range"] {
 
 /* Marker-pen highlight behind a keyword. */
 .marker {
-  background: linear-gradient(transparent 55%, var(--primary) 55% 92%, transparent 92%);
+  --mk: var(--primary);
+  background: linear-gradient(transparent 55%, var(--mk) 55% 92%, transparent 92%);
   padding-inline: 0.12em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
+}
+
+.marker-green {
+  --mk: var(--sticker-green);
+}
+.marker-pink {
+  --mk: var(--sticker-pink);
 }
 
 /* Hide scrollbar for touch-friendly horizontal swipe */

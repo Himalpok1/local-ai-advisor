@@ -27,9 +27,9 @@ export function LocalAiDiagram({ className }: { className?: string }) {
   }, [inView, reduce]);
 
   return (
-    <figure ref={ref} className={cn("rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-6", className)}>
-      <div className="relative rounded-2xl border-2 border-dashed border-ink bg-primary/[0.03] p-4 pt-9 sm:p-6 sm:pt-10">
-        <span className="absolute -top-3.5 left-4 inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-card px-3 py-1 text-xs font-semibold text-link">
+    <figure ref={ref} className={cn("rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal sm:p-6", className)}>
+      <div className="relative rounded-2xl border-2 border-dashed border-ink bg-muted p-4 pt-9 sm:p-6 sm:pt-10">
+        <span className="absolute -top-3.5 left-4 inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-sticker-green px-3 py-1 text-xs font-extrabold text-on-fill">
           <Laptop className="size-3.5" /> Your computer
         </span>
         <ol className="flex flex-col items-stretch gap-0 md:flex-row md:items-center">
@@ -41,13 +41,13 @@ export function LocalAiDiagram({ className }: { className?: string }) {
                 <div
                   className={cn(
                     "flex items-center gap-3 rounded-2xl border-2 bg-card p-3 transition-all duration-500 md:flex-1 md:flex-col md:p-4 md:text-center",
-                    on ? "border-ink shadow-brutal" : "border-ink opacity-70",
+                    on ? "border-ink shadow-brutal" : "border-ink opacity-60",
                   )}
                 >
                   <span
                     className={cn(
-                      "grid size-11 shrink-0 place-items-center rounded-xl transition-colors duration-500",
-                      on ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+                      "grid size-11 shrink-0 place-items-center rounded-xl border-2 border-ink transition-colors duration-500",
+                      on ? "bg-primary text-on-fill" : "bg-muted text-muted-foreground",
                     )}
                   >
                     <Icon className="size-5" />
@@ -62,7 +62,7 @@ export function LocalAiDiagram({ className }: { className?: string }) {
                 </div>
                 {i < NODES.length - 1 && (
                   <div className="flex justify-center py-1 md:px-1 md:py-0" aria-hidden>
-                    <span className={cn("h-7 w-1 rounded-full md:h-1 md:w-8", reduce ? "bg-primary/50" : "flow-y md:flow-x")} />
+                    <span className={cn("h-7 w-1 rounded-full md:h-1 md:w-8", reduce ? "bg-ink/50" : "flow-y md:flow-x")} />
                   </div>
                 )}
               </li>
