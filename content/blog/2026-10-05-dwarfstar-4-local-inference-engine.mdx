@@ -1,0 +1,67 @@
+---
+title: "DwarfStar 4: a narrow engine that runs big MoE models on your own machine"
+date: "2026-10-05"
+excerpt: "A new engine from the Redis creator runs big models like DeepSeek V4 Flash fast on a 96GB+ Mac — but only supports a handful of models."
+tags: ["local-llm", "new-models", "apps", "beginners"]
+author: "Ray, Your Local AI Advisor"
+---
+
+This week, the Hacker News front page featured an unusual new arrival: **DwarfStar 4** (`ds4`), a local LLM inference engine by Salvatore Sanfilippo — "antirez," the developer who created Redis. The repo passed 23,000 stars. Its pitch is a sentence from its own README: the code is "self-contained and deliberately narrow, not a general GGUF runner." Instead of supporting every model on earth, it supports a handful — and runs them faster because of it.
+
+![Flat illustration of a small glowing dwarf star beaming warm light onto a compact desktop computer and a laptop on a desk, symbolizing a powerful AI engine squeezed onto personal machines](/blog-images/dwarfstar-4-local-inference-engine-hero.webp)
+
+## What DwarfStar actually is
+
+DwarfStar is a small, self-contained inference engine written in C, targeting three backends: **Metal** (the primary target, on Macs with 96 GB of memory or more), **NVIDIA CUDA** (the DGX Spark is the main goal, plus multi-GPU setups including Ada Lovelace cards), and **ROCm** on Strix Halo systems like the Framework Desktop. It is MIT-licensed.
+
+The supported model list is deliberately short: **DeepSeek V4 Flash** (plus an experimental vision build), **DeepSeek V4.1 Flash** (Metal, and text inference on CUDA), **GLM 5.2 and 5.3** (plus Flash variants), **DeepSeek V4 PRO**, and **Qwen3.8 Flash Next** (Metal and CUDA). There is no general GGUF support — you run the GGUF files the project produces and ships. In exchange, everything is built and tested together: model loading, prompt rendering, tool calls, KV state, the HTTP server, and the coding agent are one integrated system rather than separate layers that happen to mostly work.
+
+## The trick: saying no to 95% of models
+
+Why does narrowness buy speed? A few ideas, in plain terms:
+
+- **Asymmetric quantization.** These models are Mixture-of-Experts: each token routes through a few "experts" that hold most of the weights. DwarfStar crushes those routed experts down to roughly 2-bit precision, but keeps the sensitive parts — the shared expert, the projections, the routing — at higher precision. You compress only the weights that tolerate it, so quality degrades far less than a uniform 2-bit squeeze would.
+- **Disk-resident memory.** Qwen3.8's big "engram" n-gram tables — about 95 GiB of them — stay on your SSD and are read on demand instead of being loaded into RAM. The actual Q2 weights are only 41.73 GiB, which is why the project calls it "the starting option for 64 GB Macs." Compressed KV caches work the same way: the disk holds what memory can't.
+- **Persistent KV cache.** Long session prefixes get saved to disk and resumed by hash. If you run a coding agent that re-sends 60,000 tokens of repo context every turn, skipping the re-prefill is a real time saver.
+
+There is also SSD streaming for smaller machines: the project's own guides say DeepSeek V4 Flash Q2 can stream off a fast SSD on a single 128 GB Mac or DGX Spark, and Q4 either streams or needs a 512 GB machine. Two Macs or two Sparks can also be glued together over RDMA for tensor parallelism.
+
+## The numbers
+
+The project publishes its own measurements (beta, fast-changing — treat them as a snapshot, not a lab review). For DeepSeek V4 Flash Q2:
+
+![Grouped bar chart of DwarfStar 4 generation speed in tokens per second for DeepSeek V4 Flash Q2: M5 Max 128GB at 39.4 t/s with 2K context and 27.6 t/s with 65K context; DGX Spark 128GB at 18.1 t/s with 2K context and 13.8 t/s with 65K context](/blog-images/dwarfstar-4-local-inference-engine-fig1.webp)
+
+Prefill (the "reading your prompt" phase) is even more dramatic: around 790 tokens/sec on the M5 Max and 826 on the DGX Spark at 2K context. And the README reports an eight-L40S Flash server setup reaching about **126 tokens/sec aggregate** across 16 sessions — real multi-user serving from a handful of Ada cards.
+
+Notice the 65K-context column on the chart: generation holds at ~28 t/s on a laptop Mac even with a long conversation. That is a usable agent loop on a machine you own, not a demo.
+
+## Who it's for — and who should skip it
+
+DwarfStar is for you if:
+
+- You have a 96 GB+ Mac, a DGX Spark, a Strix Halo box, or a couple of CUDA cards — the engine's stated targets.
+- You run long coding-agent sessions. There's a native agent (`ds4-agent`, with save/list/switch for saved sessions), and a server exposing OpenAI- and Anthropic-style endpoints, so clients like Pi, OpenCode, Codex CLI, and Claude Code can point at it.
+- You want your code to stay on your machine instead of going to a hosted API.
+
+Who should skip it: anyone who likes swapping between dozens of models weekly. That's still Ollama's job — and Ollama is fine at it. If your favorite model isn't on DwarfStar's short list, you're waiting on antirez, and the README says model support is "intentionally opportunistic": a model may be removed when a better replacement arrives.
+
+![Split-panel diagram contrasting a general tool (left: scattered mismatched grey blocks) with a narrow engine (right: tightly interlocking teal and gold gears fitted around a glowing star core)](/blog-images/dwarfstar-4-local-inference-engine-fig2.webp)
+
+## The honest caveats
+
+- **It's beta and moving fast.** The README says so plainly. Expect breakage.
+- **The code is largely AI-written.** The project discloses this openly: humans lead the ideas, testing, and debugging. That's honest — but read the code before you trust it with anything sensitive.
+- **The walled garden is real.** Narrowness is the product strategy, not a temporary gap. If you need model X that isn't supported, this engine isn't for you.
+- **Rough edges exist.** Early reviewers report crashes on CPU-only paths — stay on the supported GPU builds.
+
+## The takeaway
+
+DwarfStar 4 changes the answer to "what can I run on my own machine?" from a software direction, not a hardware one: instead of a faster card, you get an engine that says no to 95% of models so the remaining few run at frontier-class speed on a machine you can own. If you have the memory — 96 GB unified, a DGX Spark, or a Strix Halo box — and you live in a coding agent, it's worth an afternoon of experimentation. Everyone else: keep watching. Engines like this are the pattern to expect.
+
+Want to know if your machine fits one of the supported models? Run a check on [/check](/check), or learn how memory sizes map to models on [/learn](/learn).
+
+## Sources
+
+- [DwarfStar repo README](https://github.com/antirez/ds4) — supported models, hardware, speed claims, design notes (primary source)
+- [Dev.to write-up on DwarfStar 4](https://dev.to/ashraf_chowdury09/the-redis-guy-wrote-a-local-llm-engine-that-refuses-to-be-general-thats-why-it-works-1hmo) — project-published speed snapshot table, HN coverage
