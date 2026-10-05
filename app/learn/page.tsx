@@ -15,10 +15,9 @@ export default function LearnPage() {
   return (
     <div className="relative">
       <LegacyAnchorRedirect />
-      <div className="glow-primary pointer-events-none absolute inset-x-0 top-0 h-96" aria-hidden />
       <div className="relative mx-auto max-w-5xl px-4 pb-6 pt-8 sm:px-6 sm:pt-14">
         <header className="max-w-2xl animate-fade-up">
-          <p className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
+          <p className="inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-primary/15 px-3 py-1 text-xs font-semibold text-link">
             <BookOpen className="size-3.5" /> Free course · no sign-up
           </p>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-balance sm:text-5xl">Learn local AI, one step at a time</h1>
@@ -35,9 +34,9 @@ export default function LearnPage() {
           <CoursePath />
         </div>
 
-        <Reveal className="mt-14 rounded-3xl border border-border/70 bg-card p-5 sm:p-7">
+        <Reveal className="mt-14 rounded-2xl border-2 border-ink bg-card p-5 sm:p-7">
           <h2 className="flex items-center gap-2 text-lg font-bold">
-            <Sparkles className="size-5 text-primary" /> Jargon buster
+            <Sparkles className="size-5 text-link" /> Jargon buster
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">Saw a word you don’t know? Tap it to jump to the lesson that explains it.</p>
           <ul className="mt-4 flex flex-wrap gap-2">
@@ -45,7 +44,7 @@ export default function LearnPage() {
               <li key={g.term}>
                 <Link
                   href={`/learn/${g.slug}${g.anchor ? `#${g.anchor}` : ""}`}
-                  className="inline-flex min-h-10 items-center rounded-full border border-border/80 bg-background px-3.5 text-sm font-medium transition hover:border-primary/50 hover:bg-primary/5 hover:text-primary active:scale-95"
+                  className="inline-flex min-h-10 items-center rounded-full border-2 border-ink bg-background px-3.5 text-sm font-medium transition hover:border-ink hover:bg-primary/15 hover:text-link active:scale-95"
                 >
                   {g.term}
                 </Link>

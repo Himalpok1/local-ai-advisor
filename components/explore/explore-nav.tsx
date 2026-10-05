@@ -15,7 +15,7 @@ export const EXPLORE_SECTIONS: { id: ExploreSection; href: string; label: string
 export function ExploreNav({ current }: { current: ExploreSection }) {
   return (
     <nav aria-label="Explore" className="-mx-1 overflow-x-auto">
-      <ul className="flex w-max items-center gap-1 rounded-lg border bg-muted p-1">
+      <ul className="flex w-max items-center gap-1 rounded-lg border-2 bg-muted p-1">
         {EXPLORE_SECTIONS.map((s) => {
           const active = s.id === current;
           return (
@@ -25,7 +25,7 @@ export function ExploreNav({ current }: { current: ExploreSection }) {
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "block whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-ring",
-                  active ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+                  active ? "bg-card text-foreground shadow-brutal-sm" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {s.label}
@@ -91,8 +91,8 @@ export function ExploreSectionBlock({
 /** Informational callout. */
 export function Callout({ title, children, icon, className }: { title?: React.ReactNode; children: React.ReactNode; icon?: React.ReactNode; className?: string }) {
   return (
-    <aside className={cn("flex gap-3 rounded-xl border border-primary/25 bg-accent/50 p-4 text-sm", className)}>
-      {icon && <span className="mt-0.5 shrink-0 text-primary">{icon}</span>}
+    <aside className={cn("flex gap-3 rounded-xl border-2 border-ink bg-accent/50 p-4 text-sm", className)}>
+      {icon && <span className="mt-0.5 shrink-0 text-link">{icon}</span>}
       <div className="flex flex-col gap-1">
         {title && <p className="font-semibold">{title}</p>}
         <div className="text-muted-foreground [&_strong]:text-foreground">{children}</div>

@@ -63,29 +63,29 @@ export default function RuntimesPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[900px] text-sm">
               <caption className="sr-only">Runtimes by compute backend and API</caption>
-              <thead className="border-b bg-muted/60 text-xs text-muted-foreground">
+              <thead className="border-b-2 bg-muted/60 text-xs text-muted-foreground">
                 <tr>
                   <th scope="col" rowSpan={2} className="px-3 py-2 text-left font-medium">
                     Runtime
                   </th>
-                  <th scope="colgroup" colSpan={BACKENDS.length} className="border-l px-3 pt-2 pb-1 text-center font-medium">
+                  <th scope="colgroup" colSpan={BACKENDS.length} className="border-l-2 px-3 pt-2 pb-1 text-center font-medium">
                     Compute backends
                   </th>
-                  <th scope="colgroup" colSpan={APIS.length} className="border-l px-3 pt-2 pb-1 text-center font-medium">
+                  <th scope="colgroup" colSpan={APIS.length} className="border-l-2 px-3 pt-2 pb-1 text-center font-medium">
                     APIs exposed
                   </th>
-                  <th scope="col" rowSpan={2} className="border-l px-3 py-2 text-left font-medium">
+                  <th scope="col" rowSpan={2} className="border-l-2 px-3 py-2 text-left font-medium">
                     Formats
                   </th>
                 </tr>
                 <tr>
                   {BACKENDS.map((b, i) => (
-                    <th key={b} scope="col" title={BACKEND_LABEL[b]} className={cn("px-2 pb-2 text-center font-medium", i === 0 && "border-l")}>
+                    <th key={b} scope="col" title={BACKEND_LABEL[b]} className={cn("px-2 pb-2 text-center font-medium", i === 0 && "border-l-2")}>
                       {BACKEND_SHORT[b]}
                     </th>
                   ))}
                   {APIS.map((a, i) => (
-                    <th key={a} scope="col" title={apiLabel(a)} className={cn("px-2 pb-2 text-center font-medium", i === 0 && "border-l")}>
+                    <th key={a} scope="col" title={apiLabel(a)} className={cn("px-2 pb-2 text-center font-medium", i === 0 && "border-l-2")}>
                       {API_SHORT[a]}
                     </th>
                   ))}
@@ -102,7 +102,7 @@ export default function RuntimesPage() {
                     {BACKENDS.map((api, i) => {
                       const b = backendFor(rt, api);
                       return (
-                        <td key={api} className={cn("px-1.5 py-2 text-center", i === 0 && "border-l")}>
+                        <td key={api} className={cn("px-1.5 py-2 text-center", i === 0 && "border-l-2")}>
                           {b ? (
                             <span
                               className={cn("inline-block rounded px-1.5 py-0.5 text-xs font-medium capitalize", MATURITY_CELL[b.maturity])}
@@ -119,7 +119,7 @@ export default function RuntimesPage() {
                       );
                     })}
                     {APIS.map((a, i) => (
-                      <td key={a} className={cn("px-2 py-2 text-center", i === 0 && "border-l")}>
+                      <td key={a} className={cn("px-2 py-2 text-center", i === 0 && "border-l-2")}>
                         {rt.apis.includes(a) ? (
                           <Check className="mx-auto size-4 text-comfortable" aria-label="Yes" />
                         ) : (
@@ -127,7 +127,7 @@ export default function RuntimesPage() {
                         )}
                       </td>
                     ))}
-                    <td className="border-l px-3 py-2 text-xs whitespace-nowrap">{rt.formats.map((f) => FORMAT_LABEL[f]).join(", ")}</td>
+                    <td className="border-l-2 px-3 py-2 text-xs whitespace-nowrap">{rt.formats.map((f) => FORMAT_LABEL[f]).join(", ")}</td>
                   </tr>
                 ))}
               </tbody>
@@ -190,7 +190,7 @@ function RuntimeCard({ rt }: { rt: Runtime }) {
           </p>
         )}
 
-        <div className="overflow-x-auto rounded-lg border">
+        <div className="overflow-x-auto rounded-lg border-2">
           <table className="w-full text-xs">
             <caption className="sr-only">{rt.name}: backend maturity per operating system</caption>
             <thead className="bg-muted/60 text-muted-foreground">
@@ -230,7 +230,7 @@ function RuntimeCard({ rt }: { rt: Runtime }) {
           </table>
         </div>
 
-        <div className="mt-auto flex flex-col gap-1.5 border-t pt-3 text-xs">
+        <div className="mt-auto flex flex-col gap-1.5 border-t-2 pt-3 text-xs">
           <ExternalA href={rt.docsUrl}>Documentation</ExternalA>
           <SourceLink source={rt.source} />
           {rt.source.note && <p className="text-muted-foreground">{rt.source.note}</p>}

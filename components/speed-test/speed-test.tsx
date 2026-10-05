@@ -123,7 +123,7 @@ export function SpeedTest() {
               {hw ? " The engine column is our estimate for your machine with a native runtime." : " Pick your computer above to add our engine's estimate."}
             </p>
           </div>
-          <div className="overflow-x-auto rounded-xl border">
+          <div className="overflow-x-auto rounded-xl border-2">
             <table className="w-full min-w-[560px] text-sm">
               <thead className="bg-muted/60 text-left text-xs text-muted-foreground">
                 <tr>

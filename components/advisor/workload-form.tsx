@@ -248,7 +248,7 @@ export function AdvancedSettings({ value, onChange }: { value: WorkloadProfileIn
       <Field label={`GPU offload: ${value.gpuOffload === undefined ? "auto" : `${Math.round(value.gpuOffload * 100)}%`}`} hint="Fraction of layers on the GPU. Auto = as much as fits.">
         <div className="flex items-center gap-3">
           <input type="range" aria-label="GPU offload" min={0} max={100} value={Math.round((value.gpuOffload ?? 1) * 100)} onChange={(e) => onChange({ gpuOffload: Number(e.target.value) / 100 })} className="w-full" />
-          <button type="button" className="text-xs text-primary hover:underline" onClick={() => onChange({ gpuOffload: undefined })}>
+          <button type="button" className="text-xs text-link hover:underline" onClick={() => onChange({ gpuOffload: undefined })}>
             Auto
           </button>
         </div>

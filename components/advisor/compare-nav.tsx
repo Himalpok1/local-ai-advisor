@@ -10,9 +10,9 @@ export function CompareNav() {
     { href: "/compare/hardware", label: "Compare hardware for my workload" },
   ];
   return (
-    <nav aria-label="Compare" className="inline-flex flex-wrap gap-1 rounded-lg border bg-muted p-1">
+    <nav aria-label="Compare" className="inline-flex flex-wrap gap-1 rounded-lg border-2 bg-muted p-1">
       {items.map((i) => (
-        <Link key={i.href} href={i.href} className={cn("rounded-md px-3 py-1.5 text-sm font-medium", path === i.href ? "bg-card shadow-sm" : "text-muted-foreground hover:text-foreground")}>
+        <Link key={i.href} href={i.href} className={cn("rounded-md px-3 py-1.5 text-sm font-medium", path === i.href ? "bg-card shadow-brutal-sm" : "text-muted-foreground hover:text-foreground")}>
           {i.label}
         </Link>
       ))}

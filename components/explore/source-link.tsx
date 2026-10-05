@@ -1,18 +1,13 @@
 import { ExternalLink } from "lucide-react";
 import type { Confidence, Source } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
-
-const CONFIDENCE_STYLE: Record<Confidence, string> = {
-  high: "bg-comfortable/12 text-comfortable",
-  medium: "bg-acceptable/15 text-[color-mix(in_oklch,var(--c-acceptable)_75%,black)] dark:text-acceptable",
-  low: "bg-muted text-muted-foreground",
-};
+import { CONFIDENCE_CHIP } from "@/components/ui/tones";
 
 export function ConfidencePill({ level, className }: { level: Confidence; className?: string }) {
   return (
     <span
       title={`${level[0].toUpperCase() + level.slice(1)} confidence in this data`}
-      className={cn("inline-flex items-center rounded px-1.5 py-0.5 text-[11px] font-medium leading-none", CONFIDENCE_STYLE[level], className)}
+      className={cn("inline-flex items-center rounded-full border-2 border-ink px-1.5 py-0.5 text-[11px] font-bold leading-none", CONFIDENCE_CHIP[level], className)}
     >
       {level} confidence
     </span>
@@ -30,7 +25,7 @@ function hostOf(url: string) {
 /** External link that opens in a new tab with an accessible hint. */
 export function ExternalA({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={cn("inline-flex items-center gap-1 text-primary hover:underline", className)}>
+    <a href={href} target="_blank" rel="noopener noreferrer" className={cn("inline-flex items-center gap-1 font-semibold text-link underline decoration-primary decoration-2 underline-offset-2 hover:bg-primary hover:text-on-fill", className)}>
       {children}
       <ExternalLink className="size-3 shrink-0" aria-hidden />
       <span className="sr-only">(opens in a new tab)</span>

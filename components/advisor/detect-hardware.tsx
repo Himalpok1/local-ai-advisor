@@ -40,7 +40,7 @@ export function DetectHardware({ onPick, selectedId, className }: { onPick: (h: 
   }
 
   return (
-    <div role="status" className={cn("rounded-lg border bg-accent/40 p-3 text-sm", className)}>
+    <div role="status" className={cn("rounded-lg border-2 bg-accent/40 p-3 text-sm", className)}>
       <div className="flex items-start justify-between gap-2">
         <p>
           {result.label ? (
@@ -63,8 +63,8 @@ export function DetectHardware({ onPick, selectedId, className }: { onPick: (h: 
               onClick={() => onPick(h)}
               aria-pressed={h.id === selectedId}
               className={cn(
-                "rounded-md border px-2.5 py-1 text-xs font-medium transition",
-                h.id === selectedId ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:bg-muted",
+                "rounded-md border-2 px-2.5 py-1 text-xs font-medium transition",
+                h.id === selectedId ? "border-ink bg-primary text-primary-foreground" : "bg-card hover:bg-muted",
               )}
             >
               {candidateLabel(h, result.candidates)}

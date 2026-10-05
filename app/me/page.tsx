@@ -139,7 +139,7 @@ export default async function MePage() {
           </Card>
         ) : (
           <Card className="p-6 text-sm text-muted-foreground">
-            Measured a model yourself? <Link href="/community/submit" className="font-medium text-primary hover:underline">Report the speed</Link> and it calibrates the estimates for everyone with your chip.
+            Measured a model yourself? <Link href="/community/submit" className="font-medium text-link hover:underline">Report the speed</Link> and it calibrates the estimates for everyone with your chip.
           </Card>
         )}
       </section>
@@ -150,7 +150,7 @@ export default async function MePage() {
 function SectionTitle({ id, icon, title }: { id: string; icon: React.ReactNode; title: string }) {
   return (
     <h2 id={id} className="flex scroll-mt-24 items-center gap-2 text-xl font-semibold">
-      <span className="text-primary">{icon}</span>
+      <span className="text-link">{icon}</span>
       {title}
     </h2>
   );
@@ -166,7 +166,7 @@ async function Alerts({ rigs, seenAt }: { rigs: DecodedRig[]; seenAt: Date | nul
   if (!alerts.length) {
     return (
       <Card className="p-6 text-sm text-muted-foreground">
-        None of the releases from the last 45 days run acceptably on your rigs for what you use them for. <Link href="/new-models" className="font-medium text-primary hover:underline">See all new models</Link>.
+        None of the releases from the last 45 days run acceptably on your rigs for what you use them for. <Link href="/new-models" className="font-medium text-link hover:underline">See all new models</Link>.
       </Card>
     );
   }
@@ -176,7 +176,7 @@ async function Alerts({ rigs, seenAt }: { rigs: DecodedRig[]; seenAt: Date | nul
       <ul className="grid gap-3 md:grid-cols-2">
         {alerts.map((a) => (
           <li key={a.item.repo}>
-            <Card className={cn("flex h-full flex-col gap-2 p-4", a.unread && "border-primary/50")}>
+            <Card className={cn("flex h-full flex-col gap-2 p-4", a.unread && "border-ink")}>
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0">
                   <Link href={a.href} className="break-words font-semibold hover:underline">

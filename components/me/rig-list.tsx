@@ -62,7 +62,7 @@ function RigCard({ rig }: { rig: RigDto }) {
               });
             }}
           >
-            <input autoFocus value={name} onChange={(e) => setName(e.target.value)} maxLength={80} aria-label="Rig name" className="h-8 min-w-0 flex-1 rounded-lg border bg-card px-2.5 text-sm" />
+            <input autoFocus value={name} onChange={(e) => setName(e.target.value)} maxLength={80} aria-label="Rig name" className="h-8 min-w-0 flex-1 rounded-lg border-2 bg-card px-2.5 text-sm" />
             <button type="submit" disabled={pending || !name.trim()} className={buttonClass("primary", "sm")}>
               Save
             </button>

@@ -139,7 +139,7 @@ export default async function Page(props: Props) {
         </p>
       ) : (
         <Section title="How it rates for each workload" intro="Same model and machine, different jobs. Agents and long documents send far bigger prompts than chat, so they need much more speed and memory.">
-          <div className="overflow-x-auto rounded-xl border">
+          <div className="overflow-x-auto rounded-xl border-2">
             <table className="w-full min-w-[640px] text-sm">
               <thead className="bg-muted/60 text-left text-xs text-muted-foreground">
                 <tr>
@@ -167,7 +167,7 @@ export default async function Page(props: Props) {
                     <td className="px-4 py-3 tabular-nums">{!blocked(rec.level) && rec.performance ? fmtSec(rec.performance.coldPromptSec) : "—"}</td>
                     <td className="px-4 py-3 tabular-nums">{blocked(rec.level) ? "—" : fmtCtx(rec.context.effective)}</td>
                     <td className="px-4 py-3 text-right">
-                      <Link href={evaluateHref(rec, preset)} className="inline-flex items-center gap-1 text-primary hover:underline">
+                      <Link href={evaluateHref(rec, preset)} className="inline-flex items-center gap-1 text-link hover:underline">
                         Details <ArrowRight className="size-3.5" aria-hidden />
                       </Link>
                     </td>
@@ -202,7 +202,7 @@ export default async function Page(props: Props) {
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <Section title={`Other models for ${hardware.name}`} intro="The best-rated models for chat on this machine.">
           {others.length ? (
-            <ul className="divide-y rounded-xl border">
+            <ul className="divide-y rounded-xl border-2">
               {others.map((r) => (
                 <li key={r.model.id}>
                   <Link href={canIRunHref(r.model, hardware)} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-muted/50">
@@ -225,7 +225,7 @@ export default async function Page(props: Props) {
                   {closedApps.map((r, i) => (
                     <span key={r.model.id}>
                       {i > 0 && (i === closedApps.length - 1 ? " or " : ", ")}
-                      <Link href={canIRunHref(r.model, hardware)} className="text-primary hover:underline">
+                      <Link href={canIRunHref(r.model, hardware)} className="text-link hover:underline">
                         {r.model.name}
                       </Link>
                     </span>
@@ -242,7 +242,7 @@ export default async function Page(props: Props) {
 
         <Section title={`Cheapest machines for ${model.name}`} intro="Hardware rated comfortable or better for chat, lowest price first.">
           {cheaper.length ? (
-            <ul className="divide-y rounded-xl border">
+            <ul className="divide-y rounded-xl border-2">
               {cheaper.map((r) => (
                 <li key={r.hardware.id}>
                   <Link href={canIRunHref(model, r.hardware)} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-muted/50">
@@ -266,7 +266,7 @@ export default async function Page(props: Props) {
               {siblings.map((h, i) => (
                 <span key={h.id}>
                   {i > 0 && ", "}
-                  <Link href={canIRunHref(model, h)} className="text-primary hover:underline">
+                  <Link href={canIRunHref(model, h)} className="text-link hover:underline">
                     {h.systemRamGB} GB
                   </Link>
                 </span>

@@ -37,8 +37,8 @@ export default function Lesson() {
       <Step n={3} title="Why people do it">
         <ul className="grid gap-2 sm:grid-cols-2">
           {WHY.map((w) => (
-            <li key={w.title} className="flex gap-3 rounded-2xl border border-border/70 bg-card p-3.5">
-              <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+            <li key={w.title} className="flex gap-3 rounded-2xl border-2 border-ink bg-card p-3.5">
+              <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/25 text-link">
                 <w.icon className="size-5" />
               </span>
               <span>

@@ -35,7 +35,7 @@ export function ModelFacts({ r }: { r: ParsedHfModel }) {
               {f.downloads !== undefined && ` · ${f.downloads.toLocaleString("en-US")} downloads`}
             </CardDescription>
           </div>
-          <a href={m.source.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-primary hover:underline">
+          <a href={m.source.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-link hover:underline">
             Hugging Face <ExternalLink className="size-3.5" />
           </a>
         </div>
@@ -93,7 +93,7 @@ export function ModelFacts({ r }: { r: ParsedHfModel }) {
               const known = !!m.knownSizesGB?.[q];
               const sizeFormat = f.sizeFormats[q] ?? fmt;
               return (
-                <div key={q} className="rounded-lg border p-2 text-center">
+                <div key={q} className="rounded-lg border-2 p-2 text-center">
                   <p className="text-xs text-muted-foreground">{QUANTIZATIONS[q].formatNames[fmt] ?? QUANTIZATIONS[q].label}</p>
                   <p className="font-medium tabular-nums">{fmtGB(weightsGB(m, QUANTIZATIONS[q], sizeFormat))}</p>
                   <p className="text-[10px] text-muted-foreground">{known ? `${sizeFormat} file size` : "computed · low confidence"}</p>

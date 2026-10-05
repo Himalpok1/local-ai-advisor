@@ -14,8 +14,8 @@ export default function Lesson() {
   return (
     <>
       <Step n={1} id="gguf" title="GGUF: the format that runs everywhere">
-        <div className="flex gap-3 rounded-2xl border border-border/70 bg-card p-4">
-          <FileText className="mt-0.5 size-6 shrink-0 text-primary" />
+        <div className="flex gap-3 rounded-2xl border-2 border-ink bg-card p-4">
+          <FileText className="mt-0.5 size-6 shrink-0 text-link" />
           <div>
             <p>
               <strong>GGUF</strong> is a single-file model format used by llama.cpp, and therefore by Ollama, LM Studio, Jan and many others. It runs on Mac,
@@ -42,8 +42,8 @@ export default function Lesson() {
         <p>Runtimes talk to your graphics chip through a low-level platform. Which one depends on your hardware:</p>
         <ul className="grid gap-2 sm:grid-cols-2">
           {GPUS.map((g) => (
-            <li key={g.id} className="flex gap-3 rounded-2xl border border-border/70 bg-card p-3.5">
-              <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+            <li key={g.id} className="flex gap-3 rounded-2xl border-2 border-ink bg-card p-3.5">
+              <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/25 text-link">
                 <g.icon className="size-5" />
               </span>
               <span>

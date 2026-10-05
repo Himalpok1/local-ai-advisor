@@ -130,7 +130,7 @@ export function ModelsExplorer({ rows }: { rows: ModelRow[] }) {
       <Card className="p-4 sm:p-5">
         <form role="search" aria-label="Filter models" onSubmit={(e) => e.preventDefault()} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Field label="Search" className="sm:col-span-2 lg:col-span-1">
-            <div className="flex h-10 items-center gap-2 rounded-lg border bg-card px-3 focus-within:outline-2 focus-within:outline-ring">
+            <div className="flex h-10 items-center gap-2 rounded-lg border-2 bg-card px-3 focus-within:outline-2 focus-within:outline-ring">
               <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden />
               <input
                 type="search"
@@ -234,7 +234,7 @@ export function ModelsExplorer({ rows }: { rows: ModelRow[] }) {
             id="model-sort"
             value={sort}
             onChange={(e) => setSort(e.target.value as SortKey)}
-            className="h-8 rounded-lg border bg-card px-2 text-sm focus-visible:outline-2 focus-visible:outline-ring"
+            className="h-8 rounded-lg border-2 bg-card px-2 text-sm focus-visible:outline-2 focus-visible:outline-ring"
           >
             {SORTS.map((s) => (
               <option key={s.value} value={s.value}>

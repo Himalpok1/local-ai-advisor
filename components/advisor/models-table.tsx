@@ -77,7 +77,7 @@ export function ModelsTable({
               setSort(e.target.value as SortKey);
               setDir(-1);
             }}
-            className="h-10 rounded-xl border border-border/80 bg-card px-3 text-sm font-medium text-foreground"
+            className="h-10 rounded-xl border-2 border-ink bg-card px-3 text-sm font-medium text-foreground"
           >
             <option value="rating">Rating</option>
             <option value="generation">Speed</option>
@@ -90,7 +90,7 @@ export function ModelsTable({
           {sorted.map((r) => {
             const blocked = r.level === "unsupported" || r.level === "does-not-fit";
             return (
-              <li key={r.id} className="flex items-stretch gap-1 rounded-2xl border border-border/70 bg-card">
+              <li key={r.id} className="flex items-stretch gap-1 rounded-2xl border-2 border-ink bg-card">
                 {selectable && (
                   <label className="grid w-11 shrink-0 cursor-pointer place-items-center rounded-l-2xl">
                     <input type="checkbox" aria-label={`Compare ${r.model.name}`} checked={selected?.has(r.model.id) ?? false} onChange={() => onToggle?.(r.model.id)} className="size-5 accent-[var(--primary)]" />
@@ -128,9 +128,9 @@ export function ModelsTable({
         </ul>
       </div>
 
-      <div className="hidden overflow-x-auto rounded-xl border bg-card md:block">
+      <div className="hidden overflow-x-auto rounded-xl border-2 bg-card md:block">
         <table className="w-full text-sm">
-          <thead className="border-b bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
+          <thead className="border-b-2 bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
             <tr>
               {selectable && <th className="py-2 pl-4 pr-2 font-medium"><span className="sr-only">Compare</span></th>}
               <th className="py-2 pl-4 pr-4 font-medium">Model</th>
@@ -151,14 +151,14 @@ export function ModelsTable({
               const gen = r.dimensions.find((d) => d.key === "generation");
               const pp = r.dimensions.find((d) => d.key === "prefill");
               return (
-                <tr key={r.id} className="border-b last:border-0 hover:bg-muted/30">
+                <tr key={r.id} className="border-b-2 last:border-0 hover:bg-muted/30">
                   {selectable && (
                     <td className="py-2 pl-4 pr-2">
                       <input type="checkbox" aria-label={`Compare ${r.model.name}`} checked={selected?.has(r.model.id) ?? false} onChange={() => onToggle?.(r.model.id)} className="size-4 accent-[var(--primary)]" />
                     </td>
                   )}
                   <td className="py-2 pl-4 pr-4">
-                    <Link href={hrefFor(r)} className="font-medium hover:text-primary hover:underline">
+                    <Link href={hrefFor(r)} className="font-medium hover:text-link hover:underline">
                       {r.model.name}
                     </Link>
                     <span className="block text-xs text-muted-foreground">

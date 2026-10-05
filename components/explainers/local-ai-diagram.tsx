@@ -27,9 +27,9 @@ export function LocalAiDiagram({ className }: { className?: string }) {
   }, [inView, reduce]);
 
   return (
-    <figure ref={ref} className={cn("rounded-3xl border border-border/70 bg-card p-4 shadow-sm sm:p-6", className)}>
-      <div className="relative rounded-2xl border-2 border-dashed border-primary/30 bg-primary/[0.03] p-4 pt-9 sm:p-6 sm:pt-10">
-        <span className="absolute -top-3.5 left-4 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-card px-3 py-1 text-xs font-semibold text-primary">
+    <figure ref={ref} className={cn("rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-6", className)}>
+      <div className="relative rounded-2xl border-2 border-dashed border-ink bg-primary/[0.03] p-4 pt-9 sm:p-6 sm:pt-10">
+        <span className="absolute -top-3.5 left-4 inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-card px-3 py-1 text-xs font-semibold text-link">
           <Laptop className="size-3.5" /> Your computer
         </span>
         <ol className="flex flex-col items-stretch gap-0 md:flex-row md:items-center">
@@ -40,8 +40,8 @@ export function LocalAiDiagram({ className }: { className?: string }) {
               <li key={n.title} className="flex flex-col items-stretch md:flex-1 md:flex-row md:items-center">
                 <div
                   className={cn(
-                    "flex items-center gap-3 rounded-2xl border bg-card p-3 transition-all duration-500 md:flex-1 md:flex-col md:p-4 md:text-center",
-                    on ? "border-primary/50 shadow-md shadow-primary/10" : "border-border/70 opacity-70",
+                    "flex items-center gap-3 rounded-2xl border-2 bg-card p-3 transition-all duration-500 md:flex-1 md:flex-col md:p-4 md:text-center",
+                    on ? "border-ink shadow-brutal" : "border-ink opacity-70",
                   )}
                 >
                   <span

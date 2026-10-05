@@ -38,7 +38,7 @@ export function RecommendationCard({
   const blocked = rec.level === "unsupported" || rec.level === "does-not-fit";
   return (
     <Card className={cn("flex flex-col overflow-hidden", className)}>
-      <div className={cn("border-b px-5 py-4", style.bg)}>
+      <div className={cn("border-b-2 px-5 py-4", style.bg)}>
         {eyebrow && <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{eyebrow}</p>}
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0">
@@ -94,10 +94,10 @@ export function RecommendationCard({
           </Disclosure>
         )}
         {blocked && <p className="text-sm text-muted-foreground">{rec.explanation.blockers[0]}</p>}
-        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-3">
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 border-t-2 border-ink pt-3">
           <ConfidenceBadge level={rec.confidence.level} />
           {href && (
-            <Link href={href} className="inline-flex min-h-10 items-center gap-1 text-sm font-semibold text-primary hover:underline">
+            <Link href={href} className="inline-flex min-h-10 items-center gap-1 text-sm font-semibold text-link hover:underline">
               How to install & more <ArrowRight className="size-4" />
             </Link>
           )}

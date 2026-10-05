@@ -65,7 +65,7 @@ export function MemoryFill({ className }: { className?: string }) {
   const play = inView || reduce;
 
   return (
-    <div ref={ref} className={cn("rounded-3xl border border-border/70 bg-card p-4 shadow-sm sm:p-6", className)}>
+    <div ref={ref} className={cn("rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-6", className)}>
       <div role="tablist" aria-label="Scenario" className="grid grid-cols-2 gap-1 rounded-2xl bg-muted p-1">
         {SCENARIOS.map((x, i) => (
           <button
@@ -76,7 +76,7 @@ export function MemoryFill({ className }: { className?: string }) {
             onClick={() => setIdx(i)}
             className={cn(
               "min-h-11 cursor-pointer rounded-xl px-2 text-sm font-semibold transition",
-              idx === i ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+              idx === i ? "bg-card text-foreground shadow-brutal-sm" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {x.tab}

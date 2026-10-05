@@ -45,7 +45,7 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
             </Link>
             {/* Course position: one dot per lesson. */}
             <div className="mt-2 flex items-center gap-3 lg:mt-0">
-              <span className="text-sm font-semibold text-primary">
+              <span className="text-sm font-semibold text-link">
                 Lesson {i + 1} of {LESSONS.length}
               </span>
               <span className="flex flex-1 gap-1" aria-hidden>
@@ -56,14 +56,14 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
             </div>
             <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">{lesson.title}</h1>
             <p className="mt-3 text-lg leading-relaxed text-muted-foreground text-pretty">{lesson.summary}</p>
-            <div className="mt-5 rounded-2xl border border-border/70 bg-muted/40 p-4">
+            <div className="mt-5 rounded-2xl border-2 border-ink bg-muted/40 p-4">
               <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <Clock className="size-3.5" /> {lesson.minutes} min · you’ll learn
               </p>
               <ul className="mt-2 grid gap-1.5 sm:grid-cols-3">
                 {lesson.outcomes.map((o) => (
                   <li key={o} className="flex items-start gap-2 text-sm font-medium">
-                    <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                    <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-link" />
                     {o}
                   </li>
                 ))}

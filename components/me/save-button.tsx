@@ -33,7 +33,7 @@ export function SaveButton({ label }: { label?: string }) {
 
   if (state === "saved") {
     return (
-      <Link href="/me#saved" className="inline-flex h-8 items-center gap-1.5 rounded-xl border border-border/80 bg-card px-3 text-xs font-medium text-comfortable sm:text-sm">
+      <Link href="/me#saved" className="inline-flex h-8 items-center gap-1.5 rounded-xl border-2 border-ink bg-card px-3 text-xs font-medium text-comfortable sm:text-sm">
         <BookmarkCheck className="size-4" /> Saved · view
       </Link>
     );
@@ -72,7 +72,7 @@ export function SaveButton({ label }: { label?: string }) {
           onChange={(e) => setNaming(e.target.value)}
           maxLength={120}
           aria-label="Name for this saved item"
-          className="h-8 w-56 rounded-lg border border-border/80 bg-card px-2.5 text-sm"
+          className="h-8 w-56 rounded-lg border-2 border-ink bg-card px-2.5 text-sm"
         />
         <Button type="submit" size="sm" disabled={state === "busy" || !naming.trim()}>
           {state === "busy" && <Loader2 className="size-3.5 animate-spin" aria-hidden />} Save

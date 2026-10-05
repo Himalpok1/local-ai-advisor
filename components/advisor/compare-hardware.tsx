@@ -123,15 +123,15 @@ export function CompareHardware({ initial, initialHardware }: { initial: AppStat
       <p className="mt-6 text-sm text-muted-foreground">
         {model.name} · {workloadLabel(state.workload)}
       </p>
-      <div className="mt-2 overflow-x-auto rounded-xl border bg-card">
+      <div className="mt-2 overflow-x-auto rounded-xl border-2 bg-card">
         <table className="w-full min-w-[720px] text-sm">
           <thead>
-            <tr className="border-b bg-muted/40">
+            <tr className="border-b-2 bg-muted/40">
               <th className="sticky left-0 w-44 bg-muted/40 py-3 pl-4 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">Machine</th>
               {recs.map((r) => (
                 <th key={r.hardware.id} className="min-w-48 px-3 py-3 text-left align-top font-medium">
                   <div className="flex items-start justify-between gap-2">
-                    <Link href={recHref(r, state.workload)} className="hover:text-primary hover:underline">
+                    <Link href={recHref(r, state.workload)} className="hover:text-link hover:underline">
                       {r.hardware.name}
                     </Link>
                     <button aria-label={`Remove ${r.hardware.name}`} className="rounded p-0.5 text-muted-foreground hover:bg-muted" onClick={() => setHwIds(hwIds.filter((x) => x !== r.hardware.id))}>
@@ -145,7 +145,7 @@ export function CompareHardware({ initial, initialHardware }: { initial: AppStat
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.label} className="border-b last:border-0">
+              <tr key={row.label} className="border-b-2 last:border-0">
                 <th scope="row" className="sticky left-0 bg-card py-2 pl-4 text-left font-normal text-muted-foreground">
                   {row.label}
                 </th>

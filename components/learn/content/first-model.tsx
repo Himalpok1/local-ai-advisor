@@ -46,18 +46,18 @@ export default function Lesson() {
       <Step n={2} title="Install an app">
         <ul className="grid gap-3 sm:grid-cols-2">
           {APPS.map((a) => (
-            <li key={a.name} className="flex flex-col rounded-2xl border border-border/70 bg-card p-4">
+            <li key={a.name} className="flex flex-col rounded-2xl border-2 border-ink bg-card p-4">
               <div className="flex items-center gap-3">
-                <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
+                <span className="grid size-10 place-items-center rounded-xl bg-primary/25 text-link">
                   <a.icon className="size-5" />
                 </span>
                 <div>
                   <p className="font-bold">{a.name}</p>
-                  <p className="text-xs font-semibold text-primary">{a.tag}</p>
+                  <p className="text-xs font-semibold text-link">{a.tag}</p>
                 </div>
               </div>
               <p className="mt-3 flex-1 text-sm text-muted-foreground">{a.text}</p>
-              <a href={a.href} target="_blank" rel="noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+              <a href={a.href} target="_blank" rel="noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-link hover:underline">
                 <Download className="size-4" /> Get {a.name}
               </a>
             </li>
@@ -82,13 +82,13 @@ export default function Lesson() {
       <Step n={4} title="Say hello, and check the speed">
         <p>
           Ask it something. Most apps show the speed in tokens per second under each answer. Compare it with what you learned in{" "}
-          <Link href="/learn/speed" className="font-medium text-primary hover:underline">
+          <Link href="/learn/speed" className="font-medium text-link hover:underline">
             the speed lesson
           </Link>
           : 10+ tok/s is fine for chat, 30+ feels fast.
         </p>
-        <div className="flex gap-3 rounded-2xl border border-border/70 bg-card p-4">
-          <MessageSquareText className="mt-0.5 size-5 shrink-0 text-primary" />
+        <div className="flex gap-3 rounded-2xl border-2 border-ink bg-card p-4">
+          <MessageSquareText className="mt-0.5 size-5 shrink-0 text-link" />
           <p className="text-sm text-muted-foreground">
             <strong className="text-foreground">Too slow?</strong> Try a smaller model or a lower quant, close heavy apps, or shorten the context in the app’s
             settings. <strong className="text-foreground">Fast and comfy?</strong> Try the next size up.

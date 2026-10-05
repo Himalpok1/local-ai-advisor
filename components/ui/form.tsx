@@ -36,7 +36,7 @@ export function Select<T extends string>({
         aria-label={ariaLabel}
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value as T)}
-        className="h-10 w-full appearance-none rounded-xl border border-border/80 bg-card pl-3.5 pr-9 text-sm text-foreground shadow-2xs transition-colors focus-visible:outline-2 focus-visible:outline-ring"
+        className="h-11 w-full cursor-pointer appearance-none rounded-xl border-2 border-ink bg-card pl-3.5 pr-10 text-sm font-medium text-foreground shadow-brutal-sm transition-colors hover:bg-muted"
       >
         {groups.map((g) =>
           g ? (
@@ -56,7 +56,7 @@ export function Select<T extends string>({
           ),
         )}
       </select>
-      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-foreground" />
     </div>
   );
 }
@@ -81,7 +81,7 @@ export function Segmented<T extends string | number>({
       role="radiogroup"
       aria-label={ariaLabel}
       className={cn(
-        "inline-flex max-w-full items-center gap-1 overflow-x-auto no-scrollbar rounded-xl border border-border/70 bg-muted/80 p-1 shadow-2xs",
+        "inline-flex max-w-full items-center gap-1 overflow-x-auto no-scrollbar rounded-full border-2 border-ink bg-card p-1 shadow-brutal-sm",
         className
       )}
     >
@@ -96,11 +96,11 @@ export function Segmented<T extends string | number>({
             title={o.hint}
             onClick={() => onChange(o.value)}
             className={cn(
-              "shrink-0 rounded-lg font-medium transition cursor-pointer select-none",
+              "shrink-0 rounded-full border-2 font-semibold transition cursor-pointer select-none",
               size === "sm" ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm",
               isSelected
-                ? "bg-card text-foreground shadow-xs ring-1 ring-border/50 font-semibold"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                ? "border-ink bg-primary font-bold text-on-fill"
+                : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             {o.label}
@@ -133,11 +133,11 @@ export function NumberInput({
   placeholder?: string;
 }) {
   return (
-    <div className={cn("flex h-10 items-center rounded-xl border border-border/80 bg-card shadow-2xs focus-within:outline-2 focus-within:outline-ring", className)}>
+    <div className={cn("flex h-11 items-center rounded-xl border-2 border-ink bg-card shadow-brutal-sm focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-ring", className)}>
       <input
         type="number"
         aria-label={ariaLabel}
-        className="h-full w-full min-w-0 rounded-xl bg-transparent px-3 text-sm text-foreground outline-none"
+        className="h-full w-full min-w-0 rounded-xl bg-transparent px-3 text-sm font-medium text-foreground outline-none"
         value={value ?? ""}
         min={min}
         max={max}
@@ -161,9 +161,9 @@ export function Switch({ checked, onChange, label, hint }: { checked: boolean; o
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
-        className={cn("mt-0.5 inline-flex h-5 w-9 shrink-0 items-center rounded-full transition cursor-pointer", checked ? "bg-primary" : "bg-muted-foreground/30")}
+        className={cn("mt-0.5 inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-ink transition-colors cursor-pointer", checked ? "bg-sticker-green" : "bg-muted")}
       >
-        <span className={cn("size-4 rounded-full bg-white shadow-xs transition-transform", checked ? "translate-x-4.5" : "translate-x-0.5")} />
+        <span className={cn("size-4 rounded-full bg-ink transition-transform", checked ? "translate-x-[22px]" : "translate-x-0.5")} />
       </button>
       <span className="flex flex-col">
         <span className="text-sm font-medium text-foreground">{label}</span>
@@ -196,18 +196,18 @@ export function OptionCard({
       aria-pressed={selected}
       onClick={onClick}
       className={cn(
-        "flex w-full items-start gap-3 rounded-xl border border-border/80 bg-card p-3.5 text-left transition cursor-pointer hover:border-primary/50 hover:shadow-2xs focus-visible:outline-2 focus-visible:outline-ring",
-        selected && "border-primary bg-primary/5 ring-1 ring-primary",
+        "flex w-full items-start gap-3 rounded-xl border-2 border-ink bg-card p-3.5 text-left transition cursor-pointer hover:bg-muted focus-visible:outline-3 focus-visible:outline-ring",
+        selected && "bg-primary text-on-fill shadow-brutal-sm hover:bg-primary",
         className,
       )}
     >
-      {icon && <span className={cn("mt-0.5 shrink-0 text-muted-foreground transition-colors", selected && "text-primary")}>{icon}</span>}
+      {icon && <span className={cn("mt-0.5 shrink-0 text-muted-foreground transition-colors", selected && "text-on-fill")}>{icon}</span>}
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="flex items-center justify-between gap-2 text-sm font-medium">
+        <span className="flex items-center justify-between gap-2 text-sm font-bold">
           <span className="truncate">{title}</span>
           {badge}
         </span>
-        {description && <span className="text-xs text-muted-foreground leading-relaxed">{description}</span>}
+        {description && <span className={cn("text-xs leading-relaxed", selected ? "text-on-fill/80" : "text-muted-foreground")}>{description}</span>}
       </span>
     </button>
   );

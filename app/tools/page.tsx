@@ -60,7 +60,7 @@ export default function ToolsPage() {
           {LAYERS.map((l, i) => (
             <li key={l.title} className="relative flex">
               <Card className="flex w-full flex-col gap-1 p-4">
-                <span className="text-xs font-medium text-primary">{i + 1}</span>
+                <span className="text-xs font-medium text-link">{i + 1}</span>
                 <span className="font-semibold">{l.title}</span>
                 <span className="text-xs text-muted-foreground">{l.body}</span>
               </Card>
@@ -85,7 +85,7 @@ export default function ToolsPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[960px] text-sm">
               <caption className="sr-only">Connection level from each AI tool (rows) to each runtime (columns)</caption>
-              <thead className="border-b bg-muted/60 text-xs text-muted-foreground">
+              <thead className="border-b-2 bg-muted/60 text-xs text-muted-foreground">
                 <tr>
                   <th scope="col" className="sticky left-0 z-10 bg-muted px-3 py-2.5 text-left font-medium">
                     Tool
@@ -203,7 +203,7 @@ function ToolCard({ tool }: { tool: AITool }) {
           <h4 className="text-xs font-medium text-muted-foreground">Connections</h4>
           <ul className="mt-2 flex flex-col gap-2">
             {tool.connections.map((c, i) => (
-              <li key={i} className="rounded-lg border p-2.5 text-sm">
+              <li key={i} className="rounded-lg border-2 p-2.5 text-sm">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="font-medium">{apiLabel(c.api)}</span>
                   <ArrowRight className="size-3.5 text-muted-foreground" aria-hidden />
@@ -218,7 +218,7 @@ function ToolCard({ tool }: { tool: AITool }) {
           </ul>
         </div>
 
-        <div className="mt-auto flex flex-col gap-1.5 border-t pt-3 text-xs">
+        <div className="mt-auto flex flex-col gap-1.5 border-t-2 pt-3 text-xs">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <ExternalA href={tool.documentationURL}>Documentation</ExternalA>
             <span className="text-muted-foreground">last verified {tool.lastVerified}</span>

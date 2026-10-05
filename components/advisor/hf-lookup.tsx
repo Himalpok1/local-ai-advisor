@@ -149,7 +149,7 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <p className="text-sm font-medium text-primary">Check any Hugging Face model</p>
+      <p className="text-sm font-medium text-link">Check any Hugging Face model</p>
       <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Will this model run comfortably for you?</h1>
       <p className="mt-2 max-w-3xl text-muted-foreground">
         Search Hugging Face or paste a model link. We read its real architecture — parameters, experts, attention layout, context and file sizes — and rate it for your hardware and workload, even if it was released today.
@@ -188,7 +188,7 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
               aria-expanded={open}
               aria-controls="hf-results"
               autoComplete="off"
-              className="h-12 w-full rounded-xl border bg-card pl-10 pr-3 text-base focus-visible:outline-2 focus-visible:outline-ring"
+              className="h-12 w-full rounded-xl border-2 bg-card pl-10 pr-3 text-base focus-visible:outline-2 focus-visible:outline-ring"
             />
           </div>
           <Button type="submit" size="lg" disabled={loading}>
@@ -196,7 +196,7 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
           </Button>
         </div>
         {open && hits.length > 0 && (
-          <ul id="hf-results" role="listbox" className="absolute z-20 mt-1 max-h-80 w-full overflow-y-auto rounded-xl border bg-card p-1 shadow-lg">
+          <ul id="hf-results" role="listbox" className="absolute z-20 mt-1 max-h-80 w-full overflow-y-auto rounded-xl border-2 bg-card p-1 shadow-brutal-lg">
             {hits.map((h, index) => (
               <li key={h.id} id={`hf-option-${index}`} role="option" aria-selected={active === index} className={active === index ? "bg-muted" : ""}>
                 <button type="button" tabIndex={-1} onMouseDown={(e) => e.preventDefault()} onClick={() => load(h.id)} className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm hover:bg-muted">
@@ -211,14 +211,14 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
       <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
         <span className="py-1 text-muted-foreground">Try:</span>
         {EXAMPLES.map((e) => (
-          <button key={e} type="button" onClick={() => load(e)} className="rounded-md border bg-card px-2 py-1 hover:bg-muted">
+          <button key={e} type="button" onClick={() => load(e)} className="rounded-md border-2 bg-card px-2 py-1 hover:bg-muted">
             {e}
           </button>
         ))}
       </div>
 
       {error && (
-        <div role="alert" className="mt-6 flex max-w-3xl items-start gap-2 rounded-xl border border-borderline/40 bg-borderline/10 p-4 text-sm">
+        <div role="alert" className="mt-6 flex max-w-3xl items-start gap-2 rounded-xl border-2 border-ink bg-borderline/10 p-4 text-sm">
           <TriangleAlert className="mt-0.5 size-4 shrink-0 text-borderline" />
           {error}
         </div>
@@ -231,7 +231,7 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
 
       {result && (
         <div className={cn("mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]", loading && "opacity-60")}>
-          <div className="space-y-3"><ModelFacts r={result} /><Link className="text-sm text-primary hover:underline" href={`/hf/${result.facts.repo}`}>Permanent model page</Link></div>
+          <div className="space-y-3"><ModelFacts r={result} /><Link className="text-sm text-link hover:underline" href={`/hf/${result.facts.repo}`}>Permanent model page</Link></div>
           <div className="space-y-5">
             <Card>
               <CardHeader>
@@ -253,10 +253,10 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
               <>
                 <RecommendationCard rec={rec} eyebrow="Best quantization for your workload" href={recHref(rec, state.workload, state.custom)} workloadLabel={workloadLabel(state.workload)} />
                 <div className="flex flex-wrap gap-2">
-                  <Link href={`/hardware-for-model?${encodeState({ modelId: result.model.id, workload: state.workload, target: "comfortable" })}`} className="inline-flex h-9 items-center gap-1.5 rounded-lg border bg-card px-3 text-sm font-medium hover:bg-muted">
+                  <Link href={`/hardware-for-model?${encodeState({ modelId: result.model.id, workload: state.workload, target: "comfortable" })}`} className="inline-flex h-9 items-center gap-1.5 rounded-lg border-2 bg-card px-3 text-sm font-medium hover:bg-muted">
                     What hardware would be comfortable? <ArrowRight className="size-4" />
                   </Link>
-                  <Link href={`/compare/models?${encodeState({ hardwareId: state.hardwareId, custom: state.custom, workload: state.workload })}&models=${encodeURIComponent(result.model.id)}`} className="inline-flex h-9 items-center gap-1.5 rounded-lg border bg-card px-3 text-sm font-medium hover:bg-muted">
+                  <Link href={`/compare/models?${encodeState({ hardwareId: state.hardwareId, custom: state.custom, workload: state.workload })}&models=${encodeURIComponent(result.model.id)}`} className="inline-flex h-9 items-center gap-1.5 rounded-lg border-2 bg-card px-3 text-sm font-medium hover:bg-muted">
                     Compare with curated models <ArrowRight className="size-4" />
                   </Link>
                 </div>

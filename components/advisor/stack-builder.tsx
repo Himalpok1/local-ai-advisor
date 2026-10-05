@@ -49,11 +49,11 @@ export function StackBuilder({ initial }: { initial: AppState }) {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]">
         <div>
-          <p className="text-sm font-medium text-primary">Build my local AI stack</p>
+          <p className="text-sm font-medium text-link">Build my local AI stack</p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">From hardware to coding agent, one layer at a time</h1>
           <p className="mt-2 max-w-3xl text-muted-foreground">Choose your machine, what you’ll do and which tool you use. We pick the runtime, model and API that make the whole chain comfortable — and explain why.</p>
         </div>
-        <div className="overflow-hidden rounded-2xl border border-border/70 bg-[#F7F7F5]">
+        <div className="overflow-hidden rounded-2xl border-2 border-ink bg-[#F7F7F5]">
           <Image
             src="/brand/illustration-local-stack.svg"
             width={1200}
@@ -135,7 +135,7 @@ export function StackBuilder({ initial }: { initial: AppState }) {
                   <StackDiagram layers={stackFor(rec)} order="bottom-up" />
                   <div className="mt-4 flex flex-wrap gap-2">
                     <ShareButton saveLabel={`Stack: ${rec.model.name} on ${rec.hardware.name}`} />
-                    <Link href={recHref(rec, state.workload, state.custom, !!state.runtimeId)} className="inline-flex h-8 items-center gap-1.5 rounded-lg border bg-card px-3 text-sm font-medium hover:bg-muted">
+                    <Link href={recHref(rec, state.workload, state.custom, !!state.runtimeId)} className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 bg-card px-3 text-sm font-medium hover:bg-muted">
                       Full analysis & what-if <ArrowRight className="size-4" />
                     </Link>
                   </div>

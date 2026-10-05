@@ -15,11 +15,10 @@ export default function BlogIndexPage() {
   const posts = getAllPosts();
   return (
     <div className="relative">
-      <div className="glow-primary pointer-events-none absolute inset-x-0 top-0 h-96" aria-hidden />
       <div className="relative mx-auto max-w-4xl px-4 pb-6 pt-8 sm:px-6 sm:pt-14">
         <header className="flex animate-fade-up flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
+            <p className="inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-primary/15 px-3 py-1 text-xs font-semibold text-link">
               <Newspaper className="size-3.5" /> Blog
             </p>
             <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-balance sm:text-5xl">Local AI, in plain language</h1>
@@ -29,7 +28,7 @@ export default function BlogIndexPage() {
           </div>
           <Link
             href="/rss.xml"
-            className="inline-flex min-h-10 shrink-0 items-center gap-1.5 self-start rounded-xl border border-border/80 bg-card px-3.5 text-sm font-medium transition hover:bg-muted sm:self-auto"
+            className="inline-flex min-h-10 shrink-0 items-center gap-1.5 self-start rounded-xl border-2 border-ink bg-card px-3.5 text-sm font-medium transition hover:bg-muted sm:self-auto"
           >
             <Rss className="size-4 text-orange-500" aria-hidden /> RSS feed
           </Link>
@@ -39,12 +38,12 @@ export default function BlogIndexPage() {
           <ol className="mt-10 space-y-4 sm:mt-14">
             {posts.map((p) => (
               <li key={p.slug}>
-                <article className="group relative rounded-3xl border border-border/70 bg-card p-5 shadow-sm transition hover:border-primary/40 hover:shadow-md sm:p-7">
+                <article className="group relative rounded-2xl border-2 border-ink bg-card p-5 shadow-brutal-sm transition hover:border-ink hover:shadow-brutal sm:p-7">
                   <p className="text-sm text-muted-foreground">
                     <time dateTime={p.date}>{formatPostDate(p.date)}</time> · {p.readingMinutes} min read
                   </p>
                   <h2 className="mt-2 text-xl font-bold tracking-tight text-balance sm:text-2xl">
-                    <Link href={`/blog/${p.slug}`} className="after:absolute after:inset-0 after:rounded-3xl group-hover:text-primary">
+                    <Link href={`/blog/${p.slug}`} className="after:absolute after:inset-0 after:rounded-2xl group-hover:text-link">
                       {p.title}
                     </Link>
                   </h2>
@@ -53,7 +52,7 @@ export default function BlogIndexPage() {
                     {p.tags.map((t) => (
                       <Badge key={t}>{t}</Badge>
                     ))}
-                    <span className="ml-auto inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                    <span className="ml-auto inline-flex items-center gap-1 text-sm font-semibold text-link">
                       Read <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                     </span>
                   </div>
@@ -62,8 +61,8 @@ export default function BlogIndexPage() {
             ))}
           </ol>
         ) : (
-          <p className="mt-10 rounded-3xl border border-border/70 bg-card p-6 text-muted-foreground">
-            The first posts are on their way. Meanwhile, <Link href="/learn" className="font-medium text-primary hover:underline">learn local AI step by step</Link>.
+          <p className="mt-10 rounded-2xl border-2 border-ink bg-card p-6 text-muted-foreground">
+            The first posts are on their way. Meanwhile, <Link href="/learn" className="font-medium text-link hover:underline">learn local AI step by step</Link>.
           </p>
         )}
       </div>

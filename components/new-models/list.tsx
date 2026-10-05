@@ -89,7 +89,7 @@ function ModelCard({ m }: { m: NewModel }) {
       {m.ratings ? (
         <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {m.ratings.map((r) => (
-            <div key={r.label} className={cn("rounded-lg border px-2.5 py-2", COMFORT_STYLE[r.level].bg, COMFORT_STYLE[r.level].border)}>
+            <div key={r.label} className={cn("rounded-lg border-2 px-2.5 py-2", COMFORT_STYLE[r.level].bg, COMFORT_STYLE[r.level].border)}>
               <dt className="text-[11px] text-muted-foreground">{r.label}</dt>
               <dd className={cn("text-xs font-semibold", COMFORT_STYLE[r.level].text)}>{COMFORT_LABEL[r.level]}</dd>
               {r.tps ? <dd className="text-[11px] tabular-nums text-muted-foreground">{fmtTps(r.tps)}</dd> : null}
@@ -101,7 +101,7 @@ function ModelCard({ m }: { m: NewModel }) {
       )}
 
       <div className="mt-auto flex flex-wrap items-center gap-3 pt-4 text-sm">
-        <Link href={`/hugging-face?repo=${encodeURIComponent(m.repo)}`} className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+        <Link href={`/hugging-face?repo=${encodeURIComponent(m.repo)}`} className="inline-flex items-center gap-1 font-medium text-link hover:underline">
           Check on my computer <ArrowRight className="size-3.5" aria-hidden />
         </Link>
         <a href={`https://huggingface.co/${m.repo}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">

@@ -12,7 +12,7 @@ export function HfModelGate({ ids, children }: { ids: (string | undefined)[]; ch
         <TriangleAlert className="mx-auto size-8 text-borderline" />
         <h1 className="mt-3 text-xl font-semibold">Couldn’t load this model from Hugging Face</h1>
         <p className="mt-2 text-muted-foreground">{error}</p>
-        <Link href="/hugging-face" className="mt-6 inline-block text-primary hover:underline">
+        <Link href="/hugging-face" className="mt-6 inline-block text-link hover:underline">
           Try another model →
         </Link>
       </div>

@@ -176,7 +176,7 @@ export function ReportForm({ defaults }: { defaults: ReportDefaults }) {
             <NumberInput ariaLabel="Context depth" value={contextTokens} onChange={setContextTokens} min={0} max={1048576} suffix="tokens" />
           </Field>
           <Field label="Notes (optional)" hint="Runtime version, flags, power mode…">
-            <input value={notes} onChange={(e) => setNotes(e.target.value)} maxLength={500} aria-label="Notes" className="h-10 w-full rounded-xl border border-border/80 bg-card px-3.5 text-sm shadow-2xs" />
+            <input value={notes} onChange={(e) => setNotes(e.target.value)} maxLength={500} aria-label="Notes" className="h-10 w-full rounded-xl border-2 border-ink bg-card px-3.5 text-sm shadow-brutal-sm" />
           </Field>
         </div>
 

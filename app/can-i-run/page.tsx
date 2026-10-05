@@ -41,7 +41,7 @@ export default function CanIRunIndex() {
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((h) => (
             <li key={h.id}>
-              <Link href={hardwareHref(h)} className="flex h-full flex-col rounded-xl border bg-card p-4 transition hover:border-primary/50 hover:bg-muted/40">
+              <Link href={hardwareHref(h)} className="flex h-full flex-col rounded-xl border-2 bg-card p-4 transition hover:border-ink hover:bg-muted/40">
                 <span className="font-medium">{h.name}</span>
                 <span className="text-sm text-muted-foreground">{memoryLine(h)}</span>
                 <span className="mt-2 text-sm">
@@ -57,7 +57,7 @@ export default function CanIRunIndex() {
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {models.map((m) => (
             <li key={m.id}>
-              <Link href={modelHref(m)} className="flex h-full flex-col gap-1 rounded-xl border bg-card p-4 transition hover:border-primary/50 hover:bg-muted/40">
+              <Link href={modelHref(m)} className="flex h-full flex-col gap-1 rounded-xl border-2 bg-card p-4 transition hover:border-ink hover:bg-muted/40">
                 <span className="font-medium">{m.name}</span>
                 <span className="text-sm text-muted-foreground">
                   {m.organization} · {fmtParams(m.parameterCount)}

@@ -59,8 +59,8 @@ export function SpeedFeel({ className, initial = 1 }: { className?: string; init
   const elapsed = (shown / ANSWER.length) * total;
 
   return (
-    <div ref={ref} className={cn("overflow-hidden rounded-3xl border border-border/70 bg-card shadow-sm", className)}>
-      <div className="border-b border-border/60 p-4 sm:p-5">
+    <div ref={ref} className={cn("overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-brutal-sm", className)}>
+      <div className="border-b-2 border-ink p-4 sm:p-5">
         <div role="radiogroup" aria-label="Generation speed" className="grid grid-cols-4 gap-1 rounded-2xl bg-muted p-1">
           {SPEEDS.map((x, i) => (
             <button
@@ -74,7 +74,7 @@ export function SpeedFeel({ className, initial = 1 }: { className?: string; init
               }}
               className={cn(
                 "flex min-h-11 cursor-pointer flex-col items-center justify-center rounded-xl px-1 py-1.5 text-center transition",
-                speed === i ? "bg-card shadow-sm" : "text-muted-foreground hover:text-foreground",
+                speed === i ? "bg-card shadow-brutal-sm" : "text-muted-foreground hover:text-foreground",
               )}
             >
               <span className="text-sm font-bold tabular-nums">{x.label}</span>
@@ -100,7 +100,7 @@ export function SpeedFeel({ className, initial = 1 }: { className?: string; init
             <button
               type="button"
               onClick={() => run(speed)}
-              className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-xl border border-border/80 bg-card px-3 text-sm font-medium transition hover:bg-muted active:scale-95"
+              className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-xl border-2 border-ink bg-card px-3 text-sm font-medium transition hover:bg-muted active:scale-95"
             >
               {shown > 0 ? <RotateCcw className="size-4" /> : <Play className="size-4" />}
               {shown > 0 ? "Replay" : "Play"}

@@ -20,7 +20,7 @@ export function AnimatedBars({ title, bars, caption, className }: { title?: stri
   const reduce = useReducedMotion();
   const max = Math.max(...bars.map((b) => b.value));
   return (
-    <figure ref={ref} className={cn("rounded-3xl border border-border/70 bg-card p-4 shadow-sm sm:p-5", className)}>
+    <figure ref={ref} className={cn("rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-5", className)}>
       {title && <p className="mb-4 text-sm font-semibold">{title}</p>}
       <ul className="space-y-3.5">
         {bars.map((b, i) => (
@@ -71,7 +71,7 @@ export function MoeAnimated() {
   const active = new Set(picks[t]);
 
   return (
-    <figure ref={ref} className="rounded-3xl border border-border/70 bg-card p-4 shadow-sm sm:p-5">
+    <figure ref={ref} className="rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-5">
       <div className="flex flex-wrap items-center gap-1 text-sm">
         <span className="mr-1 text-xs font-medium text-muted-foreground">Writing:</span>
         {tokens.map((w, i) => (
@@ -93,8 +93,8 @@ export function MoeAnimated() {
             animate={{ scale: active.has(i) && !reduce ? 1.08 : 1 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             className={cn(
-              "grid aspect-square place-items-center rounded-lg border text-[10px] font-semibold transition-colors duration-300 sm:text-xs",
-              active.has(i) ? "border-primary bg-primary text-primary-foreground shadow-md shadow-primary/30" : "border-border/70 bg-muted text-muted-foreground",
+              "grid aspect-square place-items-center rounded-lg border-2 text-[10px] font-semibold transition-colors duration-300 sm:text-xs",
+              active.has(i) ? "border-ink bg-primary text-primary-foreground shadow-brutal" : "border-ink bg-muted text-muted-foreground",
             )}
           >
             E{i + 1}
@@ -105,7 +105,7 @@ export function MoeAnimated() {
         <p className="rounded-xl bg-muted px-3 py-2">
           <span className="font-semibold">Memory</span> holds all 16 experts.
         </p>
-        <p className="rounded-xl bg-primary/10 px-3 py-2">
+        <p className="rounded-xl bg-primary/25 px-3 py-2">
           <span className="font-semibold">Speed</span> depends on the 2 that work per word.
         </p>
       </div>
@@ -124,7 +124,7 @@ export function TokenChips() {
   const reduce = useReducedMotion();
   const show = inView || reduce;
   return (
-    <figure ref={ref} className="rounded-3xl border border-border/70 bg-card p-4 shadow-sm sm:p-5">
+    <figure ref={ref} className="rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-5">
       <p className="text-sm text-muted-foreground">What you type</p>
       <p className="mt-1 text-lg font-semibold">Local models run on your own computer, even offline!</p>
       <p className="mt-4 text-sm text-muted-foreground">What the model sees: {SENTENCE.length} tokens</p>
@@ -162,7 +162,7 @@ export function ContextFill() {
   const capacity = 32;
   const show = inView || reduce;
   return (
-    <figure ref={ref} className="rounded-3xl border border-border/70 bg-card p-4 shadow-sm sm:p-5">
+    <figure ref={ref} className="rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-5">
       <div className="flex items-baseline justify-between text-sm">
         <span className="font-semibold">A 32K-token context window</span>
         <span className="font-mono text-xs tabular-nums text-muted-foreground">{parts.reduce((a, p) => a + p.k, 0)}K used</span>

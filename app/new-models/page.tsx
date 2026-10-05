@@ -26,7 +26,7 @@ export default async function NewModelsPage() {
             {REFERENCE_RIGS.map((r) => r.label).join(", ").replace(/, ([^,]*)$/, " and $1")}.
           </p>
         </div>
-        <Link href="/new-models/feed.xml" className="inline-flex items-center gap-1.5 self-start rounded-lg border bg-card px-3 py-1.5 text-sm font-medium hover:bg-muted sm:self-auto">
+        <Link href="/new-models/feed.xml" className="inline-flex items-center gap-1.5 self-start rounded-lg border-2 bg-card px-3 py-1.5 text-sm font-medium hover:bg-muted sm:self-auto">
           <Rss className="size-4 text-orange-500" aria-hidden /> RSS feed
         </Link>
       </header>
@@ -34,7 +34,7 @@ export default async function NewModelsPage() {
       {items.length ? (
         <NewModelsList items={items} />
       ) : (
-        <p role="alert" className="rounded-xl border p-6 text-sm text-muted-foreground">
+        <p role="alert" className="rounded-xl border-2 p-6 text-sm text-muted-foreground">
           Hugging Face didn’t respond. This list refreshes every few hours; try again shortly.
         </p>
       )}

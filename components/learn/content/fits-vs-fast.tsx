@@ -33,7 +33,7 @@ export default function Lesson() {
         <p>Every result on this site uses the same five-step scale:</p>
         <ul className="space-y-2">
           {LEVELS.map((l) => (
-            <li key={l} className="flex flex-col gap-1.5 rounded-2xl border border-border/70 bg-card p-3 sm:flex-row sm:items-center sm:gap-3">
+            <li key={l} className="flex flex-col gap-1.5 rounded-2xl border-2 border-ink bg-card p-3 sm:flex-row sm:items-center sm:gap-3">
               <ComfortBadge level={l} size="sm" className="w-fit" />
               <span className="text-sm text-muted-foreground">{COMFORT_DESCRIPTION[l]}</span>
             </li>

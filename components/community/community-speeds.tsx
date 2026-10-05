@@ -46,7 +46,7 @@ export function CommunitySpeedsCard({ stats, modelId, chipName, reportHref }: { 
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Users className="size-4 text-primary" aria-hidden /> Community measurements
+          <Users className="size-4 text-link" aria-hidden /> Community measurements
         </CardTitle>
         <CardDescription>
           {rows.length
@@ -56,7 +56,7 @@ export function CommunitySpeedsCard({ stats, modelId, chipName, reportHref }: { 
       </CardHeader>
       <CardContent className="space-y-4">
         {rows.length > 0 && (
-          <div className="overflow-x-auto rounded-xl border">
+          <div className="overflow-x-auto rounded-xl border-2">
             <table className="w-full min-w-[480px] text-sm">
               <thead className="bg-muted/60 text-left text-xs text-muted-foreground">
                 <tr>

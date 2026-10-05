@@ -26,9 +26,9 @@ function Bar({ parts, total, label }: { parts: { label: string; value: number; c
       </div>
       <div className="relative flex h-4 overflow-hidden rounded-md bg-muted" role="img" aria-label={`${label}: ${fmtGB(used)} used of ${fmtGB(total)}`}>
         {parts.map((p) => (
-          <div key={p.label} className={cn("h-full border-r border-background/60", p.color)} style={{ width: `${(p.value / scale) * 100}%` }} title={`${p.label}: ${fmtGB(p.value)}`} />
+          <div key={p.label} className={cn("h-full border-r-2 border-background/60", p.color)} style={{ width: `${(p.value / scale) * 100}%` }} title={`${p.label}: ${fmtGB(p.value)}`} />
         ))}
-        {over && <div className="absolute inset-y-0 border-l-2 border-technical" style={{ left: `${(total / scale) * 100}%` }} />}
+        {over && <div className="absolute inset-y-0 border-l-2 border-ink" style={{ left: `${(total / scale) * 100}%` }} />}
       </div>
     </div>
   );

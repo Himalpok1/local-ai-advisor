@@ -15,11 +15,11 @@ export function SiteHeader() {
   const section = sectionFor(pathname);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-lg">
+    <header className="sticky top-0 z-50 border-b-2 border-ink bg-background">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
         <Link href="/" className="group flex shrink-0 items-center gap-2.5 rounded-lg font-semibold tracking-tight text-foreground">
-          <Image src="/brand/logo-mark.svg" width={32} height={32} alt="" loading="eager" className="size-8 transition-transform group-hover:-rotate-6 group-hover:scale-105" />
-          <span className="whitespace-nowrap text-[15px] font-bold leading-none sm:text-base">Local AI Advisor</span>
+          <Image src="/brand/logo-mark.svg" width={32} height={32} alt="" loading="eager" className="size-8 transition-transform group-hover:-rotate-6 group-hover:scale-110" />
+          <span className="whitespace-nowrap font-display text-base font-extrabold leading-none sm:text-lg">Local AI Advisor</span>
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
@@ -36,7 +36,7 @@ export function SiteHeader() {
           <UserMenu />
           <Link
             href="/check"
-            className="hidden items-center gap-1.5 whitespace-nowrap rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:brightness-110 active:scale-[0.98] lg:inline-flex"
+            className="press hidden items-center gap-1.5 whitespace-nowrap rounded-full border-2 border-ink bg-primary px-4 py-2 text-sm font-bold text-primary-foreground shadow-brutal lg:inline-flex"
           >
             Start here <ArrowRight className="size-4" />
           </Link>
@@ -52,12 +52,11 @@ function NavLink({ href, active, children }: { href: string; active: boolean; ch
       href={href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "relative whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-        active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+        "relative whitespace-nowrap rounded-full border-2 px-3.5 py-1.5 text-sm font-bold transition-colors",
+        active ? "border-ink bg-primary text-on-fill shadow-brutal-sm" : "border-transparent text-foreground hover:border-ink hover:bg-muted",
       )}
     >
       {children}
-      {active && <motion.span layoutId="nav-underline" className="absolute inset-x-3 -bottom-[13px] h-0.5 rounded-full bg-primary" />}
     </Link>
   );
 }
@@ -90,13 +89,12 @@ function ToolsMenu({ active, pathname }: { active: boolean; pathname: string }) 
         aria-haspopup="true"
         onClick={() => setOpenedOn(open ? null : pathname)}
         className={cn(
-          "relative inline-flex cursor-pointer items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-          active || open ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+          "relative inline-flex cursor-pointer items-center gap-1 rounded-full border-2 px-3.5 py-1.5 text-sm font-bold transition-colors",
+          active ? "border-ink bg-primary text-on-fill shadow-brutal-sm" : open ? "border-ink bg-muted" : "border-transparent text-foreground hover:border-ink hover:bg-muted",
         )}
       >
         Tools
         <ChevronDown className={cn("size-4 transition-transform duration-200", open && "rotate-180")} />
-        {active && <motion.span layoutId="nav-underline" className="absolute inset-x-3 -bottom-[13px] h-0.5 rounded-full bg-primary" />}
       </button>
       <AnimatePresence>
         {open && (
@@ -105,12 +103,12 @@ function ToolsMenu({ active, pathname }: { active: boolean; pathname: string }) 
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, transition: { duration: 0.12 } }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-1/2 top-12 w-[46rem] -translate-x-1/2 origin-top rounded-2xl border border-border/70 bg-card p-3 shadow-xl"
+            className="absolute left-1/2 top-12 w-[46rem] -translate-x-1/2 origin-top rounded-2xl border-2 border-ink bg-card p-3 shadow-brutal-lg"
           >
             <div className="grid grid-cols-2 gap-x-2 gap-y-1">
               {TOOL_GROUPS.map((g) => (
                 <div key={g.title} className="p-1">
-                  <p className="px-2 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{g.title}</p>
+                  <p className="px-2 pb-1 pt-2 text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">{g.title}</p>
                   <ul>
                     {g.items.map((t) => {
                       const Icon = t.icon;
@@ -119,9 +117,9 @@ function ToolsMenu({ active, pathname }: { active: boolean; pathname: string }) 
                         <li key={t.href}>
                           <Link
                             href={t.href}
-                            className={cn("group flex items-start gap-3 rounded-xl p-2 transition-colors hover:bg-muted", current && "bg-accent")}
+                            className={cn("group flex items-start gap-3 rounded-xl border-2 border-transparent p-2 transition-colors hover:border-ink hover:bg-muted", current && "border-ink bg-accent")}
                           >
-                            <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                            <span className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg border-2 border-ink bg-primary text-on-fill transition-transform group-hover:-rotate-6">
                               <Icon className="size-4" />
                             </span>
                             <span className="min-w-0">

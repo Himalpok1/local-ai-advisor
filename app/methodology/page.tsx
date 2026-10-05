@@ -101,7 +101,7 @@ export default function MethodologyPage() {
         <ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-sm">
           {TOC.map(([id, label]) => (
             <li key={id}>
-              <a href={`#${id}`} className="text-primary hover:underline">
+              <a href={`#${id}`} className="text-link hover:underline">
                 {label}
               </a>
             </li>
@@ -116,7 +116,7 @@ export default function MethodologyPage() {
       >
         <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {PIPELINE.map((p, i) => (
-            <li key={p.step} className="flex gap-3 rounded-xl border bg-card p-3.5">
+            <li key={p.step} className="flex gap-3 rounded-xl border-2 bg-card p-3.5">
               <span className="grid size-7 shrink-0 place-items-center rounded-full bg-accent text-xs font-semibold text-accent-foreground">{i + 1}</span>
               <span className="flex flex-col gap-0.5">
                 <span className="text-sm font-medium">{p.step}</span>
@@ -134,7 +134,7 @@ export default function MethodologyPage() {
       >
         <ul className="grid gap-2 md:grid-cols-2">
           {COMFORT_LEVELS.map((l) => (
-            <li key={l} className="flex flex-col gap-2 rounded-xl border bg-card p-3.5 sm:flex-row sm:items-center sm:gap-4">
+            <li key={l} className="flex flex-col gap-2 rounded-xl border-2 bg-card p-3.5 sm:flex-row sm:items-center sm:gap-4">
               <ComfortBadge level={l} size="sm" className="w-fit sm:w-40 sm:justify-start" />
               <span className="text-sm text-muted-foreground">{COMFORT_DESCRIPTION[l]}</span>
             </li>
@@ -157,7 +157,7 @@ export default function MethodologyPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1100px] text-xs">
               <caption className="sr-only">Dimension importance and generation-speed thresholds per use case</caption>
-              <thead className="border-b bg-muted/60 text-muted-foreground">
+              <thead className="border-b-2 bg-muted/60 text-muted-foreground">
                 <tr>
                   <th scope="col" className="sticky left-0 z-10 bg-muted px-3 py-2.5 text-left font-medium">
                     Use case
@@ -167,7 +167,7 @@ export default function MethodologyPage() {
                       {d.label}
                     </th>
                   ))}
-                  <th scope="col" className="border-l px-3 py-2.5 text-center font-medium">
+                  <th scope="col" className="border-l-2 px-3 py-2.5 text-center font-medium">
                     Generation tok/s
                     <span className="block font-normal">Exc. / Comf. / Acc. / Bord.</span>
                   </th>
@@ -207,7 +207,7 @@ export default function MethodologyPage() {
                         </td>
                       );
                     })}
-                    <td className="border-l px-3 py-2 text-center tabular-nums whitespace-nowrap">{u.thresholds.genTps.join(" / ")}</td>
+                    <td className="border-l-2 px-3 py-2 text-center tabular-nums whitespace-nowrap">{u.thresholds.genTps.join(" / ")}</td>
                   </tr>
                 ))}
               </tbody>
@@ -321,7 +321,7 @@ export default function MethodologyPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] text-sm">
               <caption className="sr-only">Compatibility rules</caption>
-              <thead className="border-b bg-muted/60 text-left text-xs text-muted-foreground">
+              <thead className="border-b-2 bg-muted/60 text-left text-xs text-muted-foreground">
                 <tr>
                   <th scope="col" className="px-4 py-2.5 font-medium">
                     Layer
@@ -365,7 +365,7 @@ export default function MethodologyPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1000px] text-sm">
               <caption className="sr-only">Verified benchmark results ({benchmarks.length} rows)</caption>
-              <thead className="border-b bg-muted/60 text-left text-xs text-muted-foreground">
+              <thead className="border-b-2 bg-muted/60 text-left text-xs text-muted-foreground">
                 <tr>
                   <th scope="col" className="px-3 py-2.5 font-medium">Chip</th>
                   <th scope="col" className="px-3 py-2.5 font-medium">Model</th>

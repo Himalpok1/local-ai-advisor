@@ -31,8 +31,8 @@ function GapBars({ needed, available }: { needed: number; available: number }) {
 
 function Option({ icon: Icon, title, children }: { icon: typeof Cpu; title: string; children: React.ReactNode }) {
   return (
-    <li className="flex gap-3 rounded-xl border bg-card p-4">
-      <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+    <li className="flex gap-3 rounded-xl border-2 bg-card p-4">
+      <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-primary/25 text-link">
         <Icon className="size-4" />
       </span>
       <div className="min-w-0 space-y-1.5 text-sm">
@@ -61,7 +61,7 @@ export function DoesNotFit({ model, hardware, chat, siblings }: { model: Model; 
 
   return (
     <section className="space-y-6">
-      <div className="rounded-2xl border bg-card p-5 sm:p-6">
+      <div className="rounded-2xl border-2 bg-card p-5 sm:p-6">
         <h2 className="text-xl font-semibold tracking-tight">Why it doesn’t fit</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Even its smallest practical version ({quantOf(chat)}) needs about <strong className="text-foreground">{fmtGB(gap.neededGB)}</strong> for the model, its
@@ -95,7 +95,7 @@ export function DoesNotFit({ model, hardware, chat, siblings }: { model: Model; 
               <ul className="space-y-1">
                 {smaller.map((r) => (
                   <li key={r.model.id}>
-                    <Link href={canIRunHref(r.model, hardware)} className="inline-flex flex-wrap items-center gap-2 text-primary hover:underline">
+                    <Link href={canIRunHref(r.model, hardware)} className="inline-flex flex-wrap items-center gap-2 text-link hover:underline">
                       {r.model.name} <ComfortBadge level={r.level} size="sm" />
                     </Link>
                   </li>
@@ -110,7 +110,7 @@ export function DoesNotFit({ model, hardware, chat, siblings }: { model: Model; 
             {bigger ? (
               <p className="text-muted-foreground">
                 The same {hardware.vendor === "apple" ? "chip" : "machine"} with{" "}
-                <Link href={canIRunHref(model, bigger.hardware)} className="text-primary hover:underline">
+                <Link href={canIRunHref(model, bigger.hardware)} className="text-link hover:underline">
                   {bigger.hardware.systemRamGB} GB
                 </Link>{" "}
                 handles it: <ComfortBadge level={bigger.level} size="sm" />.
@@ -125,7 +125,7 @@ export function DoesNotFit({ model, hardware, chat, siblings }: { model: Model; 
 
           <Option icon={Cpu} title="Check your exact setup">
             <p className="text-muted-foreground">These pages assume typical settings. A shorter context or a lighter chat app can change the answer.</p>
-            <Link href={`/check?hw=${hardware.id}`} className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+            <Link href={`/check?hw=${hardware.id}`} className="inline-flex items-center gap-1 font-medium text-link hover:underline">
               Check {hardware.name} <ArrowRight className="size-3.5" aria-hidden />
             </Link>
           </Option>

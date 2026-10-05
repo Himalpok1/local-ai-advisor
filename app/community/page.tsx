@@ -43,7 +43,7 @@ export default async function CommunityPage() {
       </header>
 
       {!rows ? (
-        <p role="alert" className="rounded-xl border p-6 text-sm text-muted-foreground">
+        <p role="alert" className="rounded-xl border-2 p-6 text-sm text-muted-foreground">
           Community data is unavailable right now. Try again shortly.
         </p>
       ) : rows.length === 0 ? (
@@ -57,7 +57,7 @@ export default async function CommunityPage() {
           <p className="text-sm text-muted-foreground">
             {people} report{people === 1 ? "" : "s"} across {rows.length} setup{rows.length === 1 ? "" : "s"}. Each person counts once per setup (their latest report).
           </p>
-          <div className="overflow-x-auto rounded-xl border bg-card">
+          <div className="overflow-x-auto rounded-xl border-2 bg-card">
             <table className="w-full min-w-[720px] text-sm">
               <thead className="bg-muted/60 text-left text-xs text-muted-foreground">
                 <tr>

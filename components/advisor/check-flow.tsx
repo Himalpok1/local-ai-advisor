@@ -62,7 +62,7 @@ export function CheckFlow({ initial, startWithResults }: { initial: AppState; st
       {!showResults ? (
         <div className="mx-auto max-w-4xl pb-28 lg:pb-0">
           <div className="flex items-center justify-between gap-3">
-            <p className="text-sm font-semibold text-primary">
+            <p className="text-sm font-semibold text-link">
               Step {step + 1} of {visibleSteps.length}
             </p>
             <button
@@ -70,8 +70,8 @@ export function CheckFlow({ initial, startWithResults }: { initial: AppState; st
               onClick={() => setState((s) => ({ ...s, mode: mode === "advanced" ? "simple" : "advanced" }))}
               aria-pressed={mode === "advanced"}
               className={cn(
-                "inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs font-semibold transition",
-                mode === "advanced" ? "border-primary/50 bg-primary/10 text-primary" : "border-border/80 text-muted-foreground hover:text-foreground",
+                "inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border-2 px-3 text-xs font-semibold transition",
+                mode === "advanced" ? "border-ink bg-primary/25 text-link" : "border-ink text-muted-foreground hover:text-foreground",
               )}
             >
               <SlidersHorizontal className="size-3.5" /> Advanced {mode === "advanced" ? "on" : "off"}
@@ -112,11 +112,11 @@ export function CheckFlow({ initial, startWithResults }: { initial: AppState; st
             >
               <h1 className="mt-5 text-2xl font-extrabold tracking-tight text-balance sm:text-4xl">{current.title}</h1>
               <p className="mt-2 flex items-start gap-2 text-base text-muted-foreground">
-                <Sparkles className="mt-1 size-4 shrink-0 text-primary" />
+                <Sparkles className="mt-1 size-4 shrink-0 text-link" />
                 {current.hint}
               </p>
 
-              <Card className="mt-6 rounded-3xl p-4 sm:p-6">
+              <Card className="mt-6 rounded-2xl p-4 sm:p-6">
                 {current.id === "hardware" && (
                   <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} workload={state.workload} applyDefaultRig={!initial.hardwareId} />
                 )}
@@ -130,7 +130,7 @@ export function CheckFlow({ initial, startWithResults }: { initial: AppState; st
           </AnimatePresence>
 
           {/* On phones the actions stick above the tab bar, always within thumb reach. */}
-          <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-40 border-t border-border/60 bg-background/95 px-4 py-3 backdrop-blur-lg lg:static lg:mt-6 lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+          <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-40 border-t-2 border-ink bg-background/95 px-4 py-3 lg:static lg:mt-6 lg:border-0 lg:bg-transparent lg:p-0">
             <div className="mx-auto flex max-w-4xl items-center gap-2">
               <Button variant="ghost" size="lg" onClick={() => go(Math.max(0, step - 1))} disabled={step === 0} className="px-3 sm:px-5">
                 <ArrowLeft className="size-4" /> Back
@@ -141,7 +141,7 @@ export function CheckFlow({ initial, startWithResults }: { initial: AppState; st
                     Skip to results
                   </Button>
                 )}
-                <Button size="lg" onClick={() => go(step + 1)} disabled={!canNext} className="min-w-36 shadow-lg shadow-primary/20">
+                <Button size="lg" onClick={() => go(step + 1)} disabled={!canNext} className="min-w-36 shadow-brutal-lg">
                   {step === visibleSteps.length - 1 ? "See my results" : "Next"} <ArrowRight className="size-4" />
                 </Button>
               </div>
@@ -186,11 +186,11 @@ function Results({
   return (
     <div className="space-y-8">
       <section className="animate-fade-up">
-        <p className="text-sm font-semibold text-primary">Your results</p>
+        <p className="text-sm font-semibold text-link">Your results</p>
         <h1 className="mt-1 text-2xl font-extrabold tracking-tight text-balance sm:text-4xl">
           {recommended ? (
             <>
-              Our pick for {phrase}: <span className="text-primary">{recommended.model.name}</span>
+              Our pick for {phrase}: <span className="text-link">{recommended.model.name}</span>
             </>
           ) : (
             <>Nothing runs comfortably for {phrase} on this computer</>
@@ -212,7 +212,7 @@ function Results({
 
       {recommended ? (
         <section className="grid gap-5 lg:grid-cols-3">
-          <RecommendationCard rec={recommended} eyebrow={PICK_TITLE.recommended} reason={pickReason("recommended", recommended)} href={href(recommended)} workloadLabel={workloadLabel(state.workload)} className="shadow-lg shadow-primary/10 ring-2 ring-primary/40" />
+          <RecommendationCard rec={recommended} eyebrow={PICK_TITLE.recommended} reason={pickReason("recommended", recommended)} href={href(recommended)} workloadLabel={workloadLabel(state.workload)} className="shadow-brutal-lg ring-2 ring-ink" />
           {fastest && <RecommendationCard rec={fastest} eyebrow={PICK_TITLE.fastest} reason={pickReason("fastest", fastest)} href={href(fastest)} workloadLabel={workloadLabel(state.workload)} />}
           {quality && <RecommendationCard rec={quality} eyebrow={PICK_TITLE.quality} reason={pickReason("quality", quality)} href={href(quality)} workloadLabel={workloadLabel(state.workload)} />}
         </section>
@@ -229,14 +229,14 @@ function Results({
       )}
 
       {/* Quick what-if */}
-      <details className="group rounded-3xl border border-border/70 bg-card">
+      <details className="group rounded-2xl border-2 border-ink bg-card">
         <summary className="flex min-h-14 cursor-pointer items-center justify-between gap-3 px-5 text-base font-semibold">
           <span className="flex items-center gap-2">
-            <SlidersHorizontal className="size-5 text-primary" /> Fine-tune these results
+            <SlidersHorizontal className="size-5 text-link" /> Fine-tune these results
           </span>
           <span className="hidden text-sm font-normal text-muted-foreground group-open:hidden sm:inline">Context, other apps, priority</span>
         </summary>
-        <div className="flex flex-wrap items-end gap-4 border-t border-border/60 p-5">
+        <div className="flex flex-wrap items-end gap-4 border-t-2 border-ink p-5">
         <Field label="Context" className="min-w-0">
           <Segmented ariaLabel="Context" size="sm" value={state.workload.desiredContextWindow ?? 0} onChange={(c) => setWorkload({ desiredContextWindow: c || undefined })} options={[{ value: 0, label: "Auto" }, ...CONTEXT_STEPS.filter((c) => c >= 8192).map((c) => ({ value: c, label: fmtCtx(c) }))]} />
         </Field>
@@ -258,7 +258,7 @@ function Results({
           <p className="mt-1 text-sm text-muted-foreground">These load and run, but they’d feel slow or leave your computer short of memory for {phrase}.</p>
           <div className="mt-4 grid gap-3 md:grid-cols-3">
             {technicallyPossible.map((r) => (
-              <Link key={r.id} href={href(r)} className={cn("rounded-xl border p-4 transition hover:shadow-sm", COMFORT_STYLE[r.level].bg)}>
+              <Link key={r.id} href={href(r)} className={cn("rounded-xl border-2 p-4 transition hover:shadow-brutal-sm", COMFORT_STYLE[r.level].bg)}>
                 <div className="flex items-start justify-between gap-2">
                   <p className="font-medium">{r.model.name}</p>
                   <ComfortBadge level={r.level} size="sm" />
@@ -308,7 +308,7 @@ function Results({
 
 function EditChip({ label, value, onClick }: { label: string; value: string; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className="inline-flex min-h-10 max-w-[18rem] shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border bg-card px-3 py-1.5 transition hover:bg-muted active:scale-[0.98]">
+    <button type="button" onClick={onClick} className="inline-flex min-h-10 max-w-[18rem] shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border-2 bg-card px-3 py-1.5 transition hover:bg-muted active:scale-[0.98]">
       <span className="text-xs text-muted-foreground">{label}</span>
       <span className="truncate font-medium">{value}</span>
       <Pencil className="size-3 text-muted-foreground" />

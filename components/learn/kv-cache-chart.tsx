@@ -73,7 +73,7 @@ export function KvCacheChart() {
             type="button"
             onClick={() => setModelId(id)}
             aria-pressed={modelId === id}
-            className={cn("rounded-full border px-2.5 py-1 transition hover:bg-muted", modelId === id && "border-primary bg-accent text-accent-foreground")}
+            className={cn("rounded-full border-2 px-2.5 py-1 transition hover:bg-muted", modelId === id && "border-ink bg-accent text-accent-foreground")}
           >
             {getModel(id).name}
           </button>
@@ -89,7 +89,7 @@ export function KvCacheChart() {
         </span>
         {showRef && (
           <span className="flex items-center gap-1.5">
-            <span className="size-2.5 rounded-sm border border-dashed border-muted-foreground/70" /> {reference.name} (classic), FP16
+            <span className="size-2.5 rounded-sm border-2 border-dashed border-muted-foreground/70" /> {reference.name} (classic), FP16
           </span>
         )}
       </div>
@@ -105,7 +105,7 @@ export function KvCacheChart() {
                 {showRef && (
                   <Bar
                     width={pct(r.ref)}
-                    className="border border-dashed border-muted-foreground/70 bg-transparent"
+                    className="border-2 border-dashed border-muted-foreground/70 bg-transparent"
                     value={fmtGB(r.ref)}
                     label={`${reference.name} FP16 KV at ${fmtCtx(r.ctx)}`}
                     muted

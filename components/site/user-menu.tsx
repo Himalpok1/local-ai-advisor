@@ -8,10 +8,10 @@ import { cn } from "@/lib/utils";
 function Avatar({ name, image, className }: { name?: string | null; image?: string | null; className?: string }) {
   if (image) {
     // eslint-disable-next-line @next/next/no-img-element -- remote Google avatar; no next/image domain config needed
-    return <img src={image} alt="" referrerPolicy="no-referrer" className={cn("rounded-full object-cover", className)} />;
+    return <img src={image} alt="" referrerPolicy="no-referrer" className={cn("rounded-full border-2 border-ink object-cover", className)} />;
   }
   return (
-    <span className={cn("grid place-items-center rounded-full bg-primary/15 font-semibold text-primary", className)}>
+    <span className={cn("grid place-items-center rounded-full border-2 border-ink bg-primary font-bold text-on-fill", className)}>
       {(name ?? "?").charAt(0).toUpperCase()}
     </span>
   );
@@ -48,7 +48,7 @@ export function UserMenu({ className }: { className?: string }) {
         type="button"
         onClick={() => signIn("google")}
         className={cn(
-          "inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-xl border border-border/80 bg-card px-3 text-xs font-semibold text-foreground shadow-2xs transition hover:bg-muted/70 active:scale-[0.98] cursor-pointer",
+          "press inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full border-2 border-ink bg-card px-3.5 text-xs font-bold text-foreground shadow-brutal-sm cursor-pointer",
           className,
         )}
       >
@@ -66,31 +66,31 @@ export function UserMenu({ className }: { className?: string }) {
         onClick={() => setOpen(!open)}
         aria-label={unread ? `Account menu, ${unread} new model${unread === 1 ? "" : "s"} for your rigs` : "Account menu"}
         aria-expanded={open}
-        className="relative flex size-9 items-center justify-center rounded-full ring-2 ring-transparent transition hover:ring-border cursor-pointer"
+        className="relative flex size-9 items-center justify-center rounded-full cursor-pointer"
       >
         <Avatar name={name} image={image} className="size-8 text-sm" />
         {unread > 0 && (
-          <span className="absolute -right-1 -top-1 grid min-w-4.5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold leading-4.5 text-primary-foreground ring-2 ring-background">
+          <span className="absolute -right-1 -top-1 grid min-w-4.5 place-items-center rounded-full border-2 border-ink bg-sticker-pink px-1 text-[10px] font-bold leading-3.5 text-on-fill">
             {unread > 9 ? "9+" : unread}
           </span>
         )}
       </button>
       {open && (
-        <div className="absolute right-0 top-11 w-60 overflow-hidden rounded-xl border border-border/70 bg-card shadow-lg">
-          <div className="flex items-center gap-3 border-b border-border/60 p-3">
+        <div className="absolute right-0 top-11 w-60 overflow-hidden rounded-xl border-2 border-ink bg-card shadow-brutal">
+          <div className="flex items-center gap-3 border-b-2 border-ink p-3">
             <Avatar name={name} image={image} className="size-9 shrink-0 text-sm" />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-foreground">{name}</p>
               <p className="truncate text-xs text-muted-foreground">{email}</p>
             </div>
           </div>
-          <nav className="border-b border-border/60 py-1" aria-label="Account">
+          <nav className="border-b-2 border-ink py-1" aria-label="Account">
             <MenuLink href="/me" icon={<HardDrive className="size-4" />} onClick={() => setOpen(false)}>
               My rigs &amp; saved
             </MenuLink>
             <MenuLink href="/me#alerts" icon={<Bell className="size-4" />} onClick={() => setOpen(false)}>
               New models for my rigs
-              {unread > 0 && <span className="ml-auto rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-foreground">{unread}</span>}
+              {unread > 0 && <span className="ml-auto rounded-full border-[1.5px] border-ink bg-sticker-pink px-1.5 text-[11px] font-bold text-on-fill">{unread}</span>}
             </MenuLink>
             <MenuLink href="/community/submit" icon={<Gauge className="size-4" />} onClick={() => setOpen(false)}>
               Report a speed
@@ -99,7 +99,7 @@ export function UserMenu({ className }: { className?: string }) {
           <button
             type="button"
             onClick={() => signOut()}
-            className="flex w-full items-center gap-2 px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-muted/60 hover:text-foreground cursor-pointer"
+            className="flex w-full items-center gap-2 px-3 py-2.5 text-sm font-medium text-foreground transition hover:bg-primary hover:text-on-fill cursor-pointer"
           >
             <LogOut className="size-4" />
             Sign out
@@ -112,7 +112,7 @@ export function UserMenu({ className }: { className?: string }) {
 
 function MenuLink({ href, icon, onClick, children }: { href: string; icon: React.ReactNode; onClick: () => void; children: React.ReactNode }) {
   return (
-    <Link href={href} onClick={onClick} className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground transition hover:bg-muted/60 hover:text-foreground">
+    <Link href={href} onClick={onClick} className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-foreground transition hover:bg-primary hover:text-on-fill">
       {icon}
       {children}
     </Link>

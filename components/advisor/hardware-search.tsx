@@ -43,7 +43,7 @@ export function HardwareSearch({ initial }: { initial: AppState }) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <p className="text-sm font-medium text-primary">What hardware do I need?</p>
+      <p className="text-sm font-medium text-link">What hardware do I need?</p>
       <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Hardware that delivers the experience you want — not just loads the model</h1>
       <p className="mt-2 max-w-3xl text-muted-foreground">Pick the model and describe the workload. We rate every machine in the database for that exact workload and group them by whether they meet your target.</p>
 
@@ -143,7 +143,7 @@ export function HardwareSearch({ initial }: { initial: AppState }) {
         </div>
 
         <div className="min-w-0 space-y-8">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-card p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 bg-card p-4">
             <div className="text-sm">
               <p className="font-medium">
                 {model.name} · {workloadLabel(state.workload)}
@@ -176,20 +176,20 @@ function Group({ title, description, recs, workload, empty, highlight, collapsed
           {title} <span className="text-muted-foreground">({recs.length})</span>
         </h2>
         {collapsed && recs.length > 0 && (
-          <button className="text-sm text-primary hover:underline" onClick={() => setLimit(limit ? 0 : 60)}>
+          <button className="text-sm text-link hover:underline" onClick={() => setLimit(limit ? 0 : 60)}>
             {limit ? "Hide" : "Show"}
           </button>
         )}
       </div>
       <p className="text-sm text-muted-foreground">{description}</p>
-      {recs.length === 0 && empty && <p className="mt-3 rounded-lg border border-dashed p-4 text-sm text-muted-foreground">{empty}</p>}
+      {recs.length === 0 && empty && <p className="mt-3 rounded-lg border-2 border-dashed p-4 text-sm text-muted-foreground">{empty}</p>}
       <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {recs.slice(0, limit).map((r) => (
           <HardwareResult key={r.id} rec={r} workload={workload} highlight={highlight} />
         ))}
       </div>
       {recs.length > limit && limit > 0 && (
-        <button className="mt-3 text-sm text-primary hover:underline" onClick={() => setLimit(limit + 12)}>
+        <button className="mt-3 text-sm text-link hover:underline" onClick={() => setLimit(limit + 12)}>
           Show more ({recs.length - limit} remaining)
         </button>
       )}
@@ -201,7 +201,7 @@ function HardwareResult({ rec, workload, highlight }: { rec: Recommendation; wor
   const p = rec.performance;
   const blocked = rec.level === "unsupported" || rec.level === "does-not-fit";
   return (
-    <Link href={recHref(rec, workload)} className={cn("flex flex-col rounded-xl border bg-card p-4 transition hover:border-primary/50 hover:shadow-sm", highlight && "ring-1 ring-comfortable/30")}>
+    <Link href={recHref(rec, workload)} className={cn("flex flex-col rounded-xl border-2 bg-card p-4 transition hover:border-ink hover:shadow-brutal-sm", highlight && "ring-1 ring-comfortable/30")}>
       <ComfortBadge level={rec.level} size="sm" className="self-start" />
       <p className="mt-2 font-medium leading-tight">{rec.hardware.name}</p>
       <p className="mt-1 text-xs text-muted-foreground">{hardwareSpecLine(rec.hardware)}</p>

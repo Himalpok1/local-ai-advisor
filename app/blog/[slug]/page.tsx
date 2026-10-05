@@ -70,7 +70,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </Link>
           <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">{post.title}</h1>
           <p className="mt-3 text-lg leading-relaxed text-muted-foreground text-pretty">{post.excerpt}</p>
-          <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-border/70 pb-6 text-sm text-muted-foreground">
+          <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 border-b-2 border-ink pb-6 text-sm text-muted-foreground">
             <span className="font-medium text-foreground">By {post.author}</span>
             <span aria-hidden>·</span>
             <time dateTime={post.date}>{formatPostDate(post.date)}</time>
@@ -92,32 +92,32 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {(newer || older) && (
         <nav aria-label="More posts" className="mt-12 grid gap-3 sm:grid-cols-2">
           {older ? (
-            <Link href={`/blog/${older.slug}`} className="group rounded-2xl border border-border/70 bg-card p-4 transition hover:border-primary/40">
+            <Link href={`/blog/${older.slug}`} className="group rounded-2xl border-2 border-ink bg-card p-4 transition hover:border-ink">
               <span className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <ArrowLeft className="size-3.5" /> Older
               </span>
-              <span className="mt-1 block font-semibold group-hover:text-primary">{older.title}</span>
+              <span className="mt-1 block font-semibold group-hover:text-link">{older.title}</span>
             </Link>
           ) : (
             <span className="hidden sm:block" />
           )}
           {newer && (
-            <Link href={`/blog/${newer.slug}`} className="group rounded-2xl border border-border/70 bg-card p-4 text-right transition hover:border-primary/40">
+            <Link href={`/blog/${newer.slug}`} className="group rounded-2xl border-2 border-ink bg-card p-4 text-right transition hover:border-ink">
               <span className="flex items-center justify-end gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Newer <ArrowRight className="size-3.5" />
               </span>
-              <span className="mt-1 block font-semibold group-hover:text-primary">{newer.title}</span>
+              <span className="mt-1 block font-semibold group-hover:text-link">{newer.title}</span>
             </Link>
           )}
         </nav>
       )}
 
-      <aside className="mt-10 rounded-3xl border border-primary/25 bg-primary/5 p-5 sm:p-6">
+      <aside className="mt-10 rounded-2xl border-2 border-ink bg-primary/15 p-5 sm:p-6">
         <p className="text-lg font-bold tracking-tight">Will it run on your computer?</p>
         <p className="mt-1 text-sm text-muted-foreground">Answer a few questions and see which local AI models will feel comfortable on your hardware.</p>
         <Link
           href="/check"
-          className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-2xl bg-primary px-5 font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:brightness-110 active:scale-[0.98]"
+          className="mt-4 inline-flex min-h-11 items-center gap-2 bg-primary px-5 text-primary-foreground rounded-full border-2 border-ink font-bold shadow-brutal press"
         >
           Check my computer <ArrowRight className="size-4" />
         </Link>

@@ -16,7 +16,7 @@ export default function ContactPage() {
       <p className="not-prose">
         <a
           href={`mailto:${CONTACT_EMAIL}`}
-          className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-primary px-5 font-semibold text-primary-foreground no-underline shadow-lg shadow-primary/25 transition hover:brightness-110"
+          className="inline-flex min-h-12 items-center gap-2 bg-primary px-5 text-primary-foreground no-underline rounded-full border-2 border-ink font-bold shadow-brutal press"
         >
           <Mail className="size-5" aria-hidden /> {CONTACT_EMAIL}
         </a>

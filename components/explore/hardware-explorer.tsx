@@ -154,7 +154,7 @@ export function HardwareExplorer({ hardware, benchmarkedChips }: { hardware: Har
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1100px] text-sm">
             <caption className="sr-only">Hardware configurations. Column headers with buttons can be sorted.</caption>
-            <thead className="border-b bg-muted/60 text-left text-xs text-muted-foreground">
+            <thead className="border-b-2 bg-muted/60 text-left text-xs text-muted-foreground">
               <tr>
                 <SortHeader label="Configuration" k="name" sort={sort} onSort={toggleSort} />
                 <SortHeader label="Memory" k="memory" sort={sort} onSort={toggleSort} />

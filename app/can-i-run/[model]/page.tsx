@@ -121,7 +121,7 @@ export default async function Page(props: Props) {
         {groups.map((g) => (
           <div key={g} className="space-y-2">
             <h3 className="text-sm font-semibold text-muted-foreground">{g}</h3>
-            <div className="overflow-x-auto rounded-xl border">
+            <div className="overflow-x-auto rounded-xl border-2">
               <table className="w-full min-w-[640px] text-sm">
                 <thead className="bg-muted/60 text-left text-xs text-muted-foreground">
                   <tr>

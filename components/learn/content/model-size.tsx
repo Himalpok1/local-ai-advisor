@@ -56,7 +56,7 @@ export default function Lesson() {
           <li className="rounded-2xl bg-muted px-4 py-3">
             <strong>Memory</strong> follows the total (35B): it needs as much room as any 35B model.
           </li>
-          <li className="rounded-2xl bg-primary/10 px-4 py-3">
+          <li className="rounded-2xl bg-primary/25 px-4 py-3">
             <strong>Speed</strong> follows the active part (3B): it writes almost as fast as a tiny 3B model.
           </li>
         </ul>

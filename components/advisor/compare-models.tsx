@@ -60,7 +60,7 @@ export function CompareModels({ initial, initialModels }: { initial: AppState; i
       <Card className="mt-6">
         <CardContent className="grid gap-4 pt-5 md:grid-cols-2 lg:grid-cols-4">
           <Field label="Hardware">
-            <button type="button" onClick={() => setEditHw(!editHw)} className="rounded-lg border bg-card px-3 py-2 text-left text-sm hover:bg-muted">
+            <button type="button" onClick={() => setEditHw(!editHw)} className="rounded-lg border-2 bg-card px-3 py-2 text-left text-sm hover:bg-muted">
               <span className="block truncate font-medium">{hardware.name}</span>
               <span className="block truncate text-xs text-muted-foreground">{hardwareSpecLine(hardware)}</span>
             </button>
@@ -81,7 +81,7 @@ export function CompareModels({ initial, initialModels }: { initial: AppState; i
             <ShareButton saveLabel={`Model comparison on ${hardware.name}`} />
           </div>
           {editHw && (
-            <div className="rounded-xl border p-4 md:col-span-2 lg:col-span-4">
+            <div className="rounded-xl border-2 p-4 md:col-span-2 lg:col-span-4">
               <HardwarePicker value={{ hardwareId: state.hardwareId, custom: state.custom, os: state.os }} onChange={(v) => setState((s) => ({ ...s, ...v }))} workload={state.workload} />
               <Button className="mt-4" size="sm" onClick={() => setEditHw(false)}>
                 Done
@@ -95,7 +95,7 @@ export function CompareModels({ initial, initialModels }: { initial: AppState; i
         {picks.map((p, i) => {
           const m = getModel(p.id);
           return (
-            <span key={p.id} className="inline-flex items-center gap-1 rounded-lg border bg-card py-1 pl-3 pr-1 text-sm">
+            <span key={p.id} className="inline-flex items-center gap-1 rounded-lg border-2 bg-card py-1 pl-3 pr-1 text-sm">
               {m.name}
               <select
                 aria-label={`Quantization for ${m.name}`}

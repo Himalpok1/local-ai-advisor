@@ -122,8 +122,8 @@ export function HardwarePicker({
               if (t.id === "custom") onChange({ hardwareId: "custom", custom, os: custom.os });
             }}
             className={cn(
-              "inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition",
-              tab === t.id ? "border-primary bg-accent text-accent-foreground" : "bg-card hover:bg-muted",
+              "inline-flex items-center gap-2 rounded-lg border-2 px-3 py-2 text-sm font-medium transition",
+              tab === t.id ? "border-ink bg-accent text-accent-foreground" : "bg-card hover:bg-muted",
             )}
           >
             {t.icon}
@@ -226,7 +226,7 @@ export function HardwarePicker({
       )}
 
       {selected && (
-        <div className="flex flex-wrap items-center gap-2 rounded-lg border bg-muted/40 px-3 py-2 text-sm">
+        <div className="flex flex-wrap items-center gap-2 rounded-lg border-2 bg-muted/40 px-3 py-2 text-sm">
           <span className="font-medium">{selected.name}</span>
           <span className="text-muted-foreground">· {hardwareSpecLine(selected)}</span>
           {selected.gpu?.acceleratedFp16Tflops && <Badge tone="primary">GPU neural accelerators</Badge>}

@@ -58,7 +58,7 @@ export function CourseProgress() {
           <>
             <Link
               href={`/learn/${next.slug}`}
-              className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-primary px-5 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:brightness-110 active:scale-[0.98]"
+              className="inline-flex min-h-12 items-center gap-2 bg-primary px-5 text-base text-primary-foreground rounded-full border-2 border-ink font-bold shadow-brutal press"
             >
               {count === 0 ? "Start lesson 1" : `Continue: lesson ${LESSONS.indexOf(next) + 1}`} <ArrowRight className="size-4" />
             </Link>
@@ -69,7 +69,7 @@ export function CourseProgress() {
         ) : (
           <>
             <p className="flex items-center gap-2 font-semibold">
-              <PartyPopper className="size-5 text-primary" /> You finished the course!
+              <PartyPopper className="size-5 text-link" /> You finished the course!
             </p>
             <button type="button" onClick={reset} className="mt-1 inline-flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
               <RotateCcw className="size-3.5" /> Reset progress
@@ -90,7 +90,7 @@ export function CoursePath() {
     <div className="space-y-10">
       {PARTS.map((part, pi) => (
         <section key={part.id} aria-labelledby={`part-${part.id}`}>
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">Part {pi + 1}</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-link">Part {pi + 1}</p>
           <h2 id={`part-${part.id}`} className="mt-1 text-xl font-bold tracking-tight sm:text-2xl">
             {part.title}
           </h2>
@@ -111,14 +111,14 @@ export function CoursePath() {
                   <Link
                     href={`/learn/${l.slug}`}
                     className={cn(
-                      "group flex h-full gap-4 rounded-3xl border bg-card p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.99] sm:p-5",
-                      isNext ? "border-primary/60 shadow-md shadow-primary/10 ring-1 ring-primary/30" : "border-border/70 hover:border-primary/40",
+                      "group flex h-full gap-4 rounded-2xl border-2 bg-card p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-brutal-lg active:scale-[0.99] sm:p-5",
+                      isNext ? "border-ink shadow-brutal ring-1 ring-ink" : "border-ink hover:border-ink",
                     )}
                   >
                     <span
                       className={cn(
                         "grid size-11 shrink-0 place-items-center rounded-2xl text-base font-bold transition-colors",
-                        isDone ? "bg-comfortable text-white" : isNext ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary",
+                        isDone ? "bg-comfortable text-white" : isNext ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground group-hover:bg-primary/25 group-hover:text-link",
                       )}
                     >
                       {isDone ? <Check className="size-5" strokeWidth={3} /> : n}
@@ -126,14 +126,14 @@ export function CoursePath() {
                     <span className="min-w-0 flex-1">
                       <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                         <span className="font-bold leading-snug">{l.title}</span>
-                        {isNext && <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">{done.length ? "Up next" : "Start here"}</span>}
+                        {isNext && <span className="rounded-full bg-primary/25 px-2 py-0.5 text-[11px] font-semibold text-link">{done.length ? "Up next" : "Start here"}</span>}
                       </span>
                       <span className="mt-1 block text-sm text-muted-foreground">{l.summary}</span>
                       <span className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="size-3.5" /> {l.minutes} min
                       </span>
                     </span>
-                    <ArrowRight className="mt-1 size-5 shrink-0 self-center text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" />
+                    <ArrowRight className="mt-1 size-5 shrink-0 self-center text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-link" />
                   </Link>
                 </motion.li>
               );
@@ -164,7 +164,7 @@ export function LessonOutline({ current }: { current: string }) {
                 aria-current={isCurrent ? "page" : undefined}
                 className={cn(
                   "flex items-center gap-2.5 rounded-xl px-2.5 py-2 transition-colors",
-                  isCurrent ? "bg-primary/10 font-semibold text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  isCurrent ? "bg-primary/25 font-semibold text-link" : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 )}
               >
                 <span
@@ -192,7 +192,7 @@ export function LessonFinish({ lesson, next, prev }: { lesson: Lesson; next?: Le
   const isDone = done.includes(lesson.slug);
   return (
     <div className="space-y-3">
-      <div className="rounded-3xl border border-border/70 bg-card p-5 shadow-sm sm:p-6">
+      <div className="rounded-2xl border-2 border-ink bg-card p-5 shadow-brutal-sm sm:p-6">
         {next ? (
           <>
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Up next · lesson {lessonIndex(next.slug) + 1}</p>
@@ -204,7 +204,7 @@ export function LessonFinish({ lesson, next, prev }: { lesson: Lesson; next?: Le
                 markDone(lesson.slug);
                 router.push(`/learn/${next.slug}`);
               }}
-              className="mt-4 inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-primary px-5 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:brightness-110 active:scale-[0.98] sm:w-auto"
+              className="mt-4 inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 bg-primary px-5 text-base text-primary-foreground sm:w-auto rounded-full border-2 border-ink font-bold shadow-brutal press"
             >
               <Check className="size-5" /> Done, next lesson <ArrowRight className="size-4" />
             </button>
@@ -212,14 +212,14 @@ export function LessonFinish({ lesson, next, prev }: { lesson: Lesson; next?: Le
         ) : (
           <>
             <p className="flex items-center gap-2 text-xl font-bold tracking-tight">
-              <PartyPopper className="size-6 text-primary" /> That’s the whole course!
+              <PartyPopper className="size-6 text-link" /> That’s the whole course!
             </p>
             <p className="mt-1 text-sm text-muted-foreground">You know more about local AI than most people. Time to put it to work.</p>
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
               <Link
                 href="/check"
                 onClick={() => markDone(lesson.slug)}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-primary px-5 font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:brightness-110 active:scale-[0.98]"
+                className="inline-flex min-h-12 items-center justify-center gap-2 bg-primary px-5 text-primary-foreground rounded-full border-2 border-ink font-bold shadow-brutal press"
               >
                 Check my computer <ArrowRight className="size-4" />
               </Link>
@@ -227,7 +227,7 @@ export function LessonFinish({ lesson, next, prev }: { lesson: Lesson; next?: Le
                 type="button"
                 onClick={() => markDone(lesson.slug)}
                 disabled={isDone}
-                className="inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-2xl border border-border/80 px-5 font-semibold transition hover:bg-muted disabled:cursor-default disabled:opacity-60"
+                className="inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-2xl border-2 border-ink px-5 font-semibold transition hover:bg-muted disabled:cursor-default disabled:opacity-60"
               >
                 <Check className="size-4" /> {isDone ? "Course complete" : "Mark as done"}
               </button>

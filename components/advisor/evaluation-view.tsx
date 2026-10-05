@@ -78,7 +78,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       {/* Outcome */}
-      <section className={cn("rounded-2xl border p-6 sm:p-8", style.bg, style.border)}>
+      <section className={cn("rounded-2xl border-2 p-6 sm:p-8", style.bg, style.border)}>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-3xl">
             <p className="text-sm font-medium text-muted-foreground">Can I use this comfortably?</p>
@@ -106,18 +106,18 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
         </div>
         <div className="mt-5 flex flex-wrap gap-2">
           <ShareButton saveLabel={`${model.name} on ${hardware.name}`} />
-          <Link href={`/stack?${encodeState({ ...state, quant })}`} className="inline-flex h-8 items-center gap-1.5 rounded-lg border bg-card px-3 text-sm font-medium hover:bg-muted">
+          <Link href={`/stack?${encodeState({ ...state, quant })}`} className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 bg-card px-3 text-sm font-medium hover:bg-muted">
             View as stack <ArrowRight className="size-4" />
           </Link>
-          <Link href={`/check?${encodeState({ hardwareId: state.hardwareId, custom: state.custom, os: state.os, workload: state.workload })}`} className="inline-flex h-8 items-center gap-1.5 rounded-lg border bg-card px-3 text-sm font-medium hover:bg-muted">
+          <Link href={`/check?${encodeState({ hardwareId: state.hardwareId, custom: state.custom, os: state.os, workload: state.workload })}`} className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 bg-card px-3 text-sm font-medium hover:bg-muted">
             Other models for this workload <ArrowRight className="size-4" />
           </Link>
         </div>
       </section>
 
       {changed && lastChange && (
-        <div role="status" className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border bg-card px-4 py-3 text-sm shadow-sm">
-          <Sparkles className="size-4 text-primary" />
+        <div role="status" className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border-2 bg-card px-4 py-3 text-sm shadow-brutal-sm">
+          <Sparkles className="size-4 text-link" />
           <span className="font-medium">{lastChange.change}:</span>
           <ComfortBadge level={lastChange.from.level} size="sm" />
           <ArrowRight className="size-4 text-muted-foreground" />
@@ -150,7 +150,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
             <CardContent>
               <ExplanationPanel rec={rec} />
               {suggestions.some((s) => COMFORT_RANK[s.to] > COMFORT_RANK[rec.level]) && (
-                <div className="mt-5 rounded-lg border border-primary/30 bg-accent/40 p-4 text-sm">
+                <div className="mt-5 rounded-lg border-2 border-ink bg-accent/40 p-4 text-sm">
                   <p className="font-semibold">What would move this up?</p>
                   <ul className="mt-2 space-y-1">
                     {suggestions
@@ -251,7 +251,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
             <CardContent>
               <ul className="grid gap-2 sm:grid-cols-2">
                 {fit.map((f) => (
-                  <li key={f.label} className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2 text-sm">
+                  <li key={f.label} className="flex items-center justify-between gap-3 rounded-lg border-2 px-3 py-2 text-sm">
                     <span>{f.label}</span>
                     <ComfortBadge level={f.level} size="sm" />
                   </li>
@@ -287,7 +287,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
             </CardHeader>
             <CardContent className="space-y-4">
               <Field label="Hardware">
-                <button type="button" onClick={() => setEditHardware(!editHardware)} className="rounded-lg border bg-card px-3 py-2 text-left text-sm hover:bg-muted">
+                <button type="button" onClick={() => setEditHardware(!editHardware)} className="rounded-lg border-2 bg-card px-3 py-2 text-left text-sm hover:bg-muted">
                   <span className="block font-medium">{hardware.name}</span>
                   <span className="block text-xs text-muted-foreground">{hardwareSpecLine(hardware)}</span>
                 </button>
@@ -364,7 +364,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
                       const patch = s.patch as { workload?: Partial<WorkloadProfileInput>; quant?: QuantId; modelId?: string; runtimeId?: string };
                       update({ ...(patch.quant && { quant: patch.quant }), ...(patch.modelId && { modelId: patch.modelId }), ...(patch.runtimeId && { runtimeId: patch.runtimeId }) }, patch.workload, s.change);
                     }}
-                    className="w-full rounded-lg border p-3 text-left text-sm transition hover:border-primary/50 hover:bg-muted/50"
+                    className="w-full rounded-lg border-2 p-3 text-left text-sm transition hover:border-ink hover:bg-muted/50"
                   >
                     <span className="flex items-center justify-between gap-2">
                       <span className="font-medium">{s.change}</span>
@@ -385,7 +385,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
 
       {editHardware && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4" role="dialog" aria-modal="true" aria-label="Change hardware" onClick={() => setEditHardware(false)}>
-          <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border bg-background p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+          <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border-2 bg-background p-6 shadow-brutal-lg" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-semibold">Change hardware</h2>
               <button aria-label="Close" onClick={() => setEditHardware(false)}>
@@ -408,7 +408,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
 
 function Chip({ label, value }: { label: string; value: string }) {
   return (
-    <span className="inline-flex max-w-full items-center gap-1.5 rounded-lg border bg-card px-2.5 py-1">
+    <span className="inline-flex max-w-full items-center gap-1.5 rounded-lg border-2 bg-card px-2.5 py-1">
       <span className="text-xs text-muted-foreground">{label}</span>
       <span className="truncate font-medium">{value}</span>
     </span>
@@ -417,7 +417,7 @@ function Chip({ label, value }: { label: string; value: string }) {
 
 function Tier({ ok, label, hint, strong }: { ok: boolean; label: string; hint: string; strong?: boolean }) {
   return (
-    <div className={cn("flex items-start gap-2 rounded-lg border bg-card px-3 py-2", strong && "ring-1 ring-primary/40")}>
+    <div className={cn("flex items-start gap-2 rounded-lg border-2 bg-card px-3 py-2", strong && "ring-1 ring-ink")}>
       {ok ? <Check className="mt-0.5 size-4 shrink-0 text-comfortable" /> : <X className="mt-0.5 size-4 shrink-0 text-technical" />}
       <span>
         <span className={cn("block text-sm", strong ? "font-semibold" : "font-medium")}>{label}</span>
@@ -429,7 +429,7 @@ function Tier({ ok, label, hint, strong }: { ok: boolean; label: string; hint: s
 
 function Stat({ k, v }: { k: string; v: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-4 border-b border-dashed py-1">
+    <div className="flex items-baseline justify-between gap-4 border-b-2 border-dashed py-1">
       <dt className="text-muted-foreground">{k}</dt>
       <dd className="font-medium tabular-nums">{v}</dd>
     </div>

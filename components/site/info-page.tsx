@@ -6,7 +6,7 @@ export function InfoPage({ title, intro, updated, children }: { title: string; i
   return (
     <div className="mx-auto max-w-3xl px-4 pb-8 pt-8 sm:px-6 sm:pt-12">
       <JsonLd data={breadcrumbList([{ label: title }])} />
-      <header className="animate-fade-up border-b border-border/70 pb-6">
+      <header className="animate-fade-up border-b-2 border-ink pb-6">
         <h1 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">{title}</h1>
         <p className="mt-3 text-lg leading-relaxed text-muted-foreground text-pretty">{intro}</p>
         {updated && (

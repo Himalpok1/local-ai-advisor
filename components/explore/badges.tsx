@@ -2,8 +2,7 @@ import type { BackendSupport, SupportLevel } from "@/lib/schemas";
 import { SUPPORT_LABEL } from "@/lib/compatibility";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-
-type Tone = "neutral" | "primary" | "good" | "warn" | "bad";
+import { TIER_CHIP, type Tone } from "@/components/ui/tones";
 
 export const SUPPORT_TONE: Record<SupportLevel, Tone> = {
   official: "good",
@@ -15,10 +14,10 @@ export const SUPPORT_TONE: Record<SupportLevel, Tone> = {
 
 /** Cell background for matrix tables, keyed by support level. */
 export const SUPPORT_CELL: Record<SupportLevel, string> = {
-  official: "bg-comfortable/15 text-comfortable",
-  community: "bg-excellent/10 text-excellent",
-  bridge: "bg-acceptable/20 text-[color-mix(in_oklch,var(--c-acceptable)_70%,black)] dark:text-acceptable",
-  experimental: "bg-borderline/12 text-borderline",
+  official: TIER_CHIP.comfortable,
+  community: TIER_CHIP.excellent,
+  bridge: TIER_CHIP.acceptable,
+  experimental: TIER_CHIP.borderline,
   unsupported: "bg-muted text-muted-foreground",
 };
 
@@ -41,9 +40,9 @@ export function SupportBadge({ level, className }: { level: SupportLevel; classN
 type Maturity = BackendSupport["maturity"];
 export const MATURITY_TONE: Record<Maturity, Tone> = { mature: "good", good: "primary", experimental: "warn" };
 export const MATURITY_CELL: Record<Maturity, string> = {
-  mature: "bg-comfortable/15 text-comfortable",
-  good: "bg-accent text-accent-foreground",
-  experimental: "bg-acceptable/20 text-[color-mix(in_oklch,var(--c-acceptable)_70%,black)] dark:text-acceptable",
+  mature: TIER_CHIP.comfortable,
+  good: "bg-sticker-blue text-on-fill",
+  experimental: TIER_CHIP.acceptable,
 };
 
 export function MaturityBadge({ maturity, className }: { maturity: Maturity; className?: string }) {
@@ -62,7 +61,7 @@ export function TierDots({ value, label, className }: { value: number; label: st
       {[1, 2, 3, 4, 5].map((i) => {
         const fill = rounded >= i ? 1 : rounded >= i - 0.5 ? 0.5 : 0;
         return (
-          <span key={i} className="relative size-2 overflow-hidden rounded-full bg-border">
+          <span key={i} className="relative size-2.5 overflow-hidden rounded-full border-[1.5px] border-ink bg-muted">
             {fill > 0 && <span className="absolute inset-y-0 left-0 bg-primary" style={{ width: `${fill * 100}%` }} />}
           </span>
         );

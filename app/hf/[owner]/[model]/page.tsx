@@ -49,6 +49,6 @@ export default async function Page(props: Props) {
     <h1 className="text-3xl font-semibold">{summary.parsed.model.name} on local hardware</h1>
     <p>Estimated comfort for repository coding with Aider on a MacBook Pro M4 Pro 48GB.</p>
     <div className="grid gap-6 lg:grid-cols-2"><ModelFacts r={summary.parsed} /><RecommendationCard rec={summary.rec} workloadLabel="Repository coding with Aider" /></div>
-    <Link className="text-primary underline" href={`/hugging-face?repo=${encodeURIComponent(repo)}`}>Check with your hardware and workload</Link>
+    <Link className="text-link underline" href={`/hugging-face?repo=${encodeURIComponent(repo)}`}>Check with your hardware and workload</Link>
   </main>;
 }

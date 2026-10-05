@@ -109,7 +109,7 @@ export default async function Page(props: Props) {
       </div>
 
       {!good.length && closedApps.length > 0 && (
-        <Card className="border-primary/30 bg-primary/5 p-5 sm:p-6">
+        <Card className="border-ink bg-primary/15 p-5 sm:p-6">
           <p className="font-semibold">Close your other apps and these will run</p>
           <p className="mt-1 text-sm text-muted-foreground">
             The ratings below assume a browser with a few tabs is open next to your chat app. With nothing else running, {hardware.name} has enough room for:
@@ -117,7 +117,7 @@ export default async function Page(props: Props) {
           <ul className="mt-3 flex flex-wrap gap-2">
             {closedApps.map((r) => (
               <li key={r.model.id}>
-                <Link href={canIRunHref(r.model, hardware)} className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-sm font-medium hover:border-primary/50">
+                <Link href={canIRunHref(r.model, hardware)} className="inline-flex items-center gap-2 rounded-full border-2 bg-card px-3 py-1.5 text-sm font-medium hover:border-ink">
                   {r.model.name} <span className="text-muted-foreground">{quantOf(r)}</span> <ComfortBadge level={r.level} size="sm" />
                 </Link>
               </li>
@@ -131,7 +131,7 @@ export default async function Page(props: Props) {
         if (!items.length) return null;
         return (
           <Section key={g.title} title={`${g.title} (${items.length})`} intro={g.intro}>
-            <div className="overflow-x-auto rounded-xl border">
+            <div className="overflow-x-auto rounded-xl border-2">
               <table className="w-full min-w-[680px] text-sm">
                 <thead className="bg-muted/60 text-left text-xs text-muted-foreground">
                   <tr>

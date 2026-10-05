@@ -47,7 +47,7 @@ export function FitsFigure() {
     },
   ];
   return (
-    <figure className="rounded-xl border bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
       <div className="space-y-5">
         {rows.map((r) => (
           <div key={r.label}>
@@ -98,7 +98,7 @@ export function SpillFigure() {
   const rows = [0, 0.1, 0.25, 0.5].map((s) => ({ spill: s, tps: spillTps(modelGB, s, vram, ram) }));
   const max = rows[0].tps;
   return (
-    <figure className="rounded-xl border bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
       <p className="mb-3 text-sm font-medium">Generation speed ceiling vs. how much of the model spilled out of VRAM</p>
       <div className="space-y-2.5" role="list">
         {rows.map((r) => (
@@ -138,7 +138,7 @@ export function AgentStepsFigure() {
   });
   const max = Math.max(...models.map((m) => m.total));
   return (
-    <figure className="rounded-xl border bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
       <p className="text-sm font-medium">One agent step = read the prompt (prefill) + write the reply (generation)</p>
       <div className="mt-1 flex flex-wrap gap-4 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
@@ -181,7 +181,7 @@ export function AgentStepsFigure() {
 
 function Pool({ title, size, className, children }: { title: string; size: string; className?: string; children?: React.ReactNode }) {
   return (
-    <div className={cn("rounded-lg border p-3", className)}>
+    <div className={cn("rounded-lg border-2 p-3", className)}>
       <div className="flex items-baseline justify-between gap-2 text-sm">
         <span className="font-medium">{title}</span>
         <span className="font-mono text-xs text-muted-foreground">{size}</span>
@@ -194,7 +194,7 @@ function Pool({ title, size, className, children }: { title: string; size: strin
 export function MemoryPoolsFigure() {
   return (
     <figure className="grid gap-4 sm:grid-cols-2">
-      <div className="rounded-xl border bg-card p-4">
+      <div className="rounded-xl border-2 bg-card p-4">
         <p className="mb-3 flex items-center gap-2 text-sm font-semibold">
           <MonitorSmartphone className="size-4 text-muted-foreground" /> PC with a graphics card
         </p>
@@ -208,7 +208,7 @@ export function MemoryPoolsFigure() {
           </Pool>
         </div>
       </div>
-      <div className="rounded-xl border bg-card p-4">
+      <div className="rounded-xl border-2 bg-card p-4">
         <p className="mb-3 flex items-center gap-2 text-sm font-semibold">
           <Cpu className="size-4 text-muted-foreground" /> Unified memory (one pool)
         </p>
@@ -237,10 +237,10 @@ export function MoeFigure() {
   const experts = 16;
   const active = new Set([3, 10]);
   return (
-    <figure className="rounded-xl border bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
       <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:gap-6">
         <div className="flex shrink-0 flex-col items-center gap-1 text-xs text-muted-foreground">
-          <span className="rounded-md border bg-muted px-2 py-1 font-mono text-foreground">“def”</span>
+          <span className="rounded-md border-2 bg-muted px-2 py-1 font-mono text-foreground">“def”</span>
           <span>one token</span>
           <span aria-hidden>→ router →</span>
         </div>
@@ -249,8 +249,8 @@ export function MoeFigure() {
             <div
               key={i}
               className={cn(
-                "grid size-8 place-items-center rounded-md border text-[10px] font-medium sm:size-9",
-                active.has(i) ? "border-primary bg-primary/70 text-primary-foreground" : "bg-muted text-muted-foreground",
+                "grid size-8 place-items-center rounded-md border-2 text-[10px] font-medium sm:size-9",
+                active.has(i) ? "border-ink bg-primary/70 text-primary-foreground" : "bg-muted text-muted-foreground",
               )}
             >
               E{i + 1}
@@ -284,7 +284,7 @@ export function TtftFigure() {
   const total = parts.reduce((s, p) => s + p.sec, 0);
   const ttft = parts[0].sec + parts[1].sec;
   return (
-    <figure className="rounded-xl border bg-card p-4 sm:p-5">
+    <figure className="rounded-xl border-2 bg-card p-4 sm:p-5">
       <div className="relative">
         <div className="flex h-8 overflow-hidden rounded-md">
           {parts.map((p) => (

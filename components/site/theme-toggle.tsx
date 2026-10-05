@@ -60,7 +60,7 @@ export function ThemeToggle({ className, compact }: { className?: string; compac
       <button
         type="button"
         aria-label="Toggle theme"
-        className={cn("flex size-9 items-center justify-center rounded-lg border bg-card text-muted-foreground hover:bg-muted hover:text-foreground transition", className)}
+        className={cn("flex size-9 items-center justify-center rounded-full border-2 border-ink bg-card text-foreground transition hover:bg-muted", className)}
       >
         <Sun className="size-4" />
       </button>
@@ -75,7 +75,7 @@ export function ThemeToggle({ className, compact }: { className?: string; compac
         onClick={cycleTheme}
         aria-label={`Theme: ${theme}. Click to change`}
         title={`Theme: ${theme}`}
-        className={cn("flex size-9 cursor-pointer items-center justify-center rounded-xl text-muted-foreground transition hover:bg-muted hover:text-foreground", className)}
+        className={cn("flex size-9 cursor-pointer items-center justify-center rounded-full border-2 border-transparent text-foreground transition hover:border-ink hover:bg-muted", className)}
       >
         <Icon className="size-4" />
       </button>
@@ -83,15 +83,15 @@ export function ThemeToggle({ className, compact }: { className?: string; compac
   }
 
   return (
-    <div className={cn("inline-flex items-center rounded-lg border bg-muted/70 p-0.5 text-xs font-medium", className)}>
+    <div className={cn("inline-flex items-center gap-0.5 rounded-full border-2 border-ink bg-card p-0.5 text-xs font-medium", className)}>
       <button
         type="button"
         onClick={() => handleSelect("light")}
         aria-label="Light mode"
         title="Light theme"
         className={cn(
-          "flex size-7 items-center justify-center rounded-md transition",
-          theme === "light" ? "bg-card text-foreground shadow-xs font-semibold" : "text-muted-foreground hover:text-foreground"
+          "flex size-7 items-center justify-center rounded-full transition",
+          theme === "light" ? "bg-primary text-on-fill font-bold" : "text-muted-foreground hover:text-foreground"
         )}
       >
         <Sun className="size-3.5" />
@@ -102,8 +102,8 @@ export function ThemeToggle({ className, compact }: { className?: string; compac
         aria-label="Dark mode"
         title="Dark theme"
         className={cn(
-          "flex size-7 items-center justify-center rounded-md transition",
-          theme === "dark" ? "bg-card text-foreground shadow-xs font-semibold" : "text-muted-foreground hover:text-foreground"
+          "flex size-7 items-center justify-center rounded-full transition",
+          theme === "dark" ? "bg-primary text-on-fill font-bold" : "text-muted-foreground hover:text-foreground"
         )}
       >
         <Moon className="size-3.5" />
@@ -114,8 +114,8 @@ export function ThemeToggle({ className, compact }: { className?: string; compac
         aria-label="System theme"
         title="Follow system preference"
         className={cn(
-          "flex size-7 items-center justify-center rounded-md transition",
-          theme === "system" ? "bg-card text-foreground shadow-xs font-semibold" : "text-muted-foreground hover:text-foreground"
+          "flex size-7 items-center justify-center rounded-full transition",
+          theme === "system" ? "bg-primary text-on-fill font-bold" : "text-muted-foreground hover:text-foreground"
         )}
       >
         <Monitor className="size-3.5" />

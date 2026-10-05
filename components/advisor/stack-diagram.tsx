@@ -13,7 +13,7 @@ export function StackDiagram({ layers, order = "bottom-up", className }: { layer
         const Icon = ICON[l.layer];
         return (
           <li key={l.layer} className="flex flex-col items-center">
-            <div className="flex w-full items-center gap-3 rounded-xl border bg-card px-4 py-3">
+            <div className="flex w-full items-center gap-3 rounded-xl border-2 bg-card px-4 py-3">
               <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-accent-foreground">
                 <Icon className="size-4.5" />
               </span>

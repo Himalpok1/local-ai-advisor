@@ -56,9 +56,9 @@ export function HeroChat({ className }: { className?: string }) {
 
   return (
     <div ref={ref} className={cn("relative", className)}>
-      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card shadow-2xl shadow-primary/10">
+      <div className="relative overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-brutal-xl">
         {/* Window chrome */}
-        <div className="flex items-center gap-3 border-b border-border/60 bg-muted/50 px-4 py-3">
+        <div className="flex items-center gap-3 border-b-2 border-ink bg-muted/50 px-4 py-3">
           <span className="flex gap-1.5" aria-hidden>
             <span className="size-2.5 rounded-full bg-rose-400" />
             <span className="size-2.5 rounded-full bg-amber-400" />
@@ -93,7 +93,7 @@ export function HeroChat({ className }: { className?: string }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 divide-x divide-border/60 border-t border-border/60 text-center">
+        <div className="grid grid-cols-3 divide-x divide-ink border-t-2 border-ink text-center">
           <Stat icon={<Zap className="size-3.5" />} value="28 tok/s" label="Speed" />
           <Stat icon={<Lock className="size-3.5" />} value="0 bytes" label="Sent online" />
           <Stat icon={<span className="text-xs font-bold">$</span>} value="$0" label="Per month" />
@@ -107,7 +107,7 @@ function Stat({ icon, value, label }: { icon: React.ReactNode; value: string; la
   return (
     <div className="px-2 py-3">
       <p className="flex items-center justify-center gap-1 text-sm font-bold tabular-nums">
-        <span className="text-primary">{icon}</span>
+        <span className="text-link">{icon}</span>
         {value}
       </p>
       <p className="text-[11px] text-muted-foreground">{label}</p>

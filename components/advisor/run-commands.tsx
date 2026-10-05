@@ -11,8 +11,8 @@ export function RunCommands({ commands, className }: { commands: RunCommand[]; c
   const cmd = commands.find((c) => c.id === active) ?? commands[0];
   if (!cmd) return null;
   return (
-    <div className={cn("rounded-xl border bg-card", className)}>
-      <div role="tablist" aria-label="Runtime" className="flex flex-wrap gap-1 border-b p-1.5">
+    <div className={cn("rounded-xl border-2 bg-card", className)}>
+      <div role="tablist" aria-label="Runtime" className="flex flex-wrap gap-1 border-b-2 p-1.5">
         {commands.map((c) => (
           <button
             key={c.id}
@@ -60,7 +60,7 @@ export function CodeBlock({ code }: { code: string }) {
             /* clipboard blocked: the text is still selectable */
           }
         }}
-        className="absolute right-2 top-2 grid size-7 place-items-center rounded-md border bg-card text-muted-foreground hover:text-foreground"
+        className="absolute right-2 top-2 grid size-7 place-items-center rounded-md border-2 bg-card text-muted-foreground hover:text-foreground"
       >
         {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
       </button>

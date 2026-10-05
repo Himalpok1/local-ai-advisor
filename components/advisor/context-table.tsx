@@ -8,7 +8,7 @@ export function ContextTable({ points, current }: { points: ContextPoint[]; curr
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b text-left text-xs uppercase tracking-wide text-muted-foreground">
+          <tr className="border-b-2 text-left text-xs uppercase tracking-wide text-muted-foreground">
             <th className="py-2 pr-4 font-medium">Context</th>
             <th className="py-2 pr-4 font-medium">Rating for this workload</th>
             <th className="py-2 pr-4 text-right font-medium">Generation when full</th>
@@ -18,7 +18,7 @@ export function ContextTable({ points, current }: { points: ContextPoint[]; curr
         </thead>
         <tbody>
           {points.map((p) => (
-            <tr key={p.context} className={cn("border-b last:border-0", p.context === current && "bg-accent/50")}>
+            <tr key={p.context} className={cn("border-b-2 last:border-0", p.context === current && "bg-accent/50")}>
               <td className="py-2 pr-4 font-medium">
                 {fmtCtx(p.context)} {p.context === current && <span className="text-xs text-muted-foreground">(selected)</span>}
               </td>

@@ -32,7 +32,7 @@ export function DimensionGauges({ dims, compact, keys }: { dims: DimensionResult
         const Icon = ICONS[d.key];
         const pct = Math.max(6, (d.score / 4) * 100);
         return (
-          <div key={d.key} className={cn("rounded-lg border bg-card p-3", compact && "p-2.5")}>
+          <div key={d.key} className={cn("rounded-lg border-2 bg-card p-3", compact && "p-2.5")}>
             <div className="flex items-center justify-between gap-2">
               <span className="flex items-center gap-1.5 text-sm font-medium">
                 <Icon className="size-4 text-muted-foreground" />

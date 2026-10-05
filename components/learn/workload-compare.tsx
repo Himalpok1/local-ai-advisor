@@ -66,7 +66,7 @@ export function WorkloadCompare() {
     >
       <div className="grid gap-3 md:grid-cols-3">
         {results.map(({ key, title, Icon, workload, rec }) => (
-          <div key={key} className={cn("flex flex-col rounded-xl border p-4", rec && COMFORT_STYLE[rec.level].border)}>
+          <div key={key} className={cn("flex flex-col rounded-xl border-2 p-4", rec && COMFORT_STYLE[rec.level].border)}>
             <p className="flex items-center gap-2 text-sm font-semibold">
               <Icon className="size-4 text-muted-foreground" /> {title}
             </p>
@@ -80,7 +80,7 @@ export function WorkloadCompare() {
                 {keyReason(rec) && <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{keyReason(rec)}</p>}
                 <div className="min-h-3 flex-1" />
                 {rec.performance && (
-                  <dl className="grid grid-cols-2 gap-x-3 gap-y-1 border-t pt-3 text-xs [&_dd]:text-right [&_dd]:font-mono [&_dd]:tabular-nums [&_dt]:text-muted-foreground">
+                  <dl className="grid grid-cols-2 gap-x-3 gap-y-1 border-t-2 pt-3 text-xs [&_dd]:text-right [&_dd]:font-mono [&_dd]:tabular-nums [&_dt]:text-muted-foreground">
                     <dt>Generation</dt>
                     <dd>{fmtTps(rec.performance.generationTps, rec.performance.basis)}</dd>
                     <dt>Prefill</dt>

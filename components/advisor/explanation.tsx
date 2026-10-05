@@ -33,7 +33,7 @@ export function ExplanationPanel({ rec, showLists = true }: { rec: Recommendatio
       </div>
 
       {showWhyNot && (
-        <div className="rounded-lg border bg-muted/50 p-4">
+        <div className="rounded-lg border-2 bg-muted/50 p-4">
           <h4 className="mb-2 font-semibold">
             Why “{COMFORT_LABEL[rec.level]}” rather than “{COMFORT_LABEL[higher]}”?
           </h4>
@@ -70,7 +70,7 @@ export function ExplanationPanel({ rec, showLists = true }: { rec: Recommendatio
         </div>
       )}
 
-      <div className="rounded-lg border p-4">
+      <div className="rounded-lg border-2 p-4">
         <div className="mb-2 flex items-center gap-2">
           <Info className="size-4 text-muted-foreground" />
           <h4 className="font-semibold">How sure are we?</h4>

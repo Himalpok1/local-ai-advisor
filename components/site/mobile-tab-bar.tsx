@@ -25,7 +25,7 @@ export function MobileTabBar() {
 
   return (
     <>
-      <nav aria-label="Main" className="bottom-safe fixed inset-x-0 bottom-0 z-50 border-t border-border/60 bg-background/90 backdrop-blur-lg lg:hidden">
+      <nav aria-label="Main" className="bottom-safe fixed inset-x-0 bottom-0 z-50 border-t-2 border-ink bg-background lg:hidden">
         <ul className="mx-auto grid h-16 max-w-md grid-cols-5 px-1">
           {tabs.map((t) => {
             const Icon = t.icon;
@@ -35,18 +35,18 @@ export function MobileTabBar() {
                   {t.active && (
                     <motion.span
                       layoutId="tab-pill"
-                      className="absolute inset-0 rounded-full bg-primary/12"
+                      className="absolute inset-0 rounded-full border-2 border-ink bg-primary shadow-brutal-sm"
                       transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
-                  <Icon className="relative size-5" strokeWidth={t.active ? 2.4 : 2} aria-hidden />
+                  <Icon className={cn("relative size-5", t.active && "text-on-fill")} strokeWidth={t.active ? 2.4 : 2} aria-hidden />
                 </span>
-                <span className={cn("text-[11px] leading-none", t.active ? "font-semibold" : "font-medium")}>{t.label}</span>
+                <span className={cn("text-[11px] leading-none", t.active ? "font-extrabold" : "font-semibold")}>{t.label}</span>
               </>
             );
             const cls = cn(
               "flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 transition-colors active:scale-95",
-              t.active ? "text-primary" : "text-muted-foreground",
+              t.active ? "text-foreground" : "text-muted-foreground",
             );
             return (
               <li key={t.href}>
@@ -96,14 +96,14 @@ function MoreSheet({ open, onClose, pathname }: { open: boolean; onClose: () => 
             type="button"
             aria-label="Close"
             tabIndex={-1}
-            className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-ink/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.15 } }}
             onClick={onClose}
           />
           <motion.div
-            className="bottom-safe absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-y-auto overscroll-contain rounded-t-3xl border-t border-border/60 bg-background shadow-2xl"
+            className="bottom-safe absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-y-auto overscroll-contain rounded-t-3xl border-t-2 border-ink bg-background"
             initial={reduce ? { opacity: 0 } : { y: "100%" }}
             animate={reduce ? { opacity: 1 } : { y: 0 }}
             exit={reduce ? { opacity: 0 } : { y: "100%", transition: { duration: 0.2, ease: [0.4, 0, 1, 1] } }}
@@ -115,15 +115,15 @@ function MoreSheet({ open, onClose, pathname }: { open: boolean; onClose: () => 
             dragElastic={{ top: 0, bottom: 0.6 }}
             onDragEnd={(_, info) => (info.offset.y > 120 || info.velocity.y > 600) && onClose()}
           >
-            <div className="sticky top-0 z-10 touch-none bg-background/95 px-5 pb-2 pt-3 backdrop-blur" onPointerDown={(e) => drag.start(e)}>
-              <div className="mx-auto h-1.5 w-10 rounded-full bg-border" aria-hidden />
+            <div className="sticky top-0 z-10 touch-none bg-background px-5 pb-2 pt-3" onPointerDown={(e) => drag.start(e)}>
+              <div className="mx-auto h-1.5 w-10 rounded-full bg-ink" aria-hidden />
               <div className="mt-3 flex items-center justify-between">
                 <p className="text-lg font-bold tracking-tight">All tools</p>
                 <button
                   ref={closeRef}
                   type="button"
                   onClick={onClose}
-                  className="grid size-10 cursor-pointer place-items-center rounded-full bg-muted text-muted-foreground transition hover:text-foreground"
+                  className="grid size-10 cursor-pointer place-items-center rounded-full border-2 border-ink bg-card text-foreground transition hover:bg-primary hover:text-on-fill"
                   aria-label="Close menu"
                 >
                   <X className="size-5" />
@@ -133,7 +133,7 @@ function MoreSheet({ open, onClose, pathname }: { open: boolean; onClose: () => 
             <div className="space-y-5 px-4 pb-6">
               {TOOL_GROUPS.map((g, gi) => (
                 <section key={g.title}>
-                  <p className="px-1 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{g.title}</p>
+                  <p className="px-1 pb-2 text-xs font-extrabold uppercase tracking-wider text-muted-foreground">{g.title}</p>
                   <ul className="grid grid-cols-2 gap-2">
                     {g.items.map((t, i) => {
                       const Icon = t.icon;
@@ -148,11 +148,11 @@ function MoreSheet({ open, onClose, pathname }: { open: boolean; onClose: () => 
                             href={t.href}
                             onClick={onClose}
                             className={cn(
-                              "flex h-full min-h-[5.5rem] flex-col gap-2 rounded-2xl border border-border/70 bg-card p-3 transition active:scale-[0.98]",
-                              pathname === t.href && "border-primary/50 bg-accent",
+                              "flex h-full min-h-[5.5rem] flex-col gap-2 rounded-2xl border-2 border-ink bg-card p-3 shadow-brutal-sm transition active:translate-x-0.5 active:translate-y-0.5 active:shadow-none",
+                              pathname === t.href && "bg-accent",
                             )}
                           >
-                            <span className="grid size-8 place-items-center rounded-lg bg-primary/10 text-primary">
+                            <span className="grid size-8 place-items-center rounded-lg border-2 border-ink bg-primary text-on-fill">
                               <Icon className="size-4" />
                             </span>
                             <span className="text-sm font-semibold leading-tight text-foreground">{t.label}</span>
@@ -163,7 +163,7 @@ function MoreSheet({ open, onClose, pathname }: { open: boolean; onClose: () => 
                   </ul>
                 </section>
               ))}
-              <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-card px-4 py-3">
+              <div className="flex items-center justify-between rounded-2xl border-2 border-ink bg-card px-4 py-3">
                 <span className="text-sm font-medium">Appearance</span>
                 <ThemeToggle />
               </div>

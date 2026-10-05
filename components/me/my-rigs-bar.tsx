@@ -48,7 +48,7 @@ export function MyRigsBar({
   if (!signedIn) {
     return (
       <p className="text-xs text-muted-foreground">
-        <button type="button" onClick={() => signIn("google", { redirectTo: window.location.href })} className="font-medium text-primary hover:underline cursor-pointer">
+        <button type="button" onClick={() => signIn("google", { redirectTo: window.location.href })} className="font-medium text-link hover:underline cursor-pointer">
           Sign in
         </button>{" "}
         to save this computer as a rig and pick it in one tap next time.
@@ -91,8 +91,8 @@ export function MyRigsBar({
               aria-pressed={active}
               title={r.hardware.name}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium transition cursor-pointer",
-                active ? "border-primary bg-accent text-accent-foreground" : "bg-card hover:bg-muted",
+                "inline-flex items-center gap-1.5 rounded-lg border-2 px-2.5 py-1 text-xs font-medium transition cursor-pointer",
+                active ? "border-ink bg-accent text-accent-foreground" : "bg-card hover:bg-muted",
               )}
             >
               {r.rig.isDefault ? <Star className="size-3 fill-current" aria-label="Default" /> : <HardDrive className="size-3" aria-hidden />}
@@ -107,7 +107,7 @@ export function MyRigsBar({
               setName(value.hardwareId === "custom" ? (value.custom?.name ?? "My custom rig") : selected.name);
               setNaming(true);
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-dashed px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-lg border-2 border-dashed px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground cursor-pointer"
           >
             <BookmarkPlus className="size-3.5" aria-hidden /> Save as my rig
           </button>
@@ -132,9 +132,9 @@ export function MyRigsBar({
             onChange={(e) => setName(e.target.value)}
             maxLength={80}
             aria-label="Rig name"
-            className="h-8 min-w-0 flex-1 rounded-lg border border-border/80 bg-card px-2.5 text-sm sm:max-w-xs"
+            className="h-8 min-w-0 flex-1 rounded-lg border-2 border-ink bg-card px-2.5 text-sm sm:max-w-xs"
           />
-          <button type="submit" disabled={busy || !name.trim()} className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-primary px-3 text-xs font-semibold text-primary-foreground disabled:opacity-50 cursor-pointer">
+          <button type="submit" disabled={busy || !name.trim()} className="inline-flex h-8 items-center gap-1.5 bg-primary px-3 text-xs text-primary-foreground disabled:opacity-50 cursor-pointer rounded-full border-2 border-ink font-bold shadow-brutal press">
             {busy && <Loader2 className="size-3.5 animate-spin" aria-hidden />} Save rig
           </button>
           <button type="button" onClick={() => setNaming(false)} className="h-8 px-2 text-xs text-muted-foreground hover:text-foreground cursor-pointer">

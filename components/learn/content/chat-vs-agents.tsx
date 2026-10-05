@@ -9,15 +9,15 @@ export default function Lesson() {
     <>
       <Step n={1} id="chat-is-not-agent" title="Chat: one question, one answer">
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-border/70 bg-card p-4">
+          <div className="rounded-2xl border-2 border-ink bg-card p-4">
             <p className="flex items-center gap-2 font-semibold">
-              <MessageCircle className="size-5 text-primary" /> Chat
+              <MessageCircle className="size-5 text-link" /> Chat
             </p>
             <p className="mt-1.5 text-sm text-muted-foreground">You ask, it answers, you read. A short prompt, one wait, then you take your time.</p>
           </div>
-          <div className="rounded-2xl border border-primary/40 bg-primary/5 p-4">
+          <div className="rounded-2xl border-2 border-ink bg-primary/15 p-4">
             <p className="flex items-center gap-2 font-semibold">
-              <Bot className="size-5 text-primary" /> Coding agent
+              <Bot className="size-5 text-link" /> Coding agent
             </p>
             <p className="mt-1.5 text-sm text-muted-foreground">
               Tools like OpenCode, Cline or Claude Code-style agents call the model <strong>dozens of times in a row</strong>, each time with thousands of tokens

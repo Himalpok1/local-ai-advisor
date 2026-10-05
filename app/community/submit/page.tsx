@@ -14,7 +14,7 @@ export default async function SubmitReportPage({ searchParams }: { searchParams:
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-10 sm:px-6">
       <header>
-        <p className="text-sm font-medium text-primary">
+        <p className="text-sm font-medium text-link">
           <Link href="/community" className="hover:underline">
             Community speeds
           </Link>

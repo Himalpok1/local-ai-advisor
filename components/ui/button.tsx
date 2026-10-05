@@ -1,26 +1,25 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "outline" | "ghost" | "gradient";
+type Variant = "primary" | "secondary" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-primary text-primary-foreground hover:brightness-105 active:scale-[0.98] shadow-xs hover:shadow-sm transition-all",
-  gradient: "bg-gradient-to-r from-primary via-indigo-600 to-primary bg-[length:200%_auto] text-primary-foreground hover:brightness-110 active:scale-[0.98] shadow-sm hover:shadow-md hover:shadow-primary/20 transition-all",
-  secondary: "bg-accent text-accent-foreground hover:brightness-95 active:scale-[0.98] transition-all",
-  outline: "border border-border/80 bg-card text-foreground hover:bg-muted/70 hover:border-border active:scale-[0.98] shadow-2xs transition-all",
-  ghost: "text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-[0.98] transition-all",
+  primary: "border-2 border-ink bg-primary text-primary-foreground shadow-brutal press disabled:shadow-none",
+  secondary: "border-2 border-ink bg-accent text-accent-foreground shadow-brutal press disabled:shadow-none",
+  outline: "border-2 border-ink bg-card text-foreground shadow-brutal press disabled:shadow-none",
+  ghost: "border-2 border-transparent text-foreground hover:border-ink hover:bg-muted active:bg-primary/60",
 };
 
 const SIZES: Record<Size, string> = {
-  sm: "h-8 px-3 text-xs sm:text-sm gap-1.5",
-  md: "h-10 px-4 text-sm gap-2",
-  lg: "h-11 sm:h-12 px-5 sm:px-6 text-sm sm:text-base gap-2.5",
+  sm: "h-9 px-3.5 text-xs sm:text-sm gap-1.5",
+  md: "h-11 px-5 text-sm gap-2",
+  lg: "h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg gap-2.5",
 };
 
 export function buttonClass(variant: Variant = "primary", size: Size = "md", className?: string) {
   return cn(
-    "inline-flex items-center justify-center rounded-xl font-medium transition cursor-pointer select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap",
+    "inline-flex items-center justify-center rounded-full font-bold cursor-pointer select-none focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap",
     VARIANTS[variant],
     SIZES[size],
     className,

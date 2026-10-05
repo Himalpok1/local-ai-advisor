@@ -19,8 +19,8 @@ export function QuickCheck({ question, options }: { question: string; options: Q
   const right = answered && options[picked].correct;
 
   return (
-    <section className="rounded-3xl border border-border/70 bg-card p-4 shadow-sm sm:p-6" aria-labelledby="quick-check-title">
-      <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
+    <section className="rounded-2xl border-2 border-ink bg-card p-4 shadow-brutal-sm sm:p-6" aria-labelledby="quick-check-title">
+      <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-link">
         <CircleHelp className="size-4" /> Quick check
       </p>
       <h2 id="quick-check-title" className="mt-1.5 text-lg font-bold leading-snug text-balance">
@@ -40,17 +40,17 @@ export function QuickCheck({ question, options }: { question: string; options: Q
                 animate={showWrong && !reduce ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
                 transition={{ duration: 0.35 }}
                 className={cn(
-                  "flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-medium transition-colors disabled:cursor-default",
-                  !answered && "border-border/80 hover:border-primary/50 hover:bg-primary/5 active:scale-[0.99]",
-                  showRight && "border-comfortable/60 bg-comfortable/10",
-                  showWrong && "border-technical/60 bg-technical/10",
-                  answered && !showRight && !showWrong && "border-border/50 opacity-60",
+                  "flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left text-sm font-medium transition-colors disabled:cursor-default",
+                  !answered && "border-ink hover:border-ink hover:bg-primary/15 active:scale-[0.99]",
+                  showRight && "border-ink bg-comfortable/10",
+                  showWrong && "border-ink bg-technical/10",
+                  answered && !showRight && !showWrong && "border-ink opacity-60",
                 )}
               >
                 <span
                   className={cn(
-                    "grid size-6 shrink-0 place-items-center rounded-full border text-xs font-bold",
-                    showRight ? "border-comfortable bg-comfortable text-white" : showWrong ? "border-technical bg-technical text-white" : "border-border",
+                    "grid size-6 shrink-0 place-items-center rounded-full border-2 text-xs font-bold",
+                    showRight ? "border-ink bg-comfortable text-white" : showWrong ? "border-ink bg-technical text-white" : "border-ink",
                   )}
                 >
                   {showRight ? <CheckCircle2 className="size-4" /> : showWrong ? <XCircle className="size-4" /> : String.fromCharCode(65 + i)}
@@ -78,7 +78,7 @@ export function QuickCheck({ question, options }: { question: string; options: Q
                 </p>
               )}
             </div>
-            <button type="button" onClick={() => setPicked(null)} className="mt-3 inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+            <button type="button" onClick={() => setPicked(null)} className="mt-3 inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-link hover:underline">
               <RotateCcw className="size-3.5" /> Try again
             </button>
           </motion.div>
