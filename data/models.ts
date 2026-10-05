@@ -17,7 +17,7 @@ const ALL_Q: QuantId[] = ["q3", "q4", "q5", "q6", "q8", "fp16"];
 const hf = (repo: string, confidence: Source["confidence"] = "high", note?: string): Source => ({
   url: `https://huggingface.co/${repo}`,
   title: `${repo} — Hugging Face model card & config.json`,
-  lastVerified: "2026-09-30",
+  lastVerified: "2026-10-05",
   confidence,
   note,
 });
@@ -903,6 +903,32 @@ const ALL: ModelInput[] = [
     releaseDate: "2026-04",
     notes: "Frontier-class open model that only fits on very large unified-memory machines. KV-cache size is a rough estimate (compressed sparse attention).",
     source: hf("deepseek-ai/DeepSeek-V4-Flash", "low", "Parameter table header mapping and GGUF sizes unverified."),
+  },
+  /* ---------------- Aleph Alpha ---------------- */
+  {
+    id: "kolibri-1",
+    organization: "Aleph Alpha",
+    family: "Kolibri",
+    name: "Kolibri-1 (78B-A3.5B)",
+    variant: "MoE",
+    parameterCount: 78.1,
+    activeParameterCount: 3.46,
+    denseOrMoE: "moe",
+    contextWindow: 262144,
+    modelType: "general",
+    useCases: ["chat", "reasoning", "coding", "agentic", "long-context"],
+    capabilities: { general: 3.4, coding: 3.2, reasoning: 3.9, agentic: 3.2, longContext: 3.4, writing: 3.2 },
+    toolCalling: "good",
+    vision: false,
+    thinking: true,
+    architecture: { layers: 50, kvHeads: 4, headDim: 128, fullAttentionFraction: 10 / 50, slidingWindow: 512 },
+    supportedQuantizations: ["fp8", "q4", "q8", "fp16"],
+    supportedFormats: ["safetensors", "gguf"],
+    knownSizesGB: { fp8: gb(78) },
+    license: "Apache-2.0",
+    releaseDate: "2026-10",
+    notes: "Advertised up to 1M context; vendor recommends ≤256K for serving efficiency.",
+    source: hf("Aleph-Alpha/Kolibri-1"),
   },
   /* ---------------- Benchmark reference (hidden) ---------------- */
   {
