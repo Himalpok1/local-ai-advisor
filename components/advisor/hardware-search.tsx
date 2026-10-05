@@ -44,7 +44,7 @@ export function HardwareSearch({ initial }: { initial: AppState }) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <p className="text-sm font-medium text-link">What hardware do I need?</p>
-      <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Hardware that delivers the experience you want — not just loads the model</h1>
+      <h1 className="mt-1 text-2xl font-extrabold tracking-tight sm:text-4xl">Hardware that delivers the experience you want — not just loads the model</h1>
       <p className="mt-2 max-w-3xl text-muted-foreground">Pick the model and describe the workload. We rate every machine in the database for that exact workload and group them by whether they meet your target.</p>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[420px_minmax(0,1fr)]">

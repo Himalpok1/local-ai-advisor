@@ -49,7 +49,7 @@ export default async function MePage() {
   return (
     <div className="mx-auto max-w-6xl space-y-12 px-4 py-10 sm:px-6">
       <header>
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">My rigs &amp; saved</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">My rigs &amp; saved</h1>
         <p className="mt-2 text-muted-foreground">Your computers, bookmarked results, new-model alerts and speed reports.</p>
       </header>
 
@@ -191,7 +191,7 @@ async function Alerts({ rigs, seenAt }: { rigs: DecodedRig[]; seenAt: Date | nul
               <ul className="space-y-1 text-sm">
                 {a.fits.map((f) => (
                   <li key={f.rigId} className="flex flex-wrap items-center gap-2">
-                    <span className={cn("rounded px-1.5 py-0.5 text-xs font-medium", COMFORT_STYLE[f.level].bg, COMFORT_STYLE[f.level].text)}>{COMFORT_LABEL[f.level]}</span>
+                    <span className={cn("rounded-full border-[1.5px] border-ink px-2 py-0.5 text-xs font-bold", COMFORT_STYLE[f.level].chip)}>{COMFORT_LABEL[f.level]}</span>
                     <span>on {f.rigName}</span>
                     <span className="text-muted-foreground">
                       · {f.quantLabel}

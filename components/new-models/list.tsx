@@ -89,10 +89,10 @@ function ModelCard({ m }: { m: NewModel }) {
       {m.ratings ? (
         <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {m.ratings.map((r) => (
-            <div key={r.label} className={cn("rounded-lg border-2 px-2.5 py-2", COMFORT_STYLE[r.level].bg, COMFORT_STYLE[r.level].border)}>
-              <dt className="text-[11px] text-muted-foreground">{r.label}</dt>
-              <dd className={cn("text-xs font-semibold", COMFORT_STYLE[r.level].text)}>{COMFORT_LABEL[r.level]}</dd>
-              {r.tps ? <dd className="text-[11px] tabular-nums text-muted-foreground">{fmtTps(r.tps)}</dd> : null}
+            <div key={r.label} className={cn("rounded-lg border-2 border-ink px-2.5 py-2", COMFORT_STYLE[r.level].chip)}>
+              <dt className="text-[11px] opacity-70">{r.label}</dt>
+              <dd className="text-xs font-extrabold">{COMFORT_LABEL[r.level]}</dd>
+              {r.tps ? <dd className="text-[11px] tabular-nums opacity-80">{fmtTps(r.tps)}</dd> : null}
             </div>
           ))}
         </dl>

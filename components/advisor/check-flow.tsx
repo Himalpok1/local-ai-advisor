@@ -258,12 +258,12 @@ function Results({
           <p className="mt-1 text-sm text-muted-foreground">These load and run, but they’d feel slow or leave your computer short of memory for {phrase}.</p>
           <div className="mt-4 grid gap-3 md:grid-cols-3">
             {technicallyPossible.map((r) => (
-              <Link key={r.id} href={href(r)} className={cn("rounded-xl border-2 p-4 transition hover:shadow-brutal-sm", COMFORT_STYLE[r.level].bg)}>
+              <Link key={r.id} href={href(r)} className={cn("press rounded-xl border-2 border-ink p-4 shadow-brutal-sm", COMFORT_STYLE[r.level].chip)}>
                 <div className="flex items-start justify-between gap-2">
                   <p className="font-medium">{r.model.name}</p>
-                  <ComfortBadge level={r.level} size="sm" />
+                  <ComfortBadge level={r.level} size="sm" className="bg-card text-foreground" />
                 </div>
-                <p className="mt-2 text-sm text-muted-foreground">{pickReason("technical", r)}</p>
+                <p className="mt-2 text-sm opacity-80">{pickReason("technical", r)}</p>
               </Link>
             ))}
           </div>

@@ -150,7 +150,7 @@ export function HfLookup({ initialRepo, initial }: { initialRepo?: string; initi
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <p className="text-sm font-medium text-link">Check any Hugging Face model</p>
-      <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Will this model run comfortably for you?</h1>
+      <h1 className="mt-1 text-2xl font-extrabold tracking-tight sm:text-4xl">Will this model run comfortably for you?</h1>
       <p className="mt-2 max-w-3xl text-muted-foreground">
         Search Hugging Face or paste a model link. We read its real architecture — parameters, experts, attention layout, context and file sizes — and rate it for your hardware and workload, even if it was released today.
       </p>

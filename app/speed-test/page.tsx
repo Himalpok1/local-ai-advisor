@@ -12,7 +12,7 @@ export default function SpeedTestPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8 px-4 py-10 sm:px-6">
       <header className="max-w-3xl">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Browser speed test</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">Browser speed test</h1>
         <p className="mt-3 text-lg text-muted-foreground">
           How fast a local model writes is limited mostly by <strong className="text-foreground">memory bandwidth</strong>: how quickly your GPU can read
           the model&apos;s weights. This test measures it directly with WebGPU, right here in your browser.

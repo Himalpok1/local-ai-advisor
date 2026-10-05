@@ -54,7 +54,7 @@ export function ExplorePage({
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <ExploreNav current={current} />
       <header className="mt-6 mb-8 max-w-3xl">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">{title}</h1>
         <p className="mt-3 text-base text-muted-foreground sm:text-lg">{intro}</p>
       </header>
       <div className="flex flex-col gap-10">{children}</div>

@@ -76,7 +76,7 @@ export default async function Page(props: Props) {
       />
       <div>
         <Breadcrumbs items={[{ href: "/can-i-run", label: "Can I run it?" }, { label: hardware.name }]} />
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">What LLMs can {hardware.name} run?</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">What LLMs can {hardware.name} run?</h1>
         <p className="mt-2 max-w-3xl text-muted-foreground">
           {memoryLine(hardware)}
           {hardware.gpu ? `, ${hardware.gpu.bandwidthGBs} GB/s memory bandwidth` : ""}

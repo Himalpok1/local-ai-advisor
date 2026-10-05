@@ -32,7 +32,7 @@ export function ComfortBadge({ level, size = "md", className }: { level: Comfort
     <span
       title={COMFORT_DESCRIPTION[level]}
       className={cn(
-        "inline-flex shrink-0 items-center gap-1.5 rounded-full border-2 border-ink font-bold",
+        "inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border-2 border-ink font-bold",
         s.chip,
         size === "sm" && "px-2 py-0.5 text-xs",
         size === "md" && "px-2.5 py-1 text-sm",
@@ -54,12 +54,12 @@ export function ComfortScale({ level }: { level: ComfortLevel }) {
   return (
     <div className="flex items-center gap-1" aria-label={`Rating: ${COMFORT_LABEL[level]}`}>
       {SCALE.map((l, i) => (
-        <span key={l} title={COMFORT_LABEL[l]} className={cn("h-2.5 w-6 rounded-full border-[1.5px] border-ink", i <= idx && idx >= 0 ? COMFORT_STYLE[level].dot : "bg-muted")} />
+        <span key={l} title={COMFORT_LABEL[l]} className={cn("h-2.5 w-6 rounded-full border-[1.5px] border-ink", i <= idx && idx >= 0 ? "bg-ink" : "bg-card")} />
       ))}
     </div>
   );
 }
 
 export function ConfidenceBadge({ level, className }: { level: Confidence; className?: string }) {
-  return <span className={cn("inline-flex items-center rounded-full border-[1.5px] border-ink px-2 py-0.5 text-xs font-bold", CONFIDENCE_CHIP[level], className)}>{level[0].toUpperCase() + level.slice(1)} confidence</span>;
+  return <span className={cn("inline-flex items-center whitespace-nowrap rounded-full border-[1.5px] border-ink px-2 py-0.5 text-xs font-bold", CONFIDENCE_CHIP[level], className)}>{level[0].toUpperCase() + level.slice(1)} confidence</span>;
 }

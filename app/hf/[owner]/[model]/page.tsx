@@ -46,7 +46,7 @@ export default async function Page(props: Props) {
     return <main className="mx-auto max-w-4xl space-y-4 px-4 py-10"><h1>{repo}</h1><p role="alert">{error instanceof HfError ? error.message : "Hugging Face is temporarily unavailable. No rating could be verified."}</p><Link href={`/hugging-face?repo=${encodeURIComponent(repo)}`}>Retry interactive lookup</Link></main>;
   }
   return <main className="mx-auto max-w-7xl space-y-6 px-4 py-10">
-    <h1 className="text-3xl font-semibold">{summary.parsed.model.name} on local hardware</h1>
+    <h1 className="text-3xl font-extrabold">{summary.parsed.model.name} on local hardware</h1>
     <p>Estimated comfort for repository coding with Aider on a MacBook Pro M4 Pro 48GB.</p>
     <div className="grid gap-6 lg:grid-cols-2"><ModelFacts r={summary.parsed} /><RecommendationCard rec={summary.rec} workloadLabel="Repository coding with Aider" /></div>
     <Link className="text-link underline" href={`/hugging-face?repo=${encodeURIComponent(repo)}`}>Check with your hardware and workload</Link>

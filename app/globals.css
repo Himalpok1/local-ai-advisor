@@ -221,7 +221,9 @@ details > summary::-webkit-details-marker {
   display: none;
 }
 
-input[type="range"] {
+input[type="range"],
+input[type="checkbox"],
+input[type="radio"] {
   accent-color: var(--ink);
 }
 

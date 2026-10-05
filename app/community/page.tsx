@@ -31,7 +31,7 @@ export default async function CommunityPage() {
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="max-w-3xl">
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Community speeds</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">Community speeds</h1>
           <p className="mt-3 text-lg text-muted-foreground">
             Real speeds people measured on their own machines. When {MIN_REPORTS} or more people report the same chip, model, quantization and engine, the
             median joins our verified benchmarks and calibrates the estimates on the evaluation page.

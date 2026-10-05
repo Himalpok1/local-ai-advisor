@@ -70,7 +70,7 @@ export default async function Page(props: Props) {
       <div>
         <Breadcrumbs items={[{ href: "/can-i-run", label: "Can I run it?" }, { label: model.name }]} />
         <div className="flex flex-wrap items-center gap-2">
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">What hardware can run {model.name}?</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">What hardware can run {model.name}?</h1>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">
           <Badge tone={model.denseOrMoE === "moe" ? "primary" : "neutral"}>

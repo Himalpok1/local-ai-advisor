@@ -86,7 +86,7 @@ export function CompareHardware({ initial, initialHardware }: { initial: AppStat
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <CompareNav />
-      <h1 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">Compare hardware for your workload</h1>
+      <h1 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-4xl">Compare hardware for your workload</h1>
       <p className="mt-2 max-w-3xl text-muted-foreground">The same model and the same workload on different machines. There is no universal winner — each column lists what that machine does better and worse for this job.</p>
 
       <Card className="mt-6">

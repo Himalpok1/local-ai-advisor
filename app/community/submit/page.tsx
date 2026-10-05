@@ -19,7 +19,7 @@ export default async function SubmitReportPage({ searchParams }: { searchParams:
             Community speeds
           </Link>
         </p>
-        <h1 className="mt-1 text-3xl font-semibold tracking-tight">Report your speed</h1>
+        <h1 className="mt-1 text-3xl font-extrabold tracking-tight">Report your speed</h1>
         <p className="mt-3 text-muted-foreground">
           The fastest way to get comparable numbers is llama.cpp&apos;s benchmark: <code className="rounded bg-muted px-1.5 py-0.5 text-sm">llama-bench -m model.gguf</code>{" "}
           prints prompt processing (pp512) and generation (tg128). With Ollama, run <code className="rounded bg-muted px-1.5 py-0.5 text-sm">ollama run model --verbose</code> and copy the eval rates.

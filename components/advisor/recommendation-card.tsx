@@ -38,18 +38,18 @@ export function RecommendationCard({
   const blocked = rec.level === "unsupported" || rec.level === "does-not-fit";
   return (
     <Card className={cn("flex flex-col overflow-hidden", className)}>
-      <div className={cn("border-b-2 px-5 py-4", style.bg)}>
-        {eyebrow && <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{eyebrow}</p>}
+      <div className={cn("border-b-2 border-ink px-5 py-4", style.chip)}>
+        {eyebrow && <p className="mb-1 text-xs font-extrabold uppercase tracking-wide opacity-70">{eyebrow}</p>}
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0">
-            <h3 className="text-lg font-semibold leading-tight">
-              {rec.model.name} <span className="text-muted-foreground">— {quantName(rec)}</span>
+            <h3 className="text-lg font-bold leading-tight">
+              {rec.model.name} <span className="opacity-70">— {quantName(rec)}</span>
             </h3>
-            <p className={cn("mt-1 text-sm font-medium", style.text)}>
+            <p className="mt-1 text-sm font-semibold">
               {blocked ? rec.headline : `${COMFORT_LABEL[rec.level]} for your workload`}
             </p>
           </div>
-          <ComfortBadge level={rec.level} />
+          <ComfortBadge level={rec.level} className="bg-card text-foreground" />
         </div>
         {!blocked && (
           <div className="mt-2">
@@ -97,7 +97,7 @@ export function RecommendationCard({
         <div className="mt-auto flex flex-wrap items-center justify-between gap-2 border-t-2 border-ink pt-3">
           <ConfidenceBadge level={rec.confidence.level} />
           {href && (
-            <Link href={href} className="inline-flex min-h-10 items-center gap-1 text-sm font-semibold text-link hover:underline">
+            <Link href={href} className="inline-flex min-h-10 items-center gap-1 text-sm font-bold text-link underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary hover:text-on-fill">
               How to install & more <ArrowRight className="size-4" />
             </Link>
           )}
@@ -109,7 +109,7 @@ export function RecommendationCard({
 
 function Fact({ label, value, note, warn }: { label: string; value: string; note?: string; warn?: boolean }) {
   return (
-    <div className="rounded-xl bg-muted/60 px-1.5 py-2.5">
+    <div className="rounded-xl border-2 border-ink bg-muted px-1.5 py-2.5">
       <p className="text-[11px] font-medium text-muted-foreground">{label}</p>
       <p className={cn("mt-0.5 text-sm font-bold tabular-nums leading-tight", warn && "text-technical")}>{value}</p>
       {note && <p className="mt-0.5 text-[11px] text-muted-foreground">{note}</p>}

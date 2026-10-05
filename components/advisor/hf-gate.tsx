@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
-import { Loader2, TriangleAlert } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { ChipMascot } from "@/components/art/illustrations";
+import { buttonClass } from "@/components/ui/button";
 import { useHfModels } from "@/lib/hf/client";
 
 /** Renders children only once any Hugging Face models referenced by id are imported. */
@@ -9,10 +11,10 @@ export function HfModelGate({ ids, children }: { ids: (string | undefined)[]; ch
   if (error) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6">
-        <TriangleAlert className="mx-auto size-8 text-borderline" />
-        <h1 className="mt-3 text-xl font-semibold">Couldn’t load this model from Hugging Face</h1>
+        <ChipMascot className="mx-auto w-28" tone="fill-fill-technical" />
+        <h1 className="mt-3 text-2xl font-extrabold">Couldn’t load this model from Hugging Face</h1>
         <p className="mt-2 text-muted-foreground">{error}</p>
-        <Link href="/hugging-face" className="mt-6 inline-block text-link hover:underline">
+        <Link href="/hugging-face" className={buttonClass("primary", "md", "mt-6")}>
           Try another model →
         </Link>
       </div>

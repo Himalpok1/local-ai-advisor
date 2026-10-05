@@ -78,15 +78,15 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       {/* Outcome */}
-      <section className={cn("rounded-2xl border-2 p-6 sm:p-8", style.bg, style.border)}>
+      <section className={cn("rounded-2xl border-2 border-ink p-6 shadow-brutal-lg sm:p-8", style.chip)}>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-3xl">
-            <p className="text-sm font-medium text-muted-foreground">Can I use this comfortably?</p>
-            <h1 className={cn("mt-1 text-3xl font-semibold tracking-tight sm:text-4xl", style.text)}>{rec.headline}</h1>
+            <p className="text-sm font-bold opacity-70">Can I use this comfortably?</p>
+            <h1 className="mt-1 text-3xl font-extrabold tracking-tight sm:text-5xl">{rec.headline}</h1>
             <p className="mt-3 text-base sm:text-lg">{rec.verdict}</p>
           </div>
           <div className="flex flex-col items-end gap-2">
-            <ComfortBadge level={rec.level} size="lg" />
+            <ComfortBadge level={rec.level} size="lg" className="bg-card text-foreground" />
             {!blocked && <ComfortScale level={rec.level} />}
             <ConfidenceBadge level={rec.confidence.level} />
           </div>
@@ -106,7 +106,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
         </div>
         <div className="mt-5 flex flex-wrap gap-2">
           <ShareButton saveLabel={`${model.name} on ${hardware.name}`} />
-          <Link href={`/stack?${encodeState({ ...state, quant })}`} className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 bg-card px-3 text-sm font-medium hover:bg-muted">
+          <Link href={`/stack?${encodeState({ ...state, quant })}`} className="inline-flex h-9 items-center gap-1.5 rounded-full border-2 border-ink bg-card px-3.5 text-sm font-bold text-foreground hover:bg-muted">
             View as stack <ArrowRight className="size-4" />
           </Link>
           <Link href={`/check?${encodeState({ hardwareId: state.hardwareId, custom: state.custom, os: state.os, workload: state.workload })}`} className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 bg-card px-3 text-sm font-medium hover:bg-muted">
@@ -408,7 +408,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
 
 function Chip({ label, value }: { label: string; value: string }) {
   return (
-    <span className="inline-flex max-w-full items-center gap-1.5 rounded-lg border-2 bg-card px-2.5 py-1">
+    <span className="inline-flex max-w-full items-center gap-1.5 rounded-lg border-2 border-ink bg-card px-2.5 py-1 text-foreground">
       <span className="text-xs text-muted-foreground">{label}</span>
       <span className="truncate font-medium">{value}</span>
     </span>
@@ -417,7 +417,7 @@ function Chip({ label, value }: { label: string; value: string }) {
 
 function Tier({ ok, label, hint, strong }: { ok: boolean; label: string; hint: string; strong?: boolean }) {
   return (
-    <div className={cn("flex items-start gap-2 rounded-lg border-2 bg-card px-3 py-2", strong && "ring-1 ring-ink")}>
+    <div className={cn("flex items-start gap-2 rounded-lg border-2 border-ink bg-card px-3 py-2 text-foreground", strong && "shadow-brutal-sm")}>
       {ok ? <Check className="mt-0.5 size-4 shrink-0 text-comfortable" /> : <X className="mt-0.5 size-4 shrink-0 text-technical" />}
       <span>
         <span className={cn("block text-sm", strong ? "font-semibold" : "font-medium")}>{label}</span>

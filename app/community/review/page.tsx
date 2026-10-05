@@ -16,7 +16,7 @@ export default async function ReviewPage() {
   const pending = await getDb().select().from(speedReports).where(eq(speedReports.status, "pending")).orderBy(desc(speedReports.createdAt)).limit(200);
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-semibold tracking-tight">Reports held for review</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">Reports held for review</h1>
       {pending.length === 0 ? (
         <p className="text-muted-foreground">Nothing to review.</p>
       ) : (

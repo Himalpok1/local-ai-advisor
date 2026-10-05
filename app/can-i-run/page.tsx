@@ -23,7 +23,7 @@ export default function CanIRunIndex() {
   return (
     <div className="mx-auto max-w-6xl space-y-12 px-4 py-10 sm:px-6">
       <header className="max-w-3xl">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Can I run it?</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">Can I run it?</h1>
         <p className="mt-3 text-lg text-muted-foreground">
           {models.length} open models × {HARDWARE.length} machines. Every answer comes from the same engine as the full check: memory, speed and context for
           real workloads, not just “does the file fit”.

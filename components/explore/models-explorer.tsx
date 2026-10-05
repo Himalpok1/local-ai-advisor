@@ -1,4 +1,5 @@
 "use client";
+import { ChipMascot } from "@/components/art/illustrations";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowRight, Eye, Brain, Search, Scale, RotateCcw } from "lucide-react";
@@ -246,7 +247,9 @@ export function ModelsExplorer({ rows }: { rows: ModelRow[] }) {
       </div>
 
       {filtered.length === 0 ? (
-        <Card className="p-10 text-center text-sm text-muted-foreground">No models match these filters. Try loosening the memory limit or coding tier.</Card>
+        <Card className="flex flex-col items-center gap-3 p-10 text-center text-sm text-muted-foreground">
+          <ChipMascot className="w-24" tone="fill-sticker-blue" />
+          No models match these filters. Try loosening the memory limit or coding tier.</Card>
       ) : (
         <ul className="grid gap-4 lg:grid-cols-2">
           {filtered.map((r) => (

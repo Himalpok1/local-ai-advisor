@@ -54,7 +54,7 @@ export function CompareModels({ initial, initialModels }: { initial: AppState; i
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <CompareNav />
-      <h1 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">Compare models on your machine</h1>
+      <h1 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-4xl">Compare models on your machine</h1>
       <p className="mt-2 max-w-3xl text-muted-foreground">Not generic leaderboards: every model is rated for your hardware, your tool and your workload — so you can see which one will actually feel better to use.</p>
 
       <Card className="mt-6">

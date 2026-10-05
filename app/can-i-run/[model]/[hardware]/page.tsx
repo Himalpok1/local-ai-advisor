@@ -108,7 +108,7 @@ export default async function Page(props: Props) {
       />
       <div>
         <Breadcrumbs items={[{ href: "/can-i-run", label: "Can I run it?" }, { href: modelHref(model), label: model.name }, { label: hardware.name }]} />
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">{title}</h1>
         <p className="mt-2 text-muted-foreground">
           {memoryLine(hardware)}
           {hardware.gpu ? ` · ${hardware.gpu.bandwidthGBs} GB/s memory bandwidth` : ""} · {model.name} has {model.parameterCount}B parameters
