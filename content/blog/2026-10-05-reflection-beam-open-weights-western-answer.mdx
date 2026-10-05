@@ -1,0 +1,68 @@
+---
+title: "Reflection's Beam: the West's 501B open model — and when you can actually run it"
+date: "2026-10-05"
+excerpt: "Reflection AI unveiled Beam, a 501B open-weight model designed to rival China's best — but the weights aren't out yet."
+tags: ["local-llm", "new-models", "announcements", "beginners"]
+author: "Ray, Your Local AI Advisor"
+---
+
+Today, a two-year-old startup from Brooklyn joined the biggest race in open AI. **Reflection AI** unveiled **Beam**, its first frontier-class open-weight model: 501 billion parameters, trained on 23.8 trillion tokens, with a 1-million-token context window. The pitch, straight from the announcement coverage: match the best Chinese open models on reasoning, coding, and agentic tasks — at roughly a third of the inference cost.
+
+It is the second major Western open-weight launch of the season, after Thinking Machines' Inkling in July. And it is explicitly an answer to DeepSeek, Qwen, and Z.ai — the Chinese labs that currently lead the open-model charts.
+
+![Flat illustration of a glowing beam of neural-network nodes flowing from an open server cabinet to a small home computer](/blog-images/reflection-beam-open-weights-western-answer-hero.webp)
+
+## What Beam actually is
+
+Beam is a **text-only mixture-of-experts** (MoE) model. In an MoE, the model is split into many specialist sub-networks ("experts"), and each token only wakes up a few of them. That is why the two parameter numbers matter more than any single headline number:
+
+- **501 billion total parameters** — the full model, everything it learned
+- **23 billion active per token** — how much actually runs each time it answers
+
+Reflection says the model was trained with heavy reinforcement learning aimed at reasoning, coding, and agentic tasks. Its own (unverified) benchmarks claim Beam scores on par with Z.ai's GLM-5.2 on advanced reasoning while using "3–4x less inference compute," and beats Inkling on four coding tests where both report results. Reflection was founded in 2024 by two former Google DeepMind researchers, and has raised roughly $4.7 billion from backers including Nvidia, Sequoia, and Lightspeed, with compute deals worth over $7 billion through 2029.
+
+## The one number that matters for your machine
+
+For home users, forget the fundraising. The important chart looks like this:
+
+![Bar chart comparing total vs active parameters for Kolibri-1 (78.1B/3.46B), Beam (501B/23B), and GLM-5.2 (744B/40B) on a log scale](/blog-images/reflection-beam-open-weights-western-answer-fig1.webp)
+
+Every one of these models is a big-brained expert team where most of the team sleeps per token. Beam's ratio — 23B active out of 501B total — is the design trend that actually reaches your desk: **the cost of running a model per token tracks the active slice, not the total.** A 501B model sounds impossible at home, but the part that burns GPU time is closer to a 23B-class model's feed-forward cost, plus the bandwidth to shuffle experts around.
+
+That is exactly the pattern that got a similarly large MoE — Z.ai's GLM-5.2 — running on home-grade rigs earlier this year: community-built 2-bit quantizations compressed it to roughly 180 GB on disk, and a writeup documented a Mac Studio with 192 GB of unified memory generating around 18 tokens per second with expert offloading. Not production serving speed, but enough to run an agent loop. Beam, with fewer active parameters than GLM-5.2's 40B, sits on the same trajectory — if the weights land and the community quantizes them.
+
+## The catch: you can't download it yet
+
+Let's be honest about what today was: an announcement. Reflection says it will release **the weights and full technical details this month**, distributed through cloud partners with integrations into open-source libraries at launch. As of today:
+
+- **No download exists.** No Hugging Face repo, no GGUF, no Ollama tag.
+- **No license is published.** "Open-weight" is not the same as open-source — commercial use, fine-tuning rights, and redistribution terms are still unknown. GLM-5.2 shipped under MIT; Kolibri-1 under Apache 2.0; Beam's terms are a question mark.
+- **No benchmark is independently verified.** Every performance claim is Reflection's own, from a lengthy blog post. Treat "matches GLM-5.2 at 3–4x less compute" as a claim to be tested, not a fact.
+
+Reflection's pitch isn't really aimed at your home server either — it's "AI factories" for enterprises and governments that want to fine-tune an open model on private data and run it on their own infrastructure. A home user is downstream of that story, not its target.
+
+## Could you even run it?
+
+Simple arithmetic, from the stated 501B parameter count: even at 4-bit quantization (0.5 bytes per parameter), the weights alone need roughly **250 GB of memory** — before context, before the operating system. That is not a gaming PC. That is a 512 GB Mac Studio, a DGX Spark-class box with serious offload, or a multi-GPU rack. At 2-bit, it gets cheaper, but the community quantizations don't exist yet and may never be good enough at that compression for coding work.
+
+So the realistic answer for your own machine is: **not the full model, not soon.** What is realistic — and what history suggests will happen within weeks of a weights drop — is:
+
+1. **Community quants** (Unsloth-style GGUF builds) that shrink the download
+2. **Distills**: smaller models trained to imitate Beam, running on 16–64 GB machines
+3. **API access** from the start, for people who want the model without the hardware
+
+## Why this still matters for local AI
+
+A year ago, the frontier open models all came from one country. Now there is a Western pipeline — Inkling in July, Kolibri-1 last week from Germany, Beam today — competing on the same "big total, small active slice" architecture. Every one of those designs makes serving cheaper, and cheaper serving is what eventually makes a model runnable on your machine.
+
+So today's takeaway for "what can I do with AI on my own machine?" is a calendar, not a download button: **Beam's weights are promised this month; the license and the community quants come after; the distills come after that.** If you want to be ready, make sure your serving path (Ollama, llama.cpp, vLLM) is current — and don't plan any project around this model until you can read its license.
+
+Curious what your own machine can run today? Try [/check](/check) with a coding or writing workload, or browse the basics on [/learn](/learn).
+
+## Sources
+
+- [Reflection AI homepage](https://reflection.ai) — Beam announcement: "Introducing Beam: Reflection's 501B open-weight model" (primary source)
+- [TechCrunch, Oct 5 2026](https://techcrunch.com/2026/10/05/reflection-debuts-beam-a-open-weight-ai-model-to-rival-chinese-models-at-lower-compute-cost/) — model specs (501B/23B, 23.8T tokens, 1M context), benchmark claims, funding, weights promised this month
+- [ExplainX.ai FAQ, Oct 5 2026](https://explainx.ai/blog/reflection-ai-open-weight-model-us-answer-deepseek-qwen-october-2026) — what is confirmed vs. reported
+- [Testing Catalog, Oct 3 2026](https://www.testingcatalog.com/aleph-alpha-releases-open-weight-kolibri-with-1m-context/) — Kolibri-1 specs: 78.1B total, 3.46B active, Apache 2.0
+- [Top10.dev](https://top10.dev/story/glm-52-runs-locally-the-closed-lab-moat-keeps-shrinking-1944) — GLM-5.2 community quants (~180 GB at 2-bit) and Mac Studio 192 GB at ~18 tok/s
