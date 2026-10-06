@@ -945,7 +945,7 @@ const ALL: ModelInput[] = [
     toolCalling: "good",
     vision: false,
     thinking: true,
-    architecture: { layers: 50, kvHeads: 4, headDim: 128, fullAttentionFraction: 10 / 50, slidingWindow: 512 },
+    architecture: { layers: 50, kvHeads: 4, headDim: 128, fullAttentionFraction: 10 / 50, slidingWindow: 513 },
     supportedQuantizations: ["fp8", "q4", "q8", "fp16"],
     supportedFormats: ["safetensors", "gguf"],
     knownSizesGB: { fp8: gb(78) },
