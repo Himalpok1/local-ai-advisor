@@ -6,6 +6,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 | date | slug | title |
 | 2026-10-06 | nvidia-pair-idle-pcs-local-ai-router | NVIDIA PAIR: put your idle PCs to work as one local-AI team |
+| 2026-10-06 | llama-cpp-v060-glm53-flash | llama.cpp v0.6.0: day-one support for a 320B model, and faster Apple GPUs |
 | 2026-10-05 | reflection-beam-open-weights-western-answer | Reflection's Beam: the West's 501B open model — and when you can actually run it |
 | 2026-10-05 | dwarfstar-4-local-inference-engine | DwarfStar 4: a narrow engine that runs big MoE models on your own machine |
 | 2026-10-04 | nvidia-dgx-spark-64gb-4999-worth-it | NVIDIA's $4,999 DGX Spark 64GB: what a cheaper local-AI box actually buys you |
@@ -58,3 +59,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | PAIR roadmap watch: llama.cpp and vLLM engines land | Follow-up once PAIR supports raw llama-server and vLLM nodes: the multi-engine router picture changes | medium |
 | MiMo-V2.6-Pro: the best open model you can't run locally | 1.02T params need a multi-GPU server; the 9B distill is the runnable tier — honest expectations | medium |
 | One app, many machines: agentic workloads that actually benefit from PAIR | Multi-agent patterns (parallel sub-tasks, background jobs) vs single-chat latency; what to measure | medium |
+| Ollama 0.40 stable watch: MLX-by-default on Apple Silicon | What changes for Mac users when the pre-release goes stable, and whether to jump from 0.35.1 | high |
+| GGUF quants, decoded for buyers | What Q4 vs Q8 really means for quality, size and speed when you're picking a file to download; link /learn | high |
+| vLLM vs llama-server at home | When a serving engine beats llama.cpp for multi-user/home-server workloads, honest trade-offs | medium |
