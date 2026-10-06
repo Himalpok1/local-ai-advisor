@@ -1,0 +1,55 @@
+---
+title: "llama.cpp v0.6.0: day-one support for a 320B model, and faster Apple GPUs"
+date: "2026-10-06"
+excerpt: "The free engine behind most local AI just got its biggest update in months — a new 320B model runs day one, and Macs get up to 3x faster matrix math."
+tags: ["local-llm", "announcements", "new-models", "apps"]
+author: "Ray, Your Local AI Advisor"
+---
+
+Behind almost every way you run AI on your own computer — Ollama, LM Studio, and a dozen others — sits one free, open-source engine: **llama.cpp**. Yesterday it shipped version 0.6.0, and this is one of those updates worth actually updating for. The headline: it now runs the brand-new 320-billion-parameter GLM-5.3-Flash model on day one, and Apple Silicon machines get a serious speed boost.
+
+![Flat illustration of a laptop and a desktop PC tower with a glowing graphics card, linked by arcs of light through translucent code windows — a visual for faster local AI inference](/blog-images/llama-cpp-v060-glm53-flash-hero.webp)
+
+## A new 320B model, runnable from day one
+
+GLM-5.3-Flash is a 320-billion-parameter hybrid model that handles both text and vision, released by Zhipu. The noteworthy part for local runners is how fast the open-source community caught up: the llama.cpp community merged support on September 30, and the official v0.6.0 release notes list it as a headline feature. Pre-converted GGUF files — the format your local engine actually loads — are already up on Hugging Face, so you don't have to convert anything yourself.
+
+Now for the honest math, because "320 billion parameters" can sound either impossible or free. A 3-bit quantized GGUF of the model is about **117 GB** as a file. One early tester ran it on two RTX 3090 cards (24 GB each) with 125 GB of system RAM. This is workstation territory, not laptop territory: if your machine has less than ~128 GB of combined memory, this model is a spectator sport for you.
+
+On that two-GPU setup, decode ran at 12.3 tokens per second with a stock build — and at 26.15 tokens per second with an experimental MoE expert cache plus Q4_K attention weights. That's roughly 2x, just from smarter software:
+
+![Bar chart comparing GLM-5.3-Flash decode speed on two RTX 3090 cards plus 125GB of RAM: 12.3 tokens per second on a stock build versus 26.15 with an MoE expert cache](/blog-images/llama-cpp-v060-glm53-flash-fig1.webp)
+
+That tester is an independent fork, not the official release, so treat it as a preview of what tuning can do — not a guarantee. Still, it answers the core question for big-rig owners: a frontier-class 320B model is now genuinely runnable at home, just not on ordinary hardware.
+
+## Macs get the biggest speedup
+
+If you run local AI on a Mac, this release is especially for you. The notes describe new few-row MMA matrix-multiplication kernels for speculative and batched decoding that deliver **up to ~3x faster matrix multiplication on Apple GPUs**, plus a Metal flash-attention kernel for half-precision KV caches. Matrix multiplication is the single most repeated operation in AI inference, so "3x faster" on that operation is a meaningful claim — though note the qualifier: it's for speculative and batched decoding paths, not every workload, and your mileage will vary.
+
+There's also progress on the speculative-decoding front for everyone: Qwen4Exp (an experimental Qwen model) gets multi-token prediction speculative decoding credited with a **~1.5x decode speedup on DGX Spark**, and a separate graph-reuse fix improved GLM-5.3-Flash decode by 7.2% (19.98 to 21.41 tokens per second) on two GPUs. Put side by side, the claimed speedups look like this:
+
+![Bar chart of speedups claimed in llama.cpp v0.6.0: Apple Metal MMA kernels at 3x, Qwen4Exp speculative decoding at 1.5x, and a GLM graph-reuse fix at 1.07x](/blog-images/llama-cpp-v060-glm53-flash-fig2.webp)
+
+## Two quieter changes you'll notice
+
+First, the **web UI got overhauled**. llama-server's browser interface can now browse Hugging Face Hub data and download models directly — a real quality-of-life win if you've ever juggled terminal commands just to get a model file.
+
+Second, there's a new `/v1/systemone` server API for **decision models** — tiny specialized models that return a yes/no, a classification, or a score instead of generating text. Ollama shipped the same API in its 0.35 release last week (we covered that); now raw llama-server has it too, with support for the five open decision-model families plus Nimble. It's a builder feature more than an end-user one, but it matters: your apps can ask a 4-billion-parameter model to classify a ticket in milliseconds instead of making a chat model write a paragraph and parsing it.
+
+## What should you actually do?
+
+**On a Mac:** update whatever runs llama.cpp underneath. Ollama and LM Studio both ship llama.cpp inside, so watch for their next updates and take them — the Metal kernel improvements flow through automatically. (Ollama's own 0.40 pre-release is already moving its Apple Silicon path to MLX by default; that's a separate story worth its own post.)
+
+**On a big Nvidia rig (100+ GB combined memory):** GLM-5.3-Flash is worth a look — the GGUFs are waiting on Hugging Face, and this is about as close to a frontier model as you can run at home right now.
+
+**Everyone else:** the web UI model-download pipeline and the general speed improvements still apply to the 8B–30B models you already run. Update when your app prompts you, and try the refreshed web UI — finding and loading a new model is about to feel less like sysadmin work.
+
+The pattern here is worth noticing: the gap between a model release and it running on local hardware keeps shrinking. A 320B model with day-one local support would have been unthinkable two years ago. The frontier is moving closer to your desk.
+
+## Sources
+
+- [llama.cpp v0.6.0 release notes](https://github.com/ggml-org/llama.cpp/releases/tag/v0.6.0) — GitHub, ggml-org (primary source for all release features and speedup claims)
+- [AI Weekly: llama.cpp v0.6.0 adds GLM-5.3-Flash, 3x Apple Metal matmul](https://aiweekly.co/alerts/llamacpp-v060-adds-glm-53-flash-3x-apple-metal-matmul) — AI Weekly
+- [AI Weekly: llama.cpp merges 320B GLM-5.3-Flash support](https://aiweekly.co/alerts/llamacpp-merges-320b-glm-53-flash-hybrid-text-vision-support) — AI Weekly (Sep 30 merge details)
+- [neurall/llama.cpp fork: GLM-5.3-Flash speedups](https://github.com/neurall/llama.cpp/commit/f3b1159756c45ef10e1f25ba5dff556f82bcdaba) — GitHub, neurall (117 GB 3-bit file, 12.3 → 26.15 tok/s on 2x RTX 3090 + 125GB RAM, 19.98 → 21.41 tok/s graph-reuse fix)
+- [ikawrakow/ik_llama.cpp: GLM-5.3-Flash runtime support](https://github.com/ikawrakow/ik_llama.cpp/pull/2376) — GitHub (architecture details: KDA layers, dynamic sparse attention, vision encoder)
