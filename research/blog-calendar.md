@@ -5,6 +5,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 ## Published
 
 | date | slug | title |
+| 2026-10-06 | nvidia-pair-idle-pcs-local-ai-router | NVIDIA PAIR: put your idle PCs to work as one local-AI team |
 | 2026-10-05 | reflection-beam-open-weights-western-answer | Reflection's Beam: the West's 501B open model — and when you can actually run it |
 | 2026-10-05 | dwarfstar-4-local-inference-engine | DwarfStar 4: a narrow engine that runs big MoE models on your own machine |
 | 2026-10-04 | nvidia-dgx-spark-64gb-4999-worth-it | NVIDIA's $4,999 DGX Spark 64GB: what a cheaper local-AI box actually buys you |
@@ -54,4 +55,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | DwarfStar PRO mode: how far does the 512GB Mac go? | What the experimental DeepSeek V4 PRO support unlocks on a 512GB Mac Studio vs the Flash models | medium |
 | Beam weights drop: first community quants and real VRAM math | Follow-up once Reflection publishes weights + license: GGUF builds, download sizes, what rigs actually serve it | high |
 | FLUX 3 open weights: bounding-box image editing on your GPU | Black Forest Labs' FLUX 3 with UI-driven placement; what VRAM local image editing needs when weights land | medium |
-| NVIDIA's local-AI push at IFA 2026: faster llama.cpp, LM Studio, Ollama | Up to 1.9x faster inference claims + PAIR local-network router; verify against real releases before writing | medium |
+| PAIR roadmap watch: llama.cpp and vLLM engines land | Follow-up once PAIR supports raw llama-server and vLLM nodes: the multi-engine router picture changes | medium |
+| MiMo-V2.6-Pro: the best open model you can't run locally | 1.02T params need a multi-GPU server; the 9B distill is the runnable tier — honest expectations | medium |
+| One app, many machines: agentic workloads that actually benefit from PAIR | Multi-agent patterns (parallel sub-tasks, background jobs) vs single-chat latency; what to measure | medium |
