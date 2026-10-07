@@ -187,10 +187,10 @@ function appleConfigs(): HardwareConfigurationInput[] {
 /* PCs, GPUs and other systems                                         */
 /* ------------------------------------------------------------------ */
 
-const specSrc = (url: string, title: string, confidence: Source["confidence"] = "medium", note?: string): Source => ({
+const specSrc = (url: string, title: string, confidence: Source["confidence"] = "medium", note?: string, verified = "2026-09-30"): Source => ({
   url,
   title,
-  lastVerified: "2026-09-30",
+  lastVerified: verified,
   confidence,
   note,
 });
@@ -227,7 +227,7 @@ const DESKTOP_GPUS: GpuSpec[] = [
   { key: "rtx-5070-ti", name: "GeForce RTX 5070 Ti", vendor: "nvidia", vram: 16, bandwidth: 896, tflops: 88, arch: "Blackwell", apis: ["cuda", "vulkan"], cuda: "12.0", year: 2025, price: 750, source: SRC_CUDA },
   { key: "rtx-5080", name: "GeForce RTX 5080", vendor: "nvidia", vram: 16, bandwidth: 960, tflops: 113, arch: "Blackwell", apis: ["cuda", "vulkan"], cuda: "12.0", year: 2025, price: 1000, source: SRC_CUDA },
   { key: "rtx-5090", name: "GeForce RTX 5090", vendor: "nvidia", vram: 32, bandwidth: 1792, tflops: 210, arch: "Blackwell", apis: ["cuda", "vulkan"], cuda: "12.0", year: 2025, price: 2000, source: SRC_CUDA },
-  { key: "rtx-pro-6000", name: "RTX PRO 6000 Blackwell", vendor: "nvidia", vram: 96, bandwidth: 1792, tflops: 250, arch: "Blackwell", apis: ["cuda", "vulkan"], cuda: "12.0", year: 2025, price: 8500, source: specSrc("https://github.com/ggml-org/llama.cpp/discussions/15013", "llama.cpp CUDA scoreboard; bandwidth from secondary source", "medium") },
+  { key: "rtx-pro-6000", name: "RTX PRO 6000 Blackwell", vendor: "nvidia", vram: 96, bandwidth: 1792, tflops: 250, arch: "Blackwell", apis: ["cuda", "vulkan"], cuda: "12.0", year: 2025, price: 16000, source: specSrc("https://www.thundercompute.com/blog/nvidia-rtx-pro-6000-pricing", "NVIDIA raised the official price to $16,000 (Aug 2026); launched at $8,565 (Mar 2025); specs via llama.cpp CUDA scoreboard", "medium", undefined, "2026-10-07") },
   { key: "dual-rtx-3090", name: "2× GeForce RTX 3090 (48 GB)", vendor: "nvidia", vram: 48, bandwidth: 936, tflops: 120, arch: "Ampere", apis: ["cuda", "vulkan"], cuda: "8.6", year: 2020, price: 1600, source: specSrc("https://github.com/ggml-org/llama.cpp/discussions/15013", "Layer split across two GPUs: capacity adds up, decode bandwidth does not", "low") },
   { key: "rx-7900-xt", name: "Radeon RX 7900 XT", vendor: "amd", vram: 20, bandwidth: 800, tflops: 103, arch: "RDNA 3", apis: ["rocm", "vulkan"], rocm: "official", year: 2022, price: 650, source: SRC_VULKAN },
   { key: "rx-7900-xtx", name: "Radeon RX 7900 XTX", vendor: "amd", vram: 24, bandwidth: 960, tflops: 123, arch: "RDNA 3", apis: ["rocm", "vulkan"], rocm: "official", year: 2022, price: 900, source: SRC_VULKAN },
@@ -359,9 +359,29 @@ const OTHER: HardwareConfigurationInput[] = [
     gpuMemoryFraction: 0.92,
     gpuMemoryFractionRaised: 0.95,
     os: ["linux"],
-    approxPriceUSD: 4000,
+    approxPriceUSD: 6950,
     tags: ["nvidia", "unified", "dgx"],
-    source: specSrc("https://github.com/ggml-org/llama.cpp/blob/master/benches/dgx-spark/dgx-spark.md", "llama.cpp DGX Spark benches; 273 GB/s from secondary source", "medium"),
+    source: specSrc("https://groundtruth.day/news/nvidia-dgx-spark-64gb-starts-at-4999.html", "NVIDIA raised the 128GB Founders Edition to $6,950 on Oct 2, 2026 (was $3,999 launch, $4,699 since Feb 23, 2026); verified against NVIDIA announcement", "medium", undefined, "2026-10-07"),
+  },
+  {
+    id: "dgx-spark-64",
+    name: "NVIDIA DGX Spark (GB10) · 64 GB",
+    chipKey: "nvidia-dgx-spark",
+    device: "DGX Spark",
+    vendor: "nvidia",
+    formFactor: "mini",
+    year: 2026,
+    memoryArchitecture: "unified",
+    cpu: { name: "Grace (20 Arm cores)", cores: 20, arch: "arm64", gflops: 4000 },
+    gpu: { name: "GB10 Blackwell GPU", vendor: "nvidia", bandwidthGBs: 273, fp16Tflops: 50, apis: ["cuda", "vulkan"], architecture: "Blackwell", cudaCapability: "12.1" },
+    systemRamGB: 64,
+    systemRamBandwidthGBs: 273,
+    gpuMemoryFraction: 0.92,
+    gpuMemoryFractionRaised: 0.95,
+    os: ["linux"],
+    approxPriceUSD: 4999,
+    tags: ["nvidia", "unified", "dgx"],
+    source: specSrc("https://videocardz.com/newz/nvidia-dgx-spark-drops-to-64gb-memory-but-costs-more-than-the-original-128gb-version", "NVIDIA announced the 64GB DGX Spark on Oct 2, 2026: same GB10 chip, 64GB unified, $4,999 starting price, shipping Oct 23 via Acer/ASUS/Dell/Gigabyte/HP/MSI (NVIDIA PR)", "medium", "Starting price; partners set final configs and prices. No Founders Edition for 64GB.", "2026-10-07"),
   },
   {
     id: "laptop-ryzen-ai-hx370-32",
