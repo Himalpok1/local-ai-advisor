@@ -1,0 +1,58 @@
+---
+title: "Surface Laptop Ultra + RTX Spark: what changes for AI on your own machine"
+date: "2026-10-07"
+excerpt: "Microsoft and NVIDIA launched RTX Spark laptops with up to 128GB of unified memory. The memory config you pick decides which AI models you can actually run."
+tags: ["local-llm", "announcements", "hardware", "new-models", "beginners"]
+author: "Ray, Your Local AI Advisor"
+---
+
+At a joint event in San Francisco today, Microsoft and NVIDIA unveiled the **Surface Laptop Ultra**, the first consumer laptop built on NVIDIA's **RTX Spark** chip. Microsoft is pitching it directly at people who run AI locally: up to 128GB of unified memory, CUDA support, and claims it can run 120-billion-parameter models without a cloud subscription. Pre-orders opened today, the machines ship October 16, and the starting price is $2,599.
+
+![Flat illustration of a laptop with a glowing AI chip rising above it, circuit traces connecting the chip to the screen](/blog-images/rtx-spark-surface-laptop-ultra-hero.webp)
+
+## What RTX Spark actually is
+
+RTX Spark is not a regular GPU bolted onto a laptop motherboard. It is a single chip that combines an Arm-based **NVIDIA Grace CPU** (up to 20 cores) with a **Blackwell RTX GPU** (up to 6,144 CUDA cores), linked by NVIDIA's NVLink-C2C interconnect. Both processors share one pool of up to **128GB of LPDDR5X unified memory** at roughly 300GB/s of bandwidth — so model weights never have to be copied between separate RAM and VRAM pools. NVIDIA's headline number is up to **1 petaflop of FP4 AI performance**, though the footnotes say that figure is theoretical and uses the sparsity feature.
+
+Two tiers exist at launch. The **S3** is the full version: 20-core CPU, 6,144-core GPU, up to 128GB. The **S2** steps down to an 18-core CPU, 5,120-core GPU, and 24–64GB of memory. The base $2,599 Surface Laptop Ultra uses S2 with **24GB** of unified memory and 512GB of storage; the top configuration hits $5,899.99 with S3, 128GB, and 1TB (per Notebookcheck's pricing breakdown). Canada starts at C$3,899.99.
+
+Microsoft is not alone here. RTX Spark laptops are also coming from ASUS (ProArt P14 from C$3,499, P16 from C$4,999, shipping October 16), Dell (XPS 16), HP (OmniBook Ultra 16), Lenovo (Yoga Pro 9n), MSI, Acer, and Gigabyte. A compact desktop, the **Surface RTX Spark Dev Box**, follows in November at $5,999 — US-only through Microsoft.com — built for always-on AI agents with a 100W thermal envelope.
+
+![Diagram comparing separate CPU and GPU memory pools on the left with a unified shared memory pool on the right](/blog-images/rtx-spark-surface-laptop-ultra-fig2.webp)
+
+## The memory math that decides everything
+
+The unified memory pool is the whole story for local AI. Whether a 120B-parameter model fits is purely a question of gigabytes, and the chart below puts the options side by side:
+
+![Bar chart comparing unified memory of buyable machines against the roughly 60GB a 120-billion-parameter model needs at 4-bit](/blog-images/rtx-spark-surface-laptop-ultra-fig1.webp)
+
+The dashed line marks roughly **60GB for the weights of a 120B model at 4-bit quantization** (per VideoCardz's sizing) — and that is weights *alone*, before the KV cache and the operating system take their share. Read the chart honestly:
+
+- The **128GB configs clear the bar** with real headroom — a 120B model at 4-bit leaves room for the cache and long conversations.
+- The **base 24GB config does not** come close. It runs the same small models as any 24GB machine today; buying it "for 120B models" would be a $2,599 mistake.
+- A **70B model at 4-bit needs roughly 39GB** of weights (about 0.55 bytes per parameter), so it fits the 128GB configs and NVIDIA's own 64GB DGX Spark box comfortably.
+
+The rule of thumb from [this morning's post](/blog/mistral-large-4-le-chonk-memory-math) still applies: multiply parameters by 0.55 bytes for a 4-bit estimate, and check whether your machine holds it.
+
+## What this changes for you
+
+**1. Windows is finally in the big-memory game.** Before today, the only mainstream laptop with 128GB of unified memory was Apple's M-series Max — the box this morning's post held up as the biggest consumer setup. Now CUDA, big unified memory, and Windows 11 arrive together. If you run llama.cpp or Ollama on Windows and have been eyeing a Mac for memory reasons, this is the alternative you were waiting for.
+
+**2. The software stack moved too, not just the hardware.** Microsoft took its Execution Containers (MXC) generally available — OS-level infrastructure for AI agents that keep working in the background under OS control. GitHub's HydraFusion routing is expanding to local Windows models, automatically sending easy work to your local model and hard work to the cloud. Microsoft's Windows team's own framing: "save your frontier tokens for frontier problems." If agents are new to you, the [/learn](/learn) hub has the explainers.
+
+**3. Wait for independent numbers.** Microsoft claims the Surface Laptop Ultra beats a MacBook Pro with M5 Pro chip at several AI workloads — up to 4.3× faster image generation and 6.2× faster video generation, per MarketWatch's coverage. Those are the vendor's own numbers. The number that matters for local LLMs is tokens per second in Ollama or llama-server on real quants, and nobody has published those yet. Pre-orders are open; benchmarks will land within weeks of October 16.
+
+**4. Do not confuse this with the DGX Spark.** NVIDIA's $3,999-class DGX Spark 64GB developer box (covered in our October 6 post) is a different product line from the RTX Spark chips in these laptops. Same general idea — big unified memory for local AI — but different hardware, different price, different launch.
+
+## The takeaway
+
+Today's launch changes the *options* for running big local models on Windows, not the *rules*. The rule is still memory: 128GB configurations can realistically run 120B-parameter models at 4-bit; 24GB configurations cannot. If you buy into this generation, buy the memory config that matches the models you actually want to run — check [/check](/check) and [/compare/hardware](/compare/hardware) first, and wait for independent tokens-per-second tests before paying launch-day prices.
+
+## Sources
+
+- [Microsoft unveils Surface Laptop Ultra, new Windows AI features — MobileSyrup (Oct 7, 2026)](https://mobilesyrup.com/2026/10/07/microsoft-surface-laptop-ultra-reveal/) — pricing ($2,599 US start, C$3,899.99 Canada), October 16 ship date, ASUS ProArt pricing, Call of Duty on RTX Spark in 2027
+- [RTX Spark Ships: Run 120B AI Models on Windows Locally — ByteIota (Oct 7, 2026)](https://byteiota.com/rtx-spark-surface-laptop-ultra-run-120b-ai-models-windows-locally/) — S2/S3 configurations, unified memory and bandwidth specs, 120B local claims
+- [NVIDIA and Microsoft Bring RTX Spark Laptops, AI Agents to Windows PCs — Unite.AI (Oct 7, 2026)](https://www.unite.ai/nvidia-and-microsoft-bring-rtx-spark-laptops-ai-agents-to-windows-pcs/) — named laptop models, NVLink-C2C 600GB/s, power envelopes, Microsoft Execution Containers GA
+- [Surface RTX Spark Dev Box Ships in November at $5,999 — Unite.AI (Oct 7, 2026)](https://www.unite.ai/surface-rtx-spark-dev-box-ships-in-november-at-5-999/) — Dev Box price, November ship, US-only sale, 100W thermal envelope, FP4 petaflop footnotes
+- [Microsoft's Windows AI Plan: Local Models, Agents, RTX Spark — The Neuron (Oct 7, 2026)](https://www.theneuron.ai/explainer-articles/microsoft-windows-hybrid-ai-agents-rtx-spark/) — hybrid intelligence, MXC general availability, HydraFusion routing to local models, "save your frontier tokens" framing
+- [Microsoft Announces October 7 Event with NVIDIA — Technetbooks (Oct 6, 2026)](https://www.technetbooks.com/2026/10/microsoft-announces-october-7-event.html) — event details, RTX Spark unified-memory architecture, 120B local inference claims
