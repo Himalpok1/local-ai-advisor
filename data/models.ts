@@ -17,7 +17,7 @@ const ALL_Q: QuantId[] = ["q3", "q4", "q5", "q6", "q8", "fp16"];
 const hf = (repo: string, confidence: Source["confidence"] = "high", note?: string): Source => ({
   url: `https://huggingface.co/${repo}`,
   title: `${repo} — Hugging Face model card & config.json`,
-  lastVerified: "2026-10-06",
+  lastVerified: "2026-10-07",
   confidence,
   note,
 });
