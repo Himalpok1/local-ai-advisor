@@ -5,6 +5,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 ## Published
 
 | 2026-10-07 | mistral-large-4-le-chonk-memory-math | Mistral Large 4 ('Le Chonk'): why a 1-trillion-parameter open model still won't fit on your PC |
+| 2026-10-07 | rtx-spark-surface-laptop-ultra | Surface Laptop Ultra + RTX Spark: what changes for AI on your own machine |
 | date | slug | title |
 | 2026-10-06 | nvidia-pair-idle-pcs-local-ai-router | NVIDIA PAIR: put your idle PCs to work as one local-AI team |
 | 2026-10-06 | llama-cpp-v060-glm53-flash | llama.cpp v0.6.0: day-one support for a 320B model, and faster Apple GPUs |
@@ -64,4 +65,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | GGUF quants, decoded for buyers | What Q4 vs Q8 really means for quality, size and speed when you're picking a file to download; link /learn | high |
 | vLLM vs llama-server at home | When a serving engine beats llama.cpp for multi-user/home-server workloads, honest trade-offs | medium |
 | Mistral Large 4 weights drop: real VRAM math and first community quants | Follow-up once weights land (expected end of October): actual GGUF builds, real memory numbers vs today's estimates, engine support timing | high |
-| Microsoft × NVIDIA noon announcements: RTX Spark details | Sourced brief on confirmed RTX Spark pricing/ship dates and what each means for local AI, with catalog updates | high |
+| Surface Laptop Ultra 128GB vs DGX Spark 64GB: which box for which workload | 128GB RTX Spark laptop vs 64GB DGX Spark dev box vs Apple Max: price-per-GB memory math and who each suits | medium |
+| First independent RTX Spark LLM benchmarks | Real tokens-per-second on Ollama/llama.cpp from third-party tests, checked against NVIDIA petaflop claims; revisit when tests land after Oct 16 | high |
+| MXC + HydraFusion routing: Windows new agent stack in plain terms | Background agents in Execution Containers and cloud-local routing: what changes for local model use, links to /stack and /learn | medium |
