@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-07 | mistral-large-4-le-chonk-memory-math | Mistral Large 4 ('Le Chonk'): why a 1-trillion-parameter open model still won't fit on your PC |
 | date | slug | title |
 | 2026-10-06 | nvidia-pair-idle-pcs-local-ai-router | NVIDIA PAIR: put your idle PCs to work as one local-AI team |
 | 2026-10-06 | llama-cpp-v060-glm53-flash | llama.cpp v0.6.0: day-one support for a 320B model, and faster Apple GPUs |
@@ -62,3 +63,5 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Ollama 0.40 stable watch: MLX-by-default on Apple Silicon | What changes for Mac users when the pre-release goes stable, and whether to jump from 0.35.1 | high |
 | GGUF quants, decoded for buyers | What Q4 vs Q8 really means for quality, size and speed when you're picking a file to download; link /learn | high |
 | vLLM vs llama-server at home | When a serving engine beats llama.cpp for multi-user/home-server workloads, honest trade-offs | medium |
+| Mistral Large 4 weights drop: real VRAM math and first community quants | Follow-up once weights land (expected end of October): actual GGUF builds, real memory numbers vs today's estimates, engine support timing | high |
+| Microsoft × NVIDIA noon announcements: RTX Spark details | Sourced brief on confirmed RTX Spark pricing/ship dates and what each means for local AI, with catalog updates | high |
