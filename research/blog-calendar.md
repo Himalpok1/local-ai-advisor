@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-08 | interfaze-1-lite-open-ocr-extraction-model | Interfaze 1 Lite: an open model that reads invoices, transcribes calls, and shows its work |
 | 2026-10-08 | best-local-ai-models-16gb-ram | Best local AI models for 16 GB of RAM |
 | 2026-10-07 | mistral-large-4-le-chonk-memory-math | Mistral Large 4 ('Le Chonk'): why a 1-trillion-parameter open model still won't fit on your PC |
 | 2026-10-07 | rtx-spark-surface-laptop-ultra | Surface Laptop Ultra + RTX Spark: what changes for AI on your own machine |
@@ -71,3 +72,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Microsoft's 284B-on-laptop claim: does the memory math hold? | Check the Davuluri keynote claim (DeepSeek-V4.1-Flash at 1.6-bit on 128GB RTX Spark) against real quant math; honest pre-ship caveats | medium |
 | Ivo Sage: an open-source contract model from DeepSeek V4 Flash | Legal vertical post-training that went 70% to 91% on contract benchmarks; what size it is and whether it could run locally | medium |
 | llama.cpp 0.6.0's built-in model downloader, tested | Hands-on with the HF Hub download pipeline and the memory-fit estimate; what works today vs the still-open Web UI pull request | medium |
+| OCR bake-off on ugly scans: Interfaze-1-Lite vs Tesseract vs MinerU | Hands-on accuracy and confidence-calibration test on real skewed scans and receipts | medium |
+| The 80 GB club: open models that need data-center GPUs | When renting an H100 beats buying one, with /compare/hardware cost math | medium |
+| MinerU 3.4: PDF and Office parsing for local RAG | OpenDataLab doc-parsing stack as the local complement to OCR specialist models | low |
