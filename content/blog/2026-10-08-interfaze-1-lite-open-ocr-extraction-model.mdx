@@ -1,0 +1,90 @@
+---
+title: "Interfaze 1 Lite: an open model that reads invoices, transcribes calls, and shows its work"
+date: "2026-10-08"
+excerpt: "A new Apache 2.0 model does OCR, transcription, and data extraction with confidence scores and bounding boxes — but it needs an 80 GB GPU, not your laptop."
+tags: ["new-models", "local-llm", "announcements", "beginners"]
+author: "Ray, Your Local AI Advisor"
+---
+
+Most production AI work is not chat. It is reading a stack of invoices, transcribing a recorded call, pulling fields out of a scanned form and into a database. Those jobs have one right answer, and they need the same answer every time. A general chat model is not built for that — it is built to sound fluent, which is exactly what you do not want when a wrong number becomes a bug in someone's accounting.
+
+Interfaze, a Y Combinator 2026 startup in San Francisco, released **interfaze-1-lite** on October 5, 2026, and the interesting part is not just what it does. It is how it behaves: every answer comes with **confidence scores and bounding boxes**, so you can check its work instead of trusting it. And the weights are released under **Apache 2.0**, so anyone can run them.
+
+![Flat illustration of scanned documents with glowing highlighted text regions, an audio waveform, and a scan line moving across the page](/blog-images/interfaze-1-lite-open-ocr-extraction-model-hero.webp)
+
+## What it actually does
+
+Interfaze-1-Lite takes text, images, audio, and files — PDFs and Word documents — and returns text or JSON matching a schema you supply. The jobs it targets:
+
+- **Document reading.** OCR with a box and a confidence score for every line and word, plus tables, reading order, and layout. PDFs up to 50 pages per call.
+- **Speech.** Transcription with timestamps and speaker diarization in 99 languages. The vendor says a 95-minute recording transcribes in about 90 seconds.
+- **Structured extraction.** Responses constrained to your JSON schema, read from any mix of text, images, documents, and audio.
+- **Detection.** Object outlines and GUI-element grounding — the kind of thing a computer-use agent needs to find an "Add to cart" button on a screen.
+- **Extras.** Translation across 160+ languages, time-series forecasting, and safety guardrails for text and images.
+
+That is a deliberately unglamorous list. It is a model for backend software, not for the chat window.
+
+## The unusual part: Mixture of Architecture
+
+Most models are one neural network trying to do everything. Interfaze-1-Lite is a **reasoning core plus specialists**: a hybrid-attention decoder plans the request and calls task-specific networks — a vision-language document reader for pages, a CNN-style detector for line geometry, an encoder-decoder speech recognizer for audio, a segmentation model for outlines. The company calls this **Mixture of Architecture**, or MoA, as distinct from mixture-of-experts.
+
+The intuition is straightforward. A convolutional network is very good at reading pixels. An audio model is very good at speech. A language model is good at reasoning over results. Fusing them means you do not have to glue five separate tools together with five APIs and hope the timestamps line up. Whether the fused version beats a well-built pipeline in practice is still an open question — we have not run this model, and neither has anyone publishing independently yet.
+
+## The honest hardware answer
+
+Here is where this blog has to be blunt: **you cannot run interfaze-1-lite on your own machine.** The requirements from the project's own quickstart are a single 80 GB GPU with compute capability 8.9 or newer — tested on an H100 — plus about 64 GB of RAM and 60 GB of disk for the ~50 GB of weights. That is data-center hardware, not a laptop or a gaming PC.
+
+So what are your real options today?
+
+1. **Their API.** $0.85 per million input tokens and $1.50 per million output, with a 128k context and up to 32k output tokens. Interfaze's pricing page estimates OCR at roughly $0.0011–$0.0022 per page, or $1.10–$2.20 per 1,000 pages. Cheap enough to test a pipeline in an afternoon.
+2. **A rented 80 GB GPU.** The project is self-contained — one Docker repo, no external services, runs offline — and speaks an OpenAI-compatible API on `localhost:8000`. You can skip the planner entirely and call one specialist directly:
+
+```bash
+curl http://localhost:8000/v1/chat/completions -H "Content-Type: application/json" -d '{
+  "model": "interfaze-1-lite",
+  "messages": [
+    {"role": "system", "content": "<task>ocr</task>"},
+    {"role": "user", "content": [{"type": "image_url", "image_url": {"url": "https://example.com/invoice.png"}}]}
+  ]
+}'
+```
+
+That request returns the extracted text plus every line's bounding box and confidence — the raw evidence, not just the answer.
+
+One caveat if you self-host: you need a Hugging Face token with access to two gated models it depends on (a speaker-diarization model and Llama Guard 3). Accept their terms on Hugging Face before pulling.
+
+## Reading the benchmark claims
+
+The vendor reports strong numbers against general models on perception tasks:
+
+![Bar chart of vendor-reported olmOCR-Bench scores: Interfaze 1 flagship 85.7%, Interfaze 1 Lite 83.8%, Claude Sonnet 5 83.5%, Grok 4.3 81.9%, GPT-5.4 Mini 80.1%, Gemini 3 Flash 75.3%, Claude Sonnet 4.6 73.9%](/blog-images/interfaze-1-lite-open-ocr-extraction-model-fig1.webp)
+
+On the broader board: MMMU-Pro multimodal reasoning at 73.2 (first on the board they publish), structured-output value accuracy at 81.5 with 97% valid JSON, and speech at a 3.01% word error rate on VoxPopuli. Three honest cautions apply:
+
+1. **Small margins are not wins.** 83.8% versus 83.5% for Claude Sonnet 5 is run-to-run noise, not a victory. Read it as "comparable."
+2. **Benchmarks are not your documents.** Your scanned receipts, your scanner artifacts, your layout quirks — that is the real test, and it will differ.
+3. **The comparison set is the vendor's.** The other scores come from Interfaze's own leaderboard page, and nobody independent has published re-runs yet.
+
+The defensible takeaway: a small, specialized, open model is *reported* to be competitive with large general models on perception and extraction at lower cost. Plausible and worth testing, not proven.
+
+## Does this change what you can do on your own machine?
+
+Not directly — not yet. No laptop or desktop GPU runs this. But it changes the picture in two ways that matter for a local-AI setup.
+
+First, the philosophy is the same one we covered with AstaBrief: **a small specialist beats a big generalist at one well-defined job**, and here the specialist shows its evidence. If your pipeline has a document-reading or transcription step, a model that returns confidence and boxes is worth a bake-off against piping everything through a frontier API. Low-confidence pages go to a human, high-confidence ones straight to the database.
+
+Second, open weights under Apache 2.0 are a bet on the future. Today's 80 GB model is tomorrow's 8 GB distill — the "MoE distills" trend is real, and a specialist like this is exactly the kind of thing that gets distilled into runnable sizes. When that happens, an open architecture with an OpenAI-compatible server is easy to drop into a home-server stack.
+
+Try the API first if the use case is real. Self-host if the documents cannot leave your network. Either way, test it on your own ugly scans before believing any chart — including mine.
+
+## Sources
+
+- [Interfaze-1-Lite project README](https://github.com/interfazeai/interfaze-1-lite) — architecture, requirements, benchmark table
+- [Interfaze launch blog post](https://interfaze.ai/blog/the-first-open-weight-model-for-deterministic-work-interfaze-1-lite) — release, Mixture of Architecture, API pricing
+- [Interfaze models page](https://interfaze.ai/docs/models) — interfaze-1 vs lite comparison, 128k vs 1M context
+- [Interfaze pricing page](https://interfaze.ai/pricing) — $0.85/$1.50 per MTok, per-use-case cost estimates
+- [Interfaze document-OCR comparison page](https://interfaze.ai/ocr) — olmOCR / OCRBench V2 leaderboard figures
+- [RuntimeWire coverage](https://runtimewire.com/article/interfaze-1-lite-open-weight-model) — Oct 5, 2026 release, founders, Apache 2.0 license
+- [ExplainX analysis](https://explainx.ai/blog/interfaze-1-lite-open-weight-deterministic-ocr-stt-extraction-model-2026) — Oct 6, 2026; benchmark reading cautions, evaluation plan
+
+*Benchmark figures are vendor-reported and unverified; we have not run the model. Details are accurate as of October 8, 2026. Pricing, benchmarks, and limits may change.*
