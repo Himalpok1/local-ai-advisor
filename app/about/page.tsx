@@ -26,7 +26,7 @@ export default function AboutPage() {
 
       <h2>Who runs it</h2>
       <p>
-        Local AI Advisor is built and run by Himal as an independent project at iownchatgpt.com. It is not affiliated with or endorsed by OpenAI, Apple, NVIDIA or any
+        Local AI Advisor is an independent project at iownchatgpt.com. It is not affiliated with or endorsed by OpenAI, Apple, NVIDIA or any
         model maker; “ChatGPT” is a trademark of OpenAI.
       </p>
 
