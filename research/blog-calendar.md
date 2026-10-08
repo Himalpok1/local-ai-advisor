@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-08 | best-local-ai-models-16gb-ram | Best local AI models for 16 GB of RAM |
 | 2026-10-07 | mistral-large-4-le-chonk-memory-math | Mistral Large 4 ('Le Chonk'): why a 1-trillion-parameter open model still won't fit on your PC |
 | 2026-10-07 | rtx-spark-surface-laptop-ultra | Surface Laptop Ultra + RTX Spark: what changes for AI on your own machine |
 | date | slug | title |
@@ -34,7 +35,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Private by default: what "local" really protects | What stays on your machine, what doesn't (downloads, telemetry, plugins) | medium |
 | Is local AI good enough for coding? | Honest look at small coding models vs cloud assistants, with /check for a coding workload | medium |
 | Context windows: why long chats slow down | KV cache memory growth explained simply | low |
-| Best local AI models for 16 GB of RAM | RAM-tier guide the SEO audit found missing; rank picks with /what-runs-on data, honest about 8 GB limits | high |
 | Can you run ChatGPT on your own computer? | Explain gpt-oss (OpenAI's open-weight models) vs ChatGPT, what it takes to run them, with /can-i-run links | high |
 | Which MacBook should I buy for local AI? | Hub for MacBook Air vs Pro by memory size, using /compare/hardware | medium |
 | Lower-precision formats beyond quantisation | What MXFP8 and BF16 mean in plain terms, and how they differ from Q4/Q8 model files for local users | medium |
@@ -68,3 +68,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Surface Laptop Ultra 128GB vs DGX Spark 64GB: which box for which workload | 128GB RTX Spark laptop vs 64GB DGX Spark dev box vs Apple Max: price-per-GB memory math and who each suits | medium |
 | First independent RTX Spark LLM benchmarks | Real tokens-per-second on Ollama/llama.cpp from third-party tests, checked against NVIDIA petaflop claims; revisit when tests land after Oct 16 | high |
 | MXC + HydraFusion routing: Windows new agent stack in plain terms | Background agents in Execution Containers and cloud-local routing: what changes for local model use, links to /stack and /learn | medium |
+| Microsoft's 284B-on-laptop claim: does the memory math hold? | Check the Davuluri keynote claim (DeepSeek-V4.1-Flash at 1.6-bit on 128GB RTX Spark) against real quant math; honest pre-ship caveats | medium |
+| Ivo Sage: an open-source contract model from DeepSeek V4 Flash | Legal vertical post-training that went 70% to 91% on contract benchmarks; what size it is and whether it could run locally | medium |
+| llama.cpp 0.6.0's built-in model downloader, tested | Hands-on with the HF Hub download pipeline and the memory-fit estimate; what works today vs the still-open Web UI pull request | medium |
