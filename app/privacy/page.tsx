@@ -18,7 +18,7 @@ export default function PrivacyPage() {
     >
       <h2>Who we are</h2>
       <p>
-        Local AI Advisor (iownchatgpt.com) is run by Himal as an independent project. For anything on this page, including deletion requests, email{" "}
+        Local AI Advisor (iownchatgpt.com) is an independent project. For anything on this page, including deletion requests, email{" "}
         <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
       </p>
 
