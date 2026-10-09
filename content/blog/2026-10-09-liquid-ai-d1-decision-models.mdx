@@ -1,0 +1,72 @@
+---
+title: "Liquid AI's Open d1: decision models that answer in one pass, not a paragraph"
+date: "2026-10-09"
+excerpt: "Liquid AI released two open-weight decision models that return probabilities instead of text — one question takes 8 ms on an RTX 4090."
+tags: ["new-models", "local-llm", "announcements", "beginners", "apps"]
+author: "Ray, Your Local AI Advisor"
+---
+
+A chat model writes its answer word by word. That is fine for conversation, but most real software does not need words. It needs a yes or no, a category, or a score. A moderation filter does not need a paragraph explaining its feelings — it needs "toxic: 92%".
+
+On October 7, 2026, Liquid AI released **Open d1**: two open-weight models built for exactly that job. They take in text, images, or audio, and return a structured decision — a probability for every option — in a single forward pass. There are no output tokens to generate and no generated text to parse. The bigger of the two, **d1-3B**, answers one question in 8 ms on an RTX 4090 and 50 ms on a Jetson Orin Nano, the smallest board Liquid AI measured.
+
+![Flat illustration of a glowing circuit-chip brain beside a laptop, instantly sorting image and audio inputs into two decision bins with a single beam of light](/blog-images/liquid-ai-d1-decision-models-hero.webp)
+
+## What is a decision model?
+
+A decision model is not a chatbot. It takes a **state** (the thing being decided about — a message, an image, a clip of audio) and a set of **named questions**, reads them once, and returns a probability for every allowed answer.
+
+Liquid AI defines three question types:
+
+- **noul**: a yes-or-no question, returned as the probability of "yes".
+- **choice**: pick one label from a named set, with a full probability distribution over all options.
+- **score**: a position on an ordered rubric of 2 to 10 levels, returned as a probability-weighted value.
+
+Several questions can share one state in a single call. So one d1-3B call can answer "is this a refund request?", "which team owns it?", and "how urgent is it?" over the same support ticket — and every response reports `output_tokens: 0`.
+
+This family is where structured-output demand from regular LLMs is going: when you already have to constrain an answer to yes/no or a number, a model that never generates tokens is the shorter path. If you followed our coverage of [Ollama 0.35's decision-model support](/blog/2026-10-02-ollama-035-decision-models), d1 is the same category — this time as weights you can download and run yourself.
+
+## The two models
+
+**d1-3B** has 3.12 billion parameters and accepts text plus images. Liquid AI trained it from LFM2.5-VL-3B, one of its own vision-language models, using a 32,768-token context.
+
+**d1-omni-600M** has 587 million parameters and is explicitly experimental. It accepts text paired with either an image or an audio clip (never both at once), with audio capped at 30 seconds and a 16,384-token context. Liquid AI publishes no latency figures for it and warns it is under active development.
+
+Both checkpoints sit on Hugging Face, load through Transformers, and — this is the part that matters for this site — ship with **day-one llama.cpp support** across Apple, AMD, Qualcomm, and NVIDIA, with NVFP4 on NVIDIA GPUs. That means you can run d1-3B today through the same engine you already use for chat models, on macOS, Windows, and Linux. The license is Liquid's LFM Open License v1.0, which allows free commercial use below $10 million in annual revenue.
+
+## How fast is it?
+
+Because nothing is generated token by token, Liquid AI measures end-to-end latency instead of tokens per second. Here is what d1-3B measured at, one warm request at a time, for a single question:
+
+![Bar chart of d1-3B single-question latency in milliseconds across six devices: 8 on RTX 4090, 9 on AMD MI325X, 16 on Jetson AGX Thor, 26 on Jetson AGX Orin 64GB, 30 on Apple M5 Pro, 50 on Jetson Orin Nano](/blog-images/liquid-ai-d1-decision-models-fig1.webp)
+
+A few things stand out. Three questions over one state take barely longer than one — 21 ms on the RTX 4090 versus 8 ms — because the questions share the same pass over the input. And the Apple number (30 ms on an M5 Pro) is real measured data from Liquid AI's own table, not an estimate. Batch it, and the RTX 4090 handles 475 states per second. These are vendor numbers, not independent tests, but the spread across six devices gives you a realistic envelope.
+
+## How good is it?
+
+Liquid AI's headline number: d1-3B scores **48.57** on Decision Index v0.2.1, the best result of any model under 10 billion parameters and on par with Decider 35B-A3B, which scores 47.11 at 12x the size:
+
+![Bar chart comparing Decision Index v0.2.1 scores: Winnow-12B at 50.02, d1-3B at 48.57, Decider 35B-A3B at 47.11, Decider 4B at 40.70, Decider 2B at 28.97](/blog-images/liquid-ai-d1-decision-models-fig2.webp)
+
+Be honest about the asterisk: Liquid AI scored d1 itself with the official scorer rather than through leaderboard submissions, and Decision Index is a benchmark the company operates. The relative gap to community-run decision models (Decider, Winnow) is still useful signal, but independent testing has not landed yet. On seven public text benchmarks, d1-3B averaged 82.9 against 81.1 for Decider 4B, and the tiny d1-omni-600M posted the table's top scores on Civil Comments toxicity detection (95.8) and PAWS-X paraphrase (79.5).
+
+## What does it cost to run on your machine?
+
+This is where d1 is friendlier than most new releases. At 3.12 billion parameters, d1-3B needs roughly **1.8–3.3 GB of memory** depending on quantization (about 1.8 GB at Q4, about 3.3 GB at Q8). That fits on any machine that can run a chat model at all — integrated graphics, an 8 GB laptop, a Mini PC. The 587-million-parameter omni model needs under a gigabyte and could live on a phone-class device.
+
+That combination — small weights, single-pass answers, llama.cpp on every platform — is what makes d1 interesting for local use rather than just for server racks. The practical applications Liquid AI names are routing, moderation, intent classification, reranking, LLM-as-a-judge scoring, agent guardrails, and visual inspection. Most of those are jobs where you would previously have called a chat model through an API and parsed the text. A 3 GB local model answering in 8–50 ms changes the math for exactly that pattern, and it keeps the data on your machine.
+
+## The honest caveats
+
+- **This is not a chat model.** Neither checkpoint writes text. If you want conversation, look elsewhere.
+- **The license is not Apache 2.0.** LFM Open License v1.0 is free for commercial use under $10M annual revenue, but it is a vendor-written license — read it before building a business on it.
+- **d1-omni-600M is a research checkpoint.** No published latency, and its audio training covered English speaker-to-assistant requests only.
+- **Benchmarks are vendor-run.** Treat the Decision Index numbers as Liquid AI's own homework until independent tests appear.
+
+If you are building anything that classifies, routes, scores, or gates — especially a local agent loop where every millisecond and every sent-off-your-machine API call matters — d1-3B is worth a test drive this week. Try it with a few questions over your own data, compare against whatever you parse out of a chat model today, and keep an eye on the community quants. For a broader view of what the decision-model category is good for, the [Ollama 0.35 post](/blog/2026-10-02-ollama-035-decision-models) covers the tooling side, and [/check](/check) can tell you whether a given workload fits your hardware.
+
+## Sources
+
+- [Open d1: Edge decision models for text, vision, and audio](https://www.liquid.ai/blog/d1-open), Liquid AI blog, October 2026
+- [LiquidAI/d1-3B](https://huggingface.co/LiquidAI/d1-3B) and [LiquidAI/d1-omni-600M](https://huggingface.co/LiquidAI/d1-omni-600M), model cards, Hugging Face
+- [Liquid AI Releases Open-Weight d1-3B and d1-omni-600M](https://www.marktechpost.com/2026/10/07/liquid-ai-releases-open-weight-d1-3b-and-d1-omni-600m-multimodal-decision-models-with-zero-output-tokens/), MarkTechPost, October 7, 2026
