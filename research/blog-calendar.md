@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-09 | liquid-ai-d1-decision-models | Liquid AI's Open d1: decision models that answer in one pass, not a paragraph |
 | 2026-10-08 | interfaze-1-lite-open-ocr-extraction-model | Interfaze 1 Lite: an open model that reads invoices, transcribes calls, and shows its work |
 | 2026-10-08 | best-local-ai-models-16gb-ram | Best local AI models for 16 GB of RAM |
 | 2026-10-07 | mistral-large-4-le-chonk-memory-math | Mistral Large 4 ('Le Chonk'): why a 1-trillion-parameter open model still won't fit on your PC |
@@ -75,3 +76,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | OCR bake-off on ugly scans: Interfaze-1-Lite vs Tesseract vs MinerU | Hands-on accuracy and confidence-calibration test on real skewed scans and receipts | medium |
 | The 80 GB club: open models that need data-center GPUs | When renting an H100 beats buying one, with /compare/hardware cost math | medium |
 | MinerU 3.4: PDF and Office parsing for local RAG | OpenDataLab doc-parsing stack as the local complement to OCR specialist models | low |
+
+| Winnow-12B: the open decision model even Liquid AI couldn't beat | Apache 2.0, 12B, Decision Index v0.2.1 leader at 50.02; VRAM math and runner-up-to-d1 story | medium |
+| Ollama 0.35.0 stable: what the full release adds | Structured outputs on thinking models in one pass, faster Qwen 3.8 on Apple Silicon, Nemotron H vision MLX; beyond the 0.35 decision-model post | medium |
