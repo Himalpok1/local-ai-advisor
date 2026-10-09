@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-09 | windows-ml-llama-cpp-gguf-support | Windows can now run your GGUF models itself: Microsoft's llama.cpp move explained |
 | 2026-10-09 | liquid-ai-d1-decision-models | Liquid AI's Open d1: decision models that answer in one pass, not a paragraph |
 | 2026-10-08 | interfaze-1-lite-open-ocr-extraction-model | Interfaze 1 Lite: an open model that reads invoices, transcribes calls, and shows its work |
 | 2026-10-08 | best-local-ai-models-16gb-ram | Best local AI models for 16 GB of RAM |
@@ -79,3 +80,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 | Winnow-12B: the open decision model even Liquid AI couldn't beat | Apache 2.0, 12B, Decision Index v0.2.1 leader at 50.02; VRAM math and runner-up-to-d1 story | medium |
 | Ollama 0.35.0 stable: what the full release adds | Structured outputs on thinking models in one pass, faster Qwen 3.8 on Apple Silicon, Nemotron H vision MLX; beyond the 0.35 decision-model post | medium |
+
+| MiniCPM-V 4.7: phone-class vision models get an upgrade | OpenBMB release watch (1B and 35B-A3B); inference support prepared in llama.cpp, vLLM, SGLang since late Sep; what VRAM each variant needs | medium |
+| EmbeddingGemma 2: search your own files by meaning, image, and sound | Google's 740M open multimodal embedding model runs fully on-device; what it means for private local search/RAG on laptops and phones | medium |
+| Copilot's local routing goes live: HydraFusion on Windows, revisited | Follow-up once the experimental HydraFusion local-model preview ships in Copilot/CLI/VS Code later in October: what routes where, measured | medium |
