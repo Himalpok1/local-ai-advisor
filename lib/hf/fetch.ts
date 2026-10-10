@@ -1,5 +1,6 @@
 import "server-only";
 import { HfParseError, parseHfModel, ggufSizes, nonGenerativeReason, normalizeRepo, type HfConfig, type HfFile, type HfModelInfo, type ParsedHfModel } from "./parse";
+import { eligibilityMessage } from "./eligibility";
 import { QUANTIZATIONS } from "@/data/quantizations";
 import type { QuantId } from "@/lib/schemas";
 
@@ -159,7 +160,9 @@ async function resolveConfig(repo: string, info: HfModelInfo): Promise<{ config:
   for (const c of [...candidates, ...extra]) {
     if (!/^[\w.-]+\/[\w.-]+$/.test(c)) continue;
     const cfg = await getConfig(c);
-    if (cfg && cfg !== "gated" && (cfg.num_hidden_layers || (cfg.text_config as HfConfig | undefined)?.num_hidden_layers)) return { config: cfg, source: c };
+    // Keep a readable original config even without a text backbone: falling back
+    // could replace a specialized head with its generative parent.
+    if (cfg && cfg !== "gated" && (c === repo || cfg.num_hidden_layers || (cfg.text_config as HfConfig | undefined)?.num_hidden_layers)) return { config: cfg, source: c };
   }
   return null;
 }
@@ -170,7 +173,7 @@ export async function loadHfModel(repo: string): Promise<ParsedHfModel> {
   return cached(`model:${repo}`, async () => {
     const info = await getInfo(repo);
     const rejection = nonGenerativeReason(info);
-    if (rejection) throw new HfError(`${repo} looks like an embedding/reranker model, not a text-generation model (${rejection}). Choose a generative chat or instruct model.`, 422);
+    if (rejection) throw new HfError(eligibilityMessage(repo, { status: "unsupported", reason: rejection }), 422);
     const resolved = await resolveConfig(repo, info);
     if (!resolved) {
       throw new HfError(
@@ -182,9 +185,10 @@ export async function loadHfModel(repo: string): Promise<ParsedHfModel> {
     }
     const hasTemplate = !!(info.config?.tokenizer_config?.chat_template || info.gguf?.chat_template);
     if (!hasTemplate) {
-      let template = await smallText(`${HUB}/${resolved.source}/resolve/main/chat_template.jinja`);
+      // Architecture mirrors cannot establish this repository's chat tuning.
+      let template = await smallText(`${HUB}/${repo}/resolve/main/chat_template.jinja`);
       if (!template) {
-        const raw = await smallText(`${HUB}/${resolved.source}/resolve/main/tokenizer_config.json`);
+        const raw = await smallText(`${HUB}/${repo}/resolve/main/tokenizer_config.json`);
         if (raw) try {
           const tokenizer: unknown = JSON.parse(raw);
           if (tokenizer && typeof tokenizer === "object" && "chat_template" in tokenizer) {

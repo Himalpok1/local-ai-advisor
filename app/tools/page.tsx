@@ -55,7 +55,7 @@ export default function ToolsPage() {
       title="AI tools"
       intro="Coding agents, IDE assistants and chat apps are clients: they connect to a local runtime through an API and shape how heavy your workload is."
     >
-      <ExploreSectionBlock id="layers" title="Four layers between you and the hardware" description="Each hop has to be compatible. The advisor checks every one of them.">
+      <ExploreSectionBlock id="layers" title="Five components in your local AI stack" description="Each hop has to be compatible. The advisor checks every one of them.">
         <ol className="grid gap-2 md:grid-cols-5">
           {LAYERS.map((l, i) => (
             <li key={l.title} className="relative flex">

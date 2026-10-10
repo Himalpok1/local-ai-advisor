@@ -8,6 +8,8 @@
 import { ModelSchema, type Model, type ModelInput, type QuantId } from "@/lib/schemas";
 
 import { licenseUse, type LicenseUse } from "./licenses";
+import { chatEligibility, eligibilityMessage, hfChatTemplate } from "./eligibility";
+export { nonGenerativeReason } from "./eligibility";
 
 export const HF_REPO_RE = /^[A-Za-z0-9][\w.-]{0,95}\/[\w.-]{1,96}$/;
 export const HF_ID_PREFIX = "hf:";
@@ -124,12 +126,6 @@ function completeFileBytes(files: HfFile[]): number | undefined {
   return files.reduce((sum, f) => sum + f.size!, 0);
 }
 
-function chatTemplate(info: HfModelInfo): string {
-  const t = info.config?.tokenizer_config?.chat_template ?? info.gguf?.chat_template;
-  if (!t) return "";
-  return typeof t === "string" ? t : t.map((x) => x.template).join("\n");
-}
-
 /** Rough parameter count from architecture when the Hub doesn't report one. */
 function estimateParams(tc: HfConfig, layers: number, hidden: number, heads: number, kvHeads: number, headDim: number): number {
   const vocab = num(tc.vocab_size) ?? 32000;
@@ -152,8 +148,8 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
   const isGgufRepo = !!info.gguf || (args.files ?? []).some((f) => f.path.endsWith(".gguf"));
   const isMlxRepo = info.library_name === "mlx" || (info.tags ?? []).includes("mlx");
 
-  const rejection = nonGenerativeReason(info, config, args.files);
-  if (rejection) throw new HfParseError(`${repo} looks like an embedding/reranker model, not a text-generation model (${rejection}). Choose a generative chat or instruct model.`);
+  const eligibility = chatEligibility({ ...info, id: repo }, config, args.files);
+  if (eligibility.status !== "supported") throw new HfParseError(eligibilityMessage(repo, eligibility));
 
   const layers = num(tc.num_hidden_layers) ?? num(tc.n_layer) ?? num(tc.num_layers);
   if (!layers) throw new HfParseError(`Couldn't read the architecture of ${repo} (no num_hidden_layers in config.json).`);
@@ -259,7 +255,7 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
   // ---- Capabilities (estimated) ----
   const name = repo.split("/")[1];
   const lname = repo.toLowerCase();
-  const template = chatTemplate(info);
+  const template = hfChatTemplate(info);
   const signals: HfFacts["signals"] = {
     toolCalling: { value: /\btools?\b|tool_call|function_call|\bfunctions\b|<\|tool/i.test(template) ? "good" : "basic", signal: template ? "chat-template" : "none" },
     thinking: /enable_thinking|<think>|reasoning_effort|thinking/i.test(template)
@@ -369,17 +365,6 @@ export function parseHfModel(args: { repo: string; info: HfModelInfo; config?: H
       isMlxRepo,
     },
   };
-}
-
-/** Return the metadata signal that rules out a generative language model. */
-export function nonGenerativeReason(info: HfModelInfo, config: HfConfig = {}, files: HfFile[] = []): string | undefined {
-  const tag = info.pipeline_tag ?? info.cardData?.pipeline_tag;
-  if (tag && ["feature-extraction", "sentence-similarity", "fill-mask", "token-classification", "text-classification", "zero-shot-classification"].includes(tag)) return `pipeline: ${tag}`;
-  if (info.library_name === "sentence-transformers") return "library: sentence-transformers";
-  const type = String(config.model_type ?? info.config?.model_type ?? "").toLowerCase();
-  if (["bert", "modernbert", "nomic_bert", "xlm-roberta", "roberta", "distilbert", "deberta", "deberta-v2", "electra"].includes(type)) return `model_type: ${type}`;
-  const file = files.find((f) => /embed/i.test(f.path) && /\.gguf$/i.test(f.path));
-  return file ? `GGUF file: ${file.path}` : undefined;
 }
 
 export class HfParseError extends Error {}

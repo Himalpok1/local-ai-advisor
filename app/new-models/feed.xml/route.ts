@@ -25,7 +25,7 @@ ${items
     const desc = [
       `${m.repo}${m.paramsB ? `, ${m.paramsB}B parameters` : ""}${m.pipeline === "image-text-to-text" ? ", vision" : ""}.`,
       m.license ? `License: ${m.license}${m.openness !== "unknown" ? ` (${OPENNESS_LABEL[m.openness]})` : ""}.` : "",
-      ratings ? `Chat rating: ${ratings}.` : "",
+      ratings ? `Chat rating: ${ratings}.` : m.unrated ? `Not rated: ${m.unrated}` : "Rating pending.",
     ]
       .filter(Boolean)
       .join(" ");

@@ -1,6 +1,7 @@
 import "server-only";
 import { ImageResponse } from "next/og";
 import { hfSummary } from "./summary";
+import { HfError } from "./fetch";
 
 /** Render a share card with an explicitly estimated default-hardware verdict. */
 export async function hfOgImage(repo?: string) {
@@ -14,7 +15,11 @@ export async function hfOgImage(repo?: string) {
       name = summary.parsed.model.name;
       detail = `${summary.parsed.model.parameterCount}B parameters • ${summary.parsed.model.source.confidence} confidence`;
       verdict = `Estimated: ${summary.verdict} • M4 Pro 48GB • repository coding`;
-    } catch { detail = "Model facts temporarily unavailable"; verdict = "Open the interactive lookup to retry"; }
+    } catch (error) {
+      const ineligible = error instanceof HfError && error.status === 422;
+      detail = ineligible ? "Conversational eligibility could not be established" : "Model facts temporarily unavailable";
+      verdict = ineligible ? "No chat comfort or generation-speed rating" : "Open the interactive lookup to retry";
+    }
   }
   return new ImageResponse(<div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "100%", height: "100%", padding: 70, background: "#101827", color: "#f1f5f9", gap: 28 }}>
     <div style={{ display: "flex", fontSize: 30, color: "#6ee7b7" }}>Local AI Advisor</div>

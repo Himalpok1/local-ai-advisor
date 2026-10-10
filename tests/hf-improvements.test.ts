@@ -12,7 +12,7 @@ vi.mock("server-only", () => ({}));
 const fixture = (name: string): HfConfig => JSON.parse(readFileSync(path.join(__dirname, "fixtures/hf", `${name}.config.json`), "utf8"));
 const config = fixture("Qwen__Qwen3-8B");
 const info: HfModelInfo = { id: "test/model", safetensors: { total: 8_190_735_360 }, cardData: { license: "apache-2.0" } };
-const parse = (extra: Partial<Parameters<typeof parseHfModel>[0]> = {}) => parseHfModel({ repo: "test/model", info, config, ...extra });
+const parse = (extra: Partial<Parameters<typeof parseHfModel>[0]> = {}) => parseHfModel({ repo: "test/model-Instruct", info, config, ...extra });
 afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); });
 
 describe("HF parser hardening", () => {
@@ -59,8 +59,8 @@ describe("HF parser hardening", () => {
     expect(parse().warnings.join(" ")).toMatch(/No chat template/);
   });
   it.each(["QwQ-32B", "T1-7B", "R1-Distill-Qwen-7B"])("recognizes thinking name %s", (name) => {
-    expect(parse({ repo: `test/${name}` }).facts.signals.thinking.signal).toBe("model-name");
-    expect(parse({ repo: "test/part1base" }).model.thinking).toBe(false);
+    expect(parse({ repo: `test/${name}-Instruct` }).facts.signals.thinking.signal).toBe("model-name");
+    expect(parse({ repo: "test/part1base-Instruct" }).model.thinking).toBe(false);
   });
   it("detects vision config keys and projector files", () => {
     expect(parse({ config: { ...config, image_token_index: 0 } }).model.vision).toBe(true);

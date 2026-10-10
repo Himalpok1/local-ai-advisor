@@ -6,7 +6,7 @@ Local AI Advisor answers *"Will this model + runtime + tool + hardware combinati
 
 ## Features
 
-- **What can my computer comfortably run?** (`/check`): a 6-step wizard with Simple and Advanced modes. It returns a best fit, a fast option, a quality option and a "technically possible but not recommended" list, plus a sortable table of every model.
+- **What can my computer comfortably run?** (`/check`): a five-step Simple wizard with an optional sixth Advanced step. It returns a best fit, a fast option, a quality option and a "technically possible but not recommended" list, plus a sortable table of every model.
 - **What hardware do I need?** (`/hardware-for-model`): pick a model, tool, workload and target experience, plus an optional budget. Hardware is grouped into *meets target / meets acceptable / below target / cannot run*.
 - **Detailed evaluation** (`/evaluate`): headline verdict, the four capability tiers (load / run / usable / comfortable), separate gauges for each dimension, the explainability panel, a memory breakdown, the performance basis, a context table from 4K to 128K, cross-workload fit, the stack, and live what-if controls with change banners.
 - **Build my local AI stack** (`/stack`): hardware → runtime → model → local API → AI tool, with generated setup steps.
@@ -15,7 +15,7 @@ Local AI Advisor answers *"Will this model + runtime + tool + hardware combinati
 - **Learn** (`/learn`): the core concepts, with live engine-powered widgets.
 - **Methodology** (`/methodology`): how the engine works, plus the full table of benchmarks used.
 - **Check any Hugging Face model** (`/hugging-face`): search or paste any Hub model, including GGUF and MLX repos. The server reads its real config.json and file sizes (parameters, experts, attention layout, KV cache, context) and rates it with the same engine. Gated models are read through public mirrors. Capability tiers for imported models are estimated and labelled as such.
-- **Honest live-import facts**: native and RoPE-extended context are shown separately; ratings use native context. Embeddings/rerankers receive a helpful error. Commercial-use badges summarize declared licenses, and tool/thinking/vision signals show their provenance and uncertainty.
+- **Honest live-import facts**: native and RoPE-extended context are shown separately; ratings use native context. Specialized, base and unverified conversational models receive an explicit unsupported or uncertain explanation, without comfort or generation-speed ratings. Commercial-use badges summarize declared licenses, and tool/thinking/vision signals show their provenance and uncertainty.
 - **Verified conversion availability**: live imports discover GGUF conversions and measured quant file sizes, with an explicit fallback when none are found. FP8 is a separate quantization. FP16/BF16 safetensors sizes use actual weight files; Hub `safetensors.total` is a parameter count, not bytes.
 - **Accessible, remembered lookups**: search rows identify GGUF/MLX/safetensors and gated repos; ArrowUp/Down, Enter and Escape operate the combobox. Hardware, custom specs, OS and workload are validated and remembered locally under `laa:hf-state` (shared hardware links take precedence).
 - **Model share pages** (`/hf/<owner>/<model>`): 30 seeded pages render facts and default M4 Pro 48GB repository-coding recommendations on the server, with canonical URLs, model-specific OG cards and sitemap entries. The seed uses the report's text-model trending entries plus its most-downloaded catalog rows; it excludes ASR.
@@ -82,3 +82,12 @@ npm run refresh:models   # compare curated models with Hugging Face; writes rese
 ### Environment
 
 - `HF_TOKEN`: a read-only Hugging Face token, used only on the server by `/api/hf/*` for higher rate limits. The app also works without it. Locally, put it in `.env.local` (git-ignored); in production, set it in the host's environment variables.
+
+
+### Optional account and community services
+
+Core curated recommendations do not require a database or sign-in. Accounts, saved setups and community reports additionally use `DATABASE_URL` (MySQL), `AUTH_SECRET`, `AUTH_GOOGLE_ID`, and `AUTH_GOOGLE_SECRET`; self-hosted production sets `AUTH_URL`. `ADMIN_EMAILS` is the comma-separated moderation allowlist. Keep these values server-side in ignored environment files or hosting settings. Use a separate local database for account testing; never run migrations against production during development checks.
+
+### Engineering onboarding and roadmap
+
+See [the October 10 engineering audit](research/onboarding-2026-10-10/report.md) for the architecture, baseline checks, model eligibility policy, competitive evidence, known correctness risks and sequenced roadmap. On this desktop, the default Node wrapper cannot load native package bindings; the report documents the bundled runtime used for verification.

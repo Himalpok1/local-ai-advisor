@@ -20,7 +20,7 @@ const TOTALS: Record<string, number> = {
 };
 
 const parse = (repo: string, extra: Partial<Parameters<typeof parseHfModel>[0]["info"]> = {}) =>
-  parseHfModel({ repo, info: { id: repo, safetensors: { total: TOTALS[repo] }, ...extra }, config: fixture(repo), today: "2026-10-01" });
+  parseHfModel({ repo, info: { id: repo, safetensors: { total: TOTALS[repo] }, config: { tokenizer_config: { chat_template: "messages assistant user" } }, ...extra }, config: fixture(repo), today: "2026-10-01" });
 
 /** Hub import vs. the hand-curated catalog entry for the same model. */
 const PAIRS: [string, string][] = [
