@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-10 | qwen-image-21-turbo-8-step-local | Qwen-Image-2.1-Turbo: 8-step image generation and editing on your own GPU |
 | 2026-10-09 | windows-ml-llama-cpp-gguf-support | Windows can now run your GGUF models itself: Microsoft's llama.cpp move explained |
 | 2026-10-09 | liquid-ai-d1-decision-models | Liquid AI's Open d1: decision models that answer in one pass, not a paragraph |
 | 2026-10-08 | interfaze-1-lite-open-ocr-extraction-model | Interfaze 1 Lite: an open model that reads invoices, transcribes calls, and shows its work |
@@ -45,7 +46,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Cloudflare Clef vs Ollama nimble for local triage | Head-to-head: which decision model to run locally, at what hardware cost | medium |
 | Can local decision models replace cloud APIs in real agents? | Case-study walkthrough of moving one agent inner loop fully local with measured latency/cost | high |
 | Decision models for coding agents: safety gates before shell commands | Using a local decision model as a pre-execution approval gate in coding workflows | medium |
-| Qwen-Image-2.1: the new #1 open image model | Text-to-image and editing in one 7B-class model with day-0 ComfyUI support; what VRAM it needs, and the Qwen Research License catch for commercial use | medium |
 | transformers now runs GGUF quants | Hugging Face packed-inference path for GGUF in Python: what it means for fine-tuning and introspection, the narrow arch coverage, and why llama.cpp still wins for day-to-day serving | low |
 | POCKET-Darwin-180B: can a 180B model really run on a laptop? | 4-bit GGUF, 111 GB, ~3B active params via MoE; what "runs on a laptop" actually means here | medium |
 | Budget VRAM rigs: dual RTX 2080 Ti + NVLink as a 44 GB local serving box | Old GPUs joined by NVLink for 27B-class models; used-market math vs one new card | medium |
@@ -84,3 +84,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | MiniCPM-V 4.7: phone-class vision models get an upgrade | OpenBMB release watch (1B and 35B-A3B); inference support prepared in llama.cpp, vLLM, SGLang since late Sep; what VRAM each variant needs | medium |
 | EmbeddingGemma 2: search your own files by meaning, image, and sound | Google's 740M open multimodal embedding model runs fully on-device; what it means for private local search/RAG on laptops and phones | medium |
 | Copilot's local routing goes live: HydraFusion on Windows, revisited | Follow-up once the experimental HydraFusion local-model preview ships in Copilot/CLI/VS Code later in October: what routes where, measured | medium |
+| Ecosia drops Mistral for open models: Qwen, GLM, Kimi in production search | German search engine reportedly switched its AI backend to open-weight models via partner Melious, cutting costs by half — what 'open' means when production goes open-weight | medium |
+| Official Turbo vs Viggle's 6-step LoRA: quality gap on typography | Hands-on comparison of Qwen's official 8-step Turbo against the earlier unofficial DMD distilled LoRA on text rendering and editing | low |
+| llama.cpp b11425: the Qwen3.6 CUDA regression that llama-bench missed | A prompt-processing throughput regression on 3x RTX PRO 6000 that llama-bench did not catch — why real workloads beat synthetic benches | low |
