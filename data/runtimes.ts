@@ -10,7 +10,7 @@ const ALL: RuntimeInput[] = [
   {
     id: "ollama",
     name: "Ollama",
-    description: "The easiest way to run local models. One-line install, model library, background server with Ollama, OpenAI- and Anthropic-compatible (v0.14+) APIs. Since v0.35 (Sep 2026) it also serves decision models through /v1/systemone (returns choices/probabilities/scores instead of text). An MLX engine for Apple Silicon has been in preview since March 2026 (Macs with >32 GB).",
+    description: "The easiest way to run local models. One-line install, model library, background server with Ollama, OpenAI- and Anthropic-compatible (v0.14+) APIs. Since v0.35 (Sep 2026) it also serves decision models through /v1/systemone (returns choices/probabilities/scores instead of text). Since v0.40 (Oct 2026), supported model architectures run on the MLX engine by default on Apple Silicon.",
     kind: "server",
     engine: "llama.cpp",
     backends: [
@@ -30,11 +30,11 @@ const ALL: RuntimeInput[] = [
     apiServer: true,
     docsUrl: "https://docs.ollama.com",
     source: {
-      url: "https://github.com/ollama/ollama/releases/tag/v0.35.0",
-      title: "Ollama release notes — decision models API (v0.35.0, /v1/systemone)",
-      lastVerified: "2026-10-09",
+      url: "https://github.com/ollama/ollama/releases/tag/v0.40.0",
+      title: "Ollama release notes — MLX default on Apple Silicon (v0.40.0)",
+      lastVerified: "2026-10-10",
       confidence: "high",
-      note: "Decision-models API confirmed; Anthropic /v1/messages compatibility verified 2026-09-30; Vulkan backend maturity is an assessment.",
+      note: "MLX-by-default confirmed; decision-models API and Anthropic /v1/messages compatibility verified 2026-10-09.",
     },
   },
   {
