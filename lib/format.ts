@@ -13,11 +13,10 @@ export function fmtGB(x: number): string {
   return `${(Math.round(x * 10) / 10).toFixed(1)} GB`;
 }
 
-/** Tokens/sec: measured values shown as "≈N", estimates as a ±25% range. */
+/** Heuristic display bands: ±15% with benchmarks, ±25% without; not validated intervals. */
 export function fmtTps(x: number, basis: PerformanceBasis = "estimated"): string {
   if (!Number.isFinite(x) || x <= 0) return "—";
-  if (basis === "measured") return `≈${roundNice(x)} tok/s`;
-  const spread = basis === "calibrated" ? 0.15 : 0.25;
+  const spread = basis !== "estimated" ? 0.15 : 0.25;
   const lo = roundNice(x * (1 - spread));
   const hi = roundNice(x * (1 + spread));
   return lo === hi ? `≈${lo} tok/s` : `${lo}–${hi} tok/s`;

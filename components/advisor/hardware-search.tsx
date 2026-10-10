@@ -223,7 +223,7 @@ function HardwareResult({ rec, workload, highlight }: { rec: Recommendation; wor
       )}
       <div className="mt-3 flex items-center justify-between pt-1 text-xs">
         <span className="font-medium">{fmtUSD(rec.hardware.approxPriceUSD)}</span>
-        {p && <Badge tone={p.basis === "measured" ? "good" : "neutral"}>{p.basis === "measured" ? "Benchmarked" : p.basis === "calibrated" ? "Calibrated" : "Estimated"}</Badge>}
+        {p && <Badge tone={p.basis === "anchored" ? "good" : "neutral"}>{p.basis === "anchored" ? "Anchored prediction" : p.basis === "calibrated" ? "Calibrated" : "Estimated"}</Badge>}
       </div>
     </Link>
   );

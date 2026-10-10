@@ -212,8 +212,8 @@ describe("benchmarks and confidence", () => {
   it("verified benchmark data increases confidence", () => {
     const withBench = evaluate(input);
     const without = evaluate({ ...input, benchmarks: [] });
-    expect(withBench.performance!.basis).toBe("measured");
-    expect(withBench.confidence.level).toBe("high");
+    expect(withBench.performance!.basis).toBe("anchored");
+    expect(withBench.confidence.level).toBe("medium");
     expect(COMFORT_RANK).toBeDefined();
     const order = { low: 0, medium: 1, high: 2 };
     expect(order[withBench.confidence.level]).toBeGreaterThan(order[without.confidence.level]);

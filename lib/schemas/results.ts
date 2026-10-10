@@ -4,6 +4,7 @@
  */
 import type {
   AITool,
+  Benchmark,
   ApiKind,
   ComputeApi,
   Confidence,
@@ -118,11 +119,15 @@ export interface MemoryBreakdown {
   cpuResidentGB?: number;
 }
 
-export type PerformanceBasis = "measured" | "calibrated" | "estimated";
+export type PerformanceBasis = "anchored" | "calibrated" | "estimated";
 
 export interface PerformanceEstimate {
   basis: PerformanceBasis;
   basisExplanation: string;
+  benchmarkSources: { id: string; title: string; url: string; date: string; quantLabel: string;
+    runtimeId: string; contextTokens: number; promptTokens: number; outputTokens: number; generationTps: number; prefillTps?: number;
+    referenceSettings?: Benchmark["referenceSettings"]; assumptions: string[]; sourceNote?: string }[];
+  uncertainty: { kind: "heuristic"; relativeSpread: number; empiricallyValidated: false };
   /** Decode speed with an empty-ish context. */
   generationTpsShort: number;
   /** Decode speed at the workload's typical context fill. */

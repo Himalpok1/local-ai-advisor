@@ -177,8 +177,8 @@ export default async function Page(props: Props) {
             </table>
           </div>
           <p className="text-xs text-muted-foreground">
-            {chat.performance?.basis === "measured"
-              ? "Speeds come from measured benchmarks for this chip."
+            {chat.performance?.basis === "anchored"
+              ? "Speeds are predictions anchored to published benchmarks for this chip."
               : chat.performance?.basis === "calibrated"
                 ? "Speeds are estimates calibrated against measured benchmarks on similar hardware."
                 : "Speeds are bandwidth-based estimates; no direct benchmark exists for this pair."}{" "}

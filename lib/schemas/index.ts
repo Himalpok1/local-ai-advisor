@@ -312,6 +312,8 @@ export type AIToolInput = z.input<typeof AIToolSchema>;
 /* Benchmarks                                                          */
 /* ------------------------------------------------------------------ */
 
+export const KvCacheTypeSchema = z.enum(["f16", "q8", "q4"]);
+
 export const BenchmarkSchema = z.object({
   id: z.string(),
   hardwareId: z.string(),
@@ -320,6 +322,16 @@ export const BenchmarkSchema = z.object({
   modelId: z.string(),
   quant: QuantIdSchema,
   quantLabel: z.string(),
+  /** Absent legacy settings remain unknown; the engine labels its assumptions. */
+  referenceSettings: z.object({
+    format: ModelFormatSchema,
+    kvCacheType: KvCacheTypeSchema,
+    offloadFraction: z.number().min(0).max(1),
+    batteryPenalty: z.number().positive().max(1),
+    runtimeVersion: z.string().optional(),
+    batchSize: z.number().int().positive().optional(),
+    rawLogUrl: z.string().url().optional(),
+  }).optional(),
   runtimeId: z.string(),
   backend: ComputeApiSchema,
   contextTokens: z.number().int().nonnegative(),
@@ -390,7 +402,6 @@ export type DevelopmentEnvironment = z.infer<typeof DevelopmentEnvironmentSchema
 export const PrioritySchema = z.enum(["speed", "balanced", "quality"]);
 export type Priority = z.infer<typeof PrioritySchema>;
 
-export const KvCacheTypeSchema = z.enum(["f16", "q8", "q4"]);
 export type KvCacheType = z.infer<typeof KvCacheTypeSchema>;
 
 export const ComfortTargetSchema = z.enum(["usable", "comfortable", "excellent"]);

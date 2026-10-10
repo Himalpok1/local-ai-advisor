@@ -80,13 +80,12 @@ describe("community aggregation", () => {
     expect(bench.verified).toBe(true);
   });
 
-  it("anchors the engine to the community median for that exact setup", () => {
+  it("keeps coarse community quant reports as calibration rather than exact anchors", () => {
     const stats = aggregateReports([row("a", 20), row("b", 21), row("c", 22)]);
     const input = { hardware: getHardware(HW), modelId: "qwen3.5-9b", quant: "q4" as const, runtimeId: "llama.cpp", workload: DEFAULT_WORKLOAD };
     const rec = evaluate({ ...input, benchmarks: [...BENCHMARKS, ...communityBenchmarks(stats)] });
-    expect(rec.performance?.basis).toBe("measured");
-    expect(rec.performance?.generationTpsShort).toBeGreaterThan(15);
-    expect(rec.performance?.generationTpsShort).toBeLessThan(25);
+    expect(rec.performance?.basis).toBe("calibrated");
+    expect(rec.performance?.benchmarkIds.some((id) => id.startsWith("community:"))).toBe(true);
   });
 });
 

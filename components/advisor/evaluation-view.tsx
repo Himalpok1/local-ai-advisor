@@ -192,13 +192,22 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
               <CardHeader>
                 <CardTitle className="flex flex-wrap items-center gap-2">
                   Performance estimate
-                  <Badge tone={p.basis === "measured" ? "good" : p.basis === "calibrated" ? "primary" : "neutral"}>
-                    {p.basis === "measured" ? "Based on verified benchmark" : p.basis === "calibrated" ? "Calibrated estimate" : "Estimated performance"}
+                  <Badge tone={p.basis === "anchored" ? "good" : p.basis === "calibrated" ? "primary" : "neutral"}>
+                    {p.basis === "anchored" ? "Anchored prediction" : p.basis === "calibrated" ? "Calibrated estimate" : "Estimated performance"}
                   </Badge>
                 </CardTitle>
-                <CardDescription>{p.basisExplanation} Ranges reflect estimation uncertainty.</CardDescription>
+                <CardDescription>{p.basisExplanation} Ranges are heuristic assumptions (±15% with benchmarks, ±25% otherwise), not empirically validated confidence intervals.</CardDescription>
               </CardHeader>
               <CardContent>
+                {p.benchmarkSources.map((b) => (
+                  <p key={b.id} className="mb-3 text-sm text-muted-foreground">
+                    Reference measurement: {b.generationTps} tok/s generation{b.prefillTps ? `, ${b.prefillTps} tok/s prefill` : " (prefill unreported)"}; {b.quantLabel}, {b.runtimeId}, {b.date}. Reference tokens: {b.promptTokens} prompt, {b.contextTokens} starting context, {b.outputTokens} output.{" "}
+                    <a href={b.url} target="_blank" rel="noopener noreferrer" className="underline">{b.title}</a>
+                    {b.referenceSettings && ` Settings: ${b.referenceSettings.format}, ${b.referenceSettings.kvCacheType} KV, ${Math.round(b.referenceSettings.offloadFraction * 100)}% GPU placement, power multiplier ${b.referenceSettings.batteryPenalty}; runtime version ${b.referenceSettings.runtimeVersion ?? "unreported"}, batch ${b.referenceSettings.batchSize ?? "unreported"}.`}
+                    {b.assumptions.length > 0 && ` Assumed: ${b.assumptions.join(", ")}.`}
+                    {b.sourceNote && ` Source caveat: ${b.sourceNote}`}
+                  </p>
+                ))}
                 <dl className="grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
                   <Stat k="Generation, short context" v={fmtTps(p.generationTpsShort, p.basis)} />
                   <Stat k="Generation, typical context" v={fmtTps(p.generationTps, p.basis)} />

@@ -534,9 +534,9 @@ function computeConfidence(
   hw: HardwareConfiguration,
   w: ResolvedWorkload,
 ) {
-  let c = basis === "measured" ? 3 : basis === "calibrated" ? 2.2 : 1.4;
+  let c = basis === "anchored" ? 3 : basis === "calibrated" ? 2.2 : 1.4;
   const reasons: string[] = [];
-  if (basis === "measured") reasons.push("A verified benchmark exists for this model on this chip.");
+  if (basis === "anchored") reasons.push("A verified benchmark exists for this model on this chip.");
   else if (basis === "calibrated") reasons.push("Calibrated with verified benchmarks of other models on this chip.");
   else reasons.push("No verified benchmark for this chip and backend — performance is estimated from specifications.");
   if (maturity === "experimental") {
@@ -551,7 +551,7 @@ function computeConfidence(
     c -= 0.5;
     reasons.push("Partial GPU offload is hard to predict precisely.");
   }
-  if (basis !== "measured" && (model.denseOrMoE === "moe" || model.architecture.fullAttentionFraction < 1)) {
+  if (basis !== "anchored" && (model.denseOrMoE === "moe" || model.architecture.fullAttentionFraction < 1)) {
     c -= 0.3;
     reasons.push(`${model.denseOrMoE === "moe" ? "MoE" : "Hybrid/sliding attention"} performance varies more between runtimes.`);
   }
@@ -559,11 +559,15 @@ function computeConfidence(
     c -= 0.4;
     reasons.push("Some specifications come from lower-confidence sources.");
   }
-  if (hw.gpu?.acceleratedFp16Tflops && basis !== "measured") {
+  if (hw.gpu?.acceleratedFp16Tflops && basis !== "anchored") {
     c -= 0.3;
     reasons.push("Prefill gains from new GPU matrix accelerators are based on vendor claims.");
   }
-  void perf;
+  if (perf?.benchmarkSources.some((b) => b.assumptions.length > 0)) {
+    c -= 0.5;
+    reasons.push("Benchmark placement, cache and power settings are assumed; runtime version and batch are unverified.");
+  }
+  reasons.push("Speed ranges are heuristic; empirical coverage has not been validated.");
   const level = c >= 2.6 ? "high" : c >= 1.5 ? "medium" : "low";
   return { level: level as "high" | "medium" | "low", reasons };
 }

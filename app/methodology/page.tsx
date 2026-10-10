@@ -242,8 +242,8 @@ export default function MethodologyPage() {
             <h3 className="font-semibold">Calibration and the basis of every number</h3>
             <ul className="mt-2 grid gap-2 sm:grid-cols-3">
               <li className="rounded-lg bg-muted/60 p-3">
-                <Badge tone="good">Measured</Badge>
-                <p className="mt-1.5 text-muted-foreground">A verified benchmark exists for this exact chip, model and quantization. Shown as “≈N tok/s”.</p>
+                <Badge tone="good">Anchored prediction</Badge>
+                <p className="mt-1.5 text-muted-foreground">A published reference matches this chip, model, format and quant variant. Speeds at your settings are predictions, shown with a heuristic ±15% range. Legacy references assume full GPU placement, F16 cache and mains power.</p>
               </li>
               <li className="rounded-lg bg-muted/60 p-3">
                 <Badge tone="primary">Calibrated</Badge>
@@ -259,7 +259,7 @@ export default function MethodologyPage() {
               </li>
             </ul>
             <p className="mt-3 text-muted-foreground">
-              Ranges are deliberate: we never show a falsely precise number for an estimate, and never invent a “measured” value.
+              Ranges are heuristic assumptions, not confidence intervals with validated empirical coverage. Published measurement spread and prediction error are different; neither has been established for these ranges.
             </p>
           </Card>
         </div>
@@ -293,7 +293,7 @@ export default function MethodologyPage() {
         <Card className="p-5 text-sm">
           <ul className="grid gap-2 text-muted-foreground sm:grid-cols-2 [&_strong]:text-foreground">
             <li>
-              <strong>Starting point:</strong> measured (highest) → calibrated → estimated (lowest).
+              <strong>Starting point:</strong> anchored prediction (highest, reduced for unknown reference settings) → calibrated → estimated (lowest).
             </li>
             <li>
               <strong>Lower</strong> when the runtime backend is experimental.

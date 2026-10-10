@@ -6,10 +6,7 @@
  * bound: ~2 × active-params FLOPs per prompt token, getting slower as the
  * context grows (attention cost).
  *
- * Estimates are calibrated with verified benchmarks when the same chip has
- * measured data, and replaced by measured numbers when the exact
- * chip + model + quant combination was benchmarked. Nothing here invents a
- * "measured" number: when no benchmark applies the basis is "estimated".
+ * Outputs are predictions, including those normalized to a published benchmark.
  */
 import type {
   Benchmark,
@@ -140,6 +137,15 @@ export function runtimeEngine(runtime: Runtime, backend: BackendSupport): string
   return backend.engine ?? runtime.engine;
 }
 
+/** Legacy records assume GGUF, F16 KV, full GPU placement and mains power.
+ * These are normalization assumptions, never newly verified source facts.
+ */
+export function benchmarkContext(c: PerfContext, b: Benchmark): PerfContext {
+  const settings = b.referenceSettings;
+  return { ...c, format: settings?.format ?? "gguf", kvCacheType: settings?.kvCacheType ?? "f16",
+    offloadFraction: settings?.offloadFraction ?? 1, batteryPenalty: settings?.batteryPenalty ?? 1 };
+}
+
 export interface BenchmarkMatch {
   basis: PerformanceBasis;
   decodeFactor: number;
@@ -151,12 +157,12 @@ export interface BenchmarkMatch {
 
 /**
  * Find benchmarks for this chip. A direct hit (same model + quant + engine)
- * yields "measured"; otherwise any same-chip benchmark calibrates the
+ * yields "anchored"; otherwise any same-chip benchmark calibrates the
  * hardware-efficiency assumptions ("calibrated").
  */
 export function matchBenchmarks(c: PerfContext, benchmarks: Benchmark[], models: Map<string, Model>, quants: Record<string, Quantization>): BenchmarkMatch {
   const engine = runtimeEngine(c.runtime, c.backend);
-  const sameChip = benchmarks.filter((b) => b.verified && b.chipKey === c.hardware.chipKey && b.backend === c.backend.api);
+  const sameChip = benchmarks.filter((b) => b.verified && b.chipKey === c.hardware.chipKey && b.backend === c.backend.api && models.has(b.modelId) && quants[b.quant]);
   if (sameChip.length === 0) {
     return {
       basis: "estimated",
@@ -167,7 +173,7 @@ export function matchBenchmarks(c: PerfContext, benchmarks: Benchmark[], models:
         "No verified benchmark exists for this chip with this backend. Speeds are estimated from memory bandwidth (generation) and compute throughput (prompt processing).",
     };
   }
-  const direct = sameChip.find((b) => b.modelId === c.model.id && b.quant === c.quant.id && engineFamily(b.runtimeId) === engine);
+  const direct = sameChip.find((b) => b.modelId === c.model.id && b.quant === c.quant.id && b.quantLabel === c.quant.formatNames[c.format] && (b.referenceSettings?.format ?? "gguf") === c.format && engineFamily(b.runtimeId) === engine);
   // Calibration: ratio between measured and our raw estimate for the benchmarked model.
   const decodeRatios: number[] = [];
   const prefillRatios: number[] = [];
@@ -175,7 +181,7 @@ export function matchBenchmarks(c: PerfContext, benchmarks: Benchmark[], models:
     const bm = models.get(b.modelId);
     const bq = quants[b.quant];
     if (!bm || !bq) continue;
-    const ctx: PerfContext = { ...c, model: bm, quant: bq, format: "gguf", offloadFraction: 1, batteryPenalty: 1, kvCacheType: "f16" };
+    const ctx = benchmarkContext({ ...c, model: bm, quant: bq }, b);
     const estDecode = rawDecodeTps(ctx, b.contextTokens + b.outputTokens / 2);
     decodeRatios.push(b.generationTps / estDecode);
     if (b.prefillTps) {
@@ -197,12 +203,12 @@ export function matchBenchmarks(c: PerfContext, benchmarks: Benchmark[], models:
 
   if (direct) {
     return {
-      basis: "measured",
+      basis: "anchored",
       decodeFactor,
       prefillFactor,
       direct,
       used: [direct],
-      explanation: `Based on a verified ${direct.quantLabel} benchmark of this model on this chip (${direct.source.title ?? "source"}, ${direct.date}). Context-dependent values are extrapolated from it.`,
+      explanation: `Based on a verified ${direct.quantLabel} benchmark of this model on this chip (${direct.source.title ?? "source"}, ${direct.date}). All displayed speeds and latencies are predictions. Reference: ${direct.promptTokens} prompt tokens, ${direct.contextTokens} starting context, ${direct.outputTokens} generated tokens. ${direct.referenceSettings ? "Recorded placement, cache and power settings used." : "Legacy normalization assumes GGUF, F16 cache, full GPU placement and mains power; placement, cache, runtime version and batch settings are unverified."}`,
     };
   }
   return {
@@ -210,7 +216,7 @@ export function matchBenchmarks(c: PerfContext, benchmarks: Benchmark[], models:
     decodeFactor,
     prefillFactor,
     used: sameChip,
-    explanation: `Estimated from bandwidth and compute, calibrated against ${sameChip.length} verified benchmark${sameChip.length > 1 ? "s" : ""} of other models on this same chip${crossEngine ? " (measured with a different engine, so calibration is partial)" : ""}.`,
+    explanation: `Estimated from bandwidth and compute, calibrated against ${sameChip.length} verified benchmark${sameChip.length > 1 ? "s" : ""} on this same chip${crossEngine ? " (measured with a different engine, so calibration is partial)" : ""}.`,
   };
 }
 
@@ -235,7 +241,7 @@ export function estimatePerformance(
   let prefillScale = match.prefillFactor;
   if (match.direct) {
     const b = match.direct;
-    const benchCtx: PerfContext = { ...c, offloadFraction: Math.max(c.offloadFraction, 0), batteryPenalty: 1 };
+    const benchCtx = benchmarkContext(c, b);
     decodeScale = b.generationTps / rawDecodeTps(benchCtx, b.contextTokens + b.outputTokens / 2);
     if (b.prefillTps) prefillScale = b.prefillTps / averagePrefillTps(rawPrefillTps(benchCtx), b.promptTokens, model);
     // Engine wrappers (Ollama, LM Studio…) add small overheads vs bare llama.cpp.
@@ -277,6 +283,12 @@ export function estimatePerformance(
   return {
     basis: match.basis,
     basisExplanation: match.explanation,
+    benchmarkSources: match.used.map((b) => ({ id: b.id, title: b.source.title ?? b.id, url: b.source.url,
+      date: b.date, contextTokens: b.contextTokens, promptTokens: b.promptTokens, outputTokens: b.outputTokens, quantLabel: b.quantLabel, runtimeId: b.runtimeId,
+      generationTps: b.generationTps, prefillTps: b.prefillTps,
+      referenceSettings: b.referenceSettings, assumptions: b.referenceSettings ? [] : ["GGUF", "F16 KV cache", "full GPU placement", "mains power"],
+      sourceNote: b.source.note })),
+    uncertainty: { kind: "heuristic", relativeSpread: match.basis === "estimated" ? 0.25 : 0.15, empiricallyValidated: false },
     generationTpsShort: genShort,
     generationTps: genTypical,
     generationTpsFullContext: genFull,
