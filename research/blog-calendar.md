@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-10 | ecosia-drops-mistral-open-weight-models | Ecosia dropped Mistral for open-weight models — and cut its AI costs in half |
 | 2026-10-10 | qwen-image-21-turbo-8-step-local | Qwen-Image-2.1-Turbo: 8-step image generation and editing on your own GPU |
 | 2026-10-09 | windows-ml-llama-cpp-gguf-support | Windows can now run your GGUF models itself: Microsoft's llama.cpp move explained |
 | 2026-10-09 | liquid-ai-d1-decision-models | Liquid AI's Open d1: decision models that answer in one pass, not a paragraph |
@@ -84,6 +85,8 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | MiniCPM-V 4.7: phone-class vision models get an upgrade | OpenBMB release watch (1B and 35B-A3B); inference support prepared in llama.cpp, vLLM, SGLang since late Sep; what VRAM each variant needs | medium |
 | EmbeddingGemma 2: search your own files by meaning, image, and sound | Google's 740M open multimodal embedding model runs fully on-device; what it means for private local search/RAG on laptops and phones | medium |
 | Copilot's local routing goes live: HydraFusion on Windows, revisited | Follow-up once the experimental HydraFusion local-model preview ships in Copilot/CLI/VS Code later in October: what routes where, measured | medium |
-| Ecosia drops Mistral for open models: Qwen, GLM, Kimi in production search | German search engine reportedly switched its AI backend to open-weight models via partner Melious, cutting costs by half — what 'open' means when production goes open-weight | medium |
+| Ecosia follow-up: one month after the switch | Did the open-weight routing hold up — quality, cost, censorship handling revisited | low |
 | Official Turbo vs Viggle's 6-step LoRA: quality gap on typography | Hands-on comparison of Qwen's official 8-step Turbo against the earlier unofficial DMD distilled LoRA on text rendering and editing | low |
+| Nace Drex 1.5: a 9B decision model with a typed /v1/systemone API | 8.95B dense, Decision Index 0.3.1 at 58.08; Q8_0 GGUF ~9.5GB runs on Apple Silicon or CPU — probabilities out, no text | medium |
+| JetBrains Mellum2.1: an Apache 2.0 coding model for local agent workers | Repository-based RL for explore-edit-check loops; honest memory math and what "small active params" means on consumer GPUs | medium |
 | llama.cpp b11425: the Qwen3.6 CUDA regression that llama-bench missed | A prompt-processing throughput regression on 3x RTX PRO 6000 that llama-bench did not catch — why real workloads beat synthetic benches | low |
