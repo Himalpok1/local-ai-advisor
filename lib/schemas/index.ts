@@ -103,6 +103,13 @@ export const HardwareConfigurationSchema = z.object({
   os: z.array(OSSchema).min(1),
   approxPriceUSD: z.number().positive().optional(),
   tags: z.array(z.string()).default([]),
+  /** Field-level evidence separates vendor facts from machine assumptions. */
+  evidence: z.array(z.object({
+    fields: z.array(z.string()).min(1),
+    kind: z.enum(["vendor-spec", "derived", "assumption"]),
+    source: SourceSchema,
+    detail: z.string(),
+  })).optional(),
   source: SourceSchema,
 });
 export type HardwareConfiguration = z.infer<typeof HardwareConfigurationSchema>;

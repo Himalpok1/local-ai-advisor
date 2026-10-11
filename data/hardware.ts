@@ -1,3 +1,4 @@
+import { EXPANDED_HARDWARE } from "./hardware-expansion";
 import {
   HardwareConfigurationSchema,
   type HardwareConfiguration,
@@ -445,7 +446,7 @@ const OTHER: HardwareConfigurationInput[] = [
   },
 ];
 
-export const HARDWARE: HardwareConfiguration[] = [...appleConfigs(), ...gpuConfigs(), ...OTHER].map((h) =>
+export const HARDWARE: HardwareConfiguration[] = [...appleConfigs(), ...gpuConfigs(), ...EXPANDED_HARDWARE, ...OTHER].map((h) =>
   HardwareConfigurationSchema.parse(h),
 );
 export const HARDWARE_MAP = new Map(HARDWARE.map((h) => [h.id, h]));

@@ -17,7 +17,7 @@ const tokenFile = path.join(homedir(), ".config/huggingface/token");
 const token = process.env.HF_TOKEN ?? (existsSync(tokenFile) ? readFileSync(tokenFile, "utf8").trim() : undefined);
 const H: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
 const HUB = "https://huggingface.co";
-const today = new Date().toISOString().slice(0, 10);
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 
 async function json<T>(url: string): Promise<T | null> {
   for (let attempt = 0; attempt < 3; attempt++) {

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function HardwarePage() {
-  const benchmarkedChips = [...new Set(BENCHMARKS.map((b) => b.chipKey))].filter((k) => HARDWARE.some((h) => h.chipKey === k));
+  const benchmarkedChips = [...new Set(BENCHMARKS.filter((b) => b.verified).map((b) => b.chipKey))].filter((k) => HARDWARE.some((h) => h.chipKey === k));
   return (
     <ExplorePage
       current="hardware"
@@ -34,6 +34,7 @@ export default function HardwarePage() {
         model’s active weights from memory once. <strong className="text-foreground">Compute</strong> (TFLOPS) mainly determines how fast long prompts
         are ingested.
       </p>
+      <p className="text-sm text-muted-foreground">{HARDWARE.length} machine configurations across {new Set(HARDWARE.map((h) => h.chipKey)).size} chip families. Search by name, compare specifications, and expand each row for its sources and assumptions. A published chip benchmark does not make every configuration a measured result.</p>
       <HardwareExplorer hardware={HARDWARE} benchmarkedChips={benchmarkedChips} />
     </ExplorePage>
   );

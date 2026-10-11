@@ -156,6 +156,7 @@ export function contextSweep(input: EvaluateInput): ContextPoint[] {
     const r = evaluate({ ...input, workload: { ...input.workload, desiredContextWindow: context } });
     return {
       context,
+      basis: r.performance?.basis,
       supported,
       fits: r.memory.fits,
       level: supported ? r.level : r.level === "unsupported" ? "unsupported" : r.level,

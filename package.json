@@ -12,7 +12,8 @@
     "refresh:models": "tsx scripts/refresh-models.mts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "new-post": "node scripts/new-post.mjs"
+    "new-post": "node scripts/new-post.mjs",
+    "audit:catalog": "tsx scripts/audit-catalog.mts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.3",

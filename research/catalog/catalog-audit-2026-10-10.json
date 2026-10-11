@@ -1,0 +1,2653 @@
+{
+  "asOf": "2026-10-10",
+  "configurations": 164,
+  "chipFamilies": 69,
+  "sourceReviewedConfigurations": 38,
+  "benchmarkedChipFamilies": 32,
+  "discoveries": [
+    {
+      "id": "m1",
+      "name": "M1",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mba-m1-8c-8",
+        "mba-m1-8c-16",
+        "mbp-m1-pro-16c-16",
+        "mbp-m1-pro-16c-32",
+        "mbp-m1-max-32c-32",
+        "mbp-m1-max-32c-64",
+        "studio-m1-max-32c-32",
+        "studio-m1-max-32c-64",
+        "studio-m1-ultra-64c-64",
+        "studio-m1-ultra-64c-128"
+      ]
+    },
+    {
+      "id": "m1-pro",
+      "name": "M1 Pro",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mbp-m1-pro-16c-16",
+        "mbp-m1-pro-16c-32"
+      ]
+    },
+    {
+      "id": "m1-max",
+      "name": "M1 Max",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mbp-m1-max-32c-32",
+        "mbp-m1-max-32c-64",
+        "studio-m1-max-32c-32",
+        "studio-m1-max-32c-64"
+      ]
+    },
+    {
+      "id": "m1-ultra",
+      "name": "M1 Ultra",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "studio-m1-ultra-64c-64",
+        "studio-m1-ultra-64c-128"
+      ]
+    },
+    {
+      "id": "m2",
+      "name": "M2",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mba-m2-10c-8",
+        "mba-m2-10c-16",
+        "mba-m2-10c-24",
+        "mbp-m2-pro-19c-16",
+        "mbp-m2-pro-19c-32",
+        "mbp-m2-max-38c-32",
+        "mbp-m2-max-38c-64",
+        "mbp-m2-max-38c-96",
+        "mini-m2-10c-8",
+        "mini-m2-10c-16",
+        "mini-m2-10c-24",
+        "mini-m2-pro-19c-16",
+        "mini-m2-pro-19c-32",
+        "studio-m2-max-38c-32",
+        "studio-m2-max-38c-64",
+        "studio-m2-max-38c-96",
+        "studio-m2-ultra-76c-64",
+        "studio-m2-ultra-76c-128",
+        "studio-m2-ultra-76c-192",
+        "macpro-m2-ultra-76c-64",
+        "macpro-m2-ultra-76c-128",
+        "macpro-m2-ultra-76c-192"
+      ]
+    },
+    {
+      "id": "m2-pro",
+      "name": "M2 Pro",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mbp-m2-pro-19c-16",
+        "mbp-m2-pro-19c-32",
+        "mini-m2-pro-19c-16",
+        "mini-m2-pro-19c-32"
+      ]
+    },
+    {
+      "id": "m2-max",
+      "name": "M2 Max",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mbp-m2-max-38c-32",
+        "mbp-m2-max-38c-64",
+        "mbp-m2-max-38c-96",
+        "studio-m2-max-38c-32",
+        "studio-m2-max-38c-64",
+        "studio-m2-max-38c-96"
+      ]
+    },
+    {
+      "id": "m2-ultra",
+      "name": "M2 Ultra",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "studio-m2-ultra-76c-64",
+        "studio-m2-ultra-76c-128",
+        "studio-m2-ultra-76c-192",
+        "macpro-m2-ultra-76c-64",
+        "macpro-m2-ultra-76c-128",
+        "macpro-m2-ultra-76c-192"
+      ]
+    },
+    {
+      "id": "m3",
+      "name": "M3",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mba-m3-10c-8",
+        "mba-m3-10c-16",
+        "mba-m3-10c-24",
+        "mbp-m3-pro-18c-18",
+        "mbp-m3-pro-18c-36",
+        "mbp-m3-max-30c-36",
+        "mbp-m3-max-30c-96",
+        "mbp-m3-max-40c-48",
+        "mbp-m3-max-40c-64",
+        "mbp-m3-max-40c-128",
+        "studio-m3-ultra-80c-96",
+        "studio-m3-ultra-80c-256",
+        "studio-m3-ultra-80c-512"
+      ]
+    },
+    {
+      "id": "m3-pro",
+      "name": "M3 Pro",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mbp-m3-pro-18c-18",
+        "mbp-m3-pro-18c-36"
+      ]
+    },
+    {
+      "id": "m3-max-30c",
+      "name": "M3 Max (30-core GPU)",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "m3-max-40c",
+      "name": "M3 Max (40-core GPU)",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "m3-ultra",
+      "name": "M3 Ultra",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "studio-m3-ultra-80c-96",
+        "studio-m3-ultra-80c-256",
+        "studio-m3-ultra-80c-512"
+      ]
+    },
+    {
+      "id": "m4",
+      "name": "M4",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mba-m4-10c-16",
+        "mba-m4-10c-24",
+        "mba-m4-10c-32",
+        "mbp-m4-10c-16",
+        "mbp-m4-10c-24",
+        "mbp-m4-10c-32",
+        "mbp-m4-pro-20c-24",
+        "mbp-m4-pro-20c-48",
+        "mbp-m4-max-32c-36",
+        "mbp-m4-max-40c-48",
+        "mbp-m4-max-40c-64",
+        "mbp-m4-max-40c-128",
+        "mini-m4-10c-16",
+        "mini-m4-10c-24",
+        "mini-m4-10c-32",
+        "mini-m4-pro-20c-24",
+        "mini-m4-pro-20c-48",
+        "mini-m4-pro-20c-64",
+        "studio-m4-max-40c-48",
+        "studio-m4-max-40c-64",
+        "studio-m4-max-40c-128"
+      ]
+    },
+    {
+      "id": "m4-pro",
+      "name": "M4 Pro",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mbp-m4-pro-20c-24",
+        "mbp-m4-pro-20c-48",
+        "mini-m4-pro-20c-24",
+        "mini-m4-pro-20c-48",
+        "mini-m4-pro-20c-64"
+      ]
+    },
+    {
+      "id": "m4-max-32c",
+      "name": "M4 Max (32-core GPU)",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "m4-max-40c",
+      "name": "M4 Max (40-core GPU)",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "m5",
+      "name": "M5",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mba-m5-10c-16",
+        "mba-m5-10c-24",
+        "mba-m5-10c-32",
+        "mbp-m5-10c-16",
+        "mbp-m5-10c-24",
+        "mbp-m5-10c-32",
+        "mbp-m5-pro-20c-24",
+        "mbp-m5-pro-20c-48",
+        "mbp-m5-pro-20c-64",
+        "mbp-m5-max-32c-36",
+        "mbp-m5-max-40c-48",
+        "mbp-m5-max-40c-64",
+        "mbp-m5-max-40c-128",
+        "mini-m5-pro-20c-24",
+        "mini-m5-pro-20c-48",
+        "mini-m5-pro-20c-64",
+        "studio-m5-max-40c-48",
+        "studio-m5-max-40c-64",
+        "studio-m5-max-40c-128",
+        "studio-m5-ultra-80c-128",
+        "studio-m5-ultra-80c-256",
+        "studio-m5-ultra-80c-512"
+      ]
+    },
+    {
+      "id": "m5-pro",
+      "name": "M5 Pro",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "mbp-m5-pro-20c-24",
+        "mbp-m5-pro-20c-48",
+        "mbp-m5-pro-20c-64",
+        "mini-m5-pro-20c-24",
+        "mini-m5-pro-20c-48",
+        "mini-m5-pro-20c-64"
+      ]
+    },
+    {
+      "id": "m5-max-32c",
+      "name": "M5 Max (32-core GPU)",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "m5-max-40c",
+      "name": "M5 Max (40-core GPU)",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "m5-ultra",
+      "name": "M5 Ultra",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": [
+        "studio-m5-ultra-80c-128",
+        "studio-m5-ultra-80c-256",
+        "studio-m5-ultra-80c-512"
+      ]
+    },
+    {
+      "id": "m6-153",
+      "name": "M6 (16 GB)",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "m6-170",
+      "name": "M6 (24–32 GB)",
+      "family": "apple",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-5090",
+      "name": "RTX 5090",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-5090-32",
+        "pc-rtx-5090-64"
+      ]
+    },
+    {
+      "id": "rtx-5080",
+      "name": "RTX 5080",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-5080-32"
+      ]
+    },
+    {
+      "id": "rtx-5070-ti",
+      "name": "RTX 5070 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-5070-ti-32"
+      ]
+    },
+    {
+      "id": "rtx-5070",
+      "name": "RTX 5070",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-5070-32"
+      ]
+    },
+    {
+      "id": "rtx-5060-ti-16gb",
+      "name": "RTX 5060 Ti 16GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-5060-ti-16-32"
+      ]
+    },
+    {
+      "id": "rtx-5060-ti-8gb",
+      "name": "RTX 5060 Ti 8GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-5060",
+      "name": "RTX 5060",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-5050",
+      "name": "RTX 5050",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-5090-laptop",
+      "name": "RTX 5090 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": [
+        "laptop-rtx-5090-laptop-32"
+      ]
+    },
+    {
+      "id": "rtx-5080-laptop",
+      "name": "RTX 5080 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-5070-ti-laptop",
+      "name": "RTX 5070 Ti Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-5070-laptop-8gb",
+      "name": "RTX 5070 Laptop GPU 8GB",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-5060-laptop",
+      "name": "RTX 5060 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-5050-laptop",
+      "name": "RTX 5050 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4090",
+      "name": "RTX 4090",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-4090-32",
+        "pc-rtx-4090-64"
+      ]
+    },
+    {
+      "id": "rtx-4080-super",
+      "name": "RTX 4080 Super",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-4080-super-32"
+      ]
+    },
+    {
+      "id": "rtx-4080",
+      "name": "RTX 4080",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4070-ti-super",
+      "name": "RTX 4070 Ti Super",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-4070-ti-super-32"
+      ]
+    },
+    {
+      "id": "rtx-4070-ti",
+      "name": "RTX 4070 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4070-super",
+      "name": "RTX 4070 Super",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4070",
+      "name": "RTX 4070",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4070-gddr6",
+      "name": "RTX 4070 (GDDR6)",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4060-ti-16gb",
+      "name": "RTX 4060 Ti 16GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-4060-ti-16-32"
+      ]
+    },
+    {
+      "id": "rtx-4060-ti-8gb",
+      "name": "RTX 4060 Ti 8GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4060",
+      "name": "RTX 4060",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3090-ti",
+      "name": "RTX 3090 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3090",
+      "name": "RTX 3090",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-3090-32",
+        "pc-rtx-3090-64"
+      ]
+    },
+    {
+      "id": "rtx-3080-ti",
+      "name": "RTX 3080 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3080-12gb",
+      "name": "RTX 3080 12GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3080-10gb",
+      "name": "RTX 3080 10GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-3080-10-32",
+        "pc-rtx-3080-10-64"
+      ]
+    },
+    {
+      "id": "rtx-3070-ti",
+      "name": "RTX 3070 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3070",
+      "name": "RTX 3070",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-3070-32",
+        "pc-rtx-3070-64"
+      ]
+    },
+    {
+      "id": "rtx-3060-ti-gddr6x",
+      "name": "RTX 3060 Ti (GDDR6X)",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3060-ti",
+      "name": "RTX 3060 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3060-12gb",
+      "name": "RTX 3060 12GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-3060-12-32"
+      ]
+    },
+    {
+      "id": "rtx-3060-8gb",
+      "name": "RTX 3060 8GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3050-8gb",
+      "name": "RTX 3050 8GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3050-6gb",
+      "name": "RTX 3050 6GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-2080-ti",
+      "name": "RTX 2080 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-2080-super",
+      "name": "RTX 2080 Super",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-2080-super-32",
+        "pc-rtx-2080-super-64"
+      ]
+    },
+    {
+      "id": "rtx-2080",
+      "name": "RTX 2080",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-2080-32",
+        "pc-rtx-2080-64"
+      ]
+    },
+    {
+      "id": "rtx-2070-super",
+      "name": "RTX 2070 Super",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-2070-super-32",
+        "pc-rtx-2070-super-64"
+      ]
+    },
+    {
+      "id": "rtx-2070",
+      "name": "RTX 2070",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-2060-super",
+      "name": "RTX 2060 Super",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-2060-12gb",
+      "name": "RTX 2060 12GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-2060",
+      "name": "RTX 2060",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1660-ti",
+      "name": "GTX 1660 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1660-super",
+      "name": "GTX 1660 Super",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1660",
+      "name": "GTX 1660",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1650-super",
+      "name": "GTX 1650 Super",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1650-gddr6",
+      "name": "GTX 1650 (GDDR6)",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1650",
+      "name": "GTX 1650",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1630",
+      "name": "GTX 1630",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-pro-6000-blackwell",
+      "name": "RTX PRO 6000 Blackwell Workstation Edition",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-6000-ada",
+      "name": "RTX 6000 Ada Generation",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-6000-ada-64",
+        "pc-rtx-6000-ada-128"
+      ]
+    },
+    {
+      "id": "rtx-a6000",
+      "name": "RTX A6000",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-a6000-64",
+        "pc-rtx-a6000-128"
+      ]
+    },
+    {
+      "id": "rtx-a5000",
+      "name": "RTX A5000",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-a5000-32",
+        "pc-rtx-a5000-64"
+      ]
+    },
+    {
+      "id": "rtx-a4000",
+      "name": "RTX A4000",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rtx-a4000-32",
+        "pc-rtx-a4000-64"
+      ]
+    },
+    {
+      "id": "rtx-4000-ada",
+      "name": "RTX 4000 Ada Generation",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "a100-40gb",
+      "name": "A100 40GB (PCIe)",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "a100-80gb-pcie",
+      "name": "A100 80GB (PCIe)",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "a100-80gb-sxm",
+      "name": "A100 80GB (SXM)",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "h100-80gb-sxm",
+      "name": "H100 80GB (SXM)",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "h100-80gb-pcie",
+      "name": "H100 80GB (PCIe)",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "l40s",
+      "name": "L40S",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "l4",
+      "name": "L4",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "tesla-p40",
+      "name": "Tesla P40",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "tesla-v100-16gb",
+      "name": "Tesla V100 16GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "tesla-v100-32gb",
+      "name": "Tesla V100 32GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "dgx-spark",
+      "name": "DGX Spark (GB10)",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-9070-xt",
+      "name": "Radeon RX 9070 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-9070-xt-32"
+      ]
+    },
+    {
+      "id": "rx-9070",
+      "name": "Radeon RX 9070",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-9070-gre",
+      "name": "Radeon RX 9070 GRE",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-9060-xt-16gb",
+      "name": "Radeon RX 9060 XT 16GB",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-9060-xt-8gb",
+      "name": "Radeon RX 9060 XT 8GB",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-9060",
+      "name": "Radeon RX 9060",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-9050-8gb",
+      "name": "Radeon RX 9050 8GB",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-9050-4gb",
+      "name": "Radeon RX 9050 4GB",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-7900-xtx",
+      "name": "Radeon RX 7900 XTX",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-7900-xtx-32",
+        "pc-rx-7900-xtx-64"
+      ]
+    },
+    {
+      "id": "rx-7900-xt",
+      "name": "Radeon RX 7900 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-7900-xt-32"
+      ]
+    },
+    {
+      "id": "rx-7900-gre",
+      "name": "Radeon RX 7900 GRE",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-7800-xt",
+      "name": "Radeon RX 7800 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-7800-xt-32",
+        "pc-rx-7800-xt-64"
+      ]
+    },
+    {
+      "id": "rx-7700-xt",
+      "name": "Radeon RX 7700 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-7700-xt-32",
+        "pc-rx-7700-xt-64"
+      ]
+    },
+    {
+      "id": "rx-7700",
+      "name": "Radeon RX 7700",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-7600-xt",
+      "name": "Radeon RX 7600 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-7600-xt-32",
+        "pc-rx-7600-xt-64"
+      ]
+    },
+    {
+      "id": "rx-7600",
+      "name": "Radeon RX 7600",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-7600-32",
+        "pc-rx-7600-64"
+      ]
+    },
+    {
+      "id": "rx-6950-xt",
+      "name": "Radeon RX 6950 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-6900-xt",
+      "name": "Radeon RX 6900 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-6900-xt-32",
+        "pc-rx-6900-xt-64"
+      ]
+    },
+    {
+      "id": "rx-6800-xt",
+      "name": "Radeon RX 6800 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-6800-xt-32",
+        "pc-rx-6800-xt-64"
+      ]
+    },
+    {
+      "id": "rx-6800",
+      "name": "Radeon RX 6800",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-6800-32",
+        "pc-rx-6800-64"
+      ]
+    },
+    {
+      "id": "rx-6750-xt",
+      "name": "Radeon RX 6750 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-6700-xt",
+      "name": "Radeon RX 6700 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-6700-xt-32",
+        "pc-rx-6700-xt-64"
+      ]
+    },
+    {
+      "id": "rx-6700",
+      "name": "Radeon RX 6700",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-6650-xt",
+      "name": "Radeon RX 6650 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-6600-xt",
+      "name": "Radeon RX 6600 XT",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-6600",
+      "name": "Radeon RX 6600",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-rx-6600-32",
+        "pc-rx-6600-64"
+      ]
+    },
+    {
+      "id": "rx-6500-xt-8gb",
+      "name": "Radeon RX 6500 XT 8GB",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-6500-xt-4gb",
+      "name": "Radeon RX 6500 XT 4GB",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rx-6400",
+      "name": "Radeon RX 6400",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "radeon-pro-w7900",
+      "name": "Radeon PRO W7900",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "radeon-pro-w7800-32gb",
+      "name": "Radeon PRO W7800 32GB",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "radeon-pro-w7800-48gb",
+      "name": "Radeon PRO W7800 48GB",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "radeon-pro-w7700",
+      "name": "Radeon PRO W7700",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "radeon-ai-pro-r9700",
+      "name": "Radeon AI PRO R9700",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-radeon-ai-pro-r9700-32",
+        "pc-radeon-ai-pro-r9700-64"
+      ]
+    },
+    {
+      "id": "instinct-mi300x",
+      "name": "Instinct MI300X",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "radeon-8060s-ryzen-ai-max-plus-395",
+      "name": "Radeon 8060S (Ryzen AI Max+ 395)",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "radeon-8050s-ryzen-ai-max-390",
+      "name": "Radeon 8050S (Ryzen AI Max 390)",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-b580",
+      "name": "Arc B580",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": [
+        "pc-arc-b580-32"
+      ]
+    },
+    {
+      "id": "arc-b570",
+      "name": "Arc B570",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-a770-16gb",
+      "name": "Arc A770 16GB",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-a770-8gb",
+      "name": "Arc A770 8GB",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-a750",
+      "name": "Arc A750",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-a580",
+      "name": "Arc A580",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-a380",
+      "name": "Arc A380",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-pro-b50",
+      "name": "Arc Pro B50",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-pro-b60",
+      "name": "Arc Pro B60",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-pro-b65",
+      "name": "Arc Pro B65",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "arc-pro-b70",
+      "name": "Arc Pro B70",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "intel-iris-xe-96eu-core-i7-1255u",
+      "name": "Iris Xe Graphics (96 EU, Core i7-1255U platform)",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4090-laptop",
+      "name": "RTX 4090 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": [
+        "laptop-rtx-4090-laptop-32"
+      ]
+    },
+    {
+      "id": "rtx-4080-laptop",
+      "name": "RTX 4080 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4070-laptop",
+      "name": "RTX 4070 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-4060-laptop",
+      "name": "RTX 4060 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": [
+        "laptop-rtx-4060-laptop-32"
+      ]
+    },
+    {
+      "id": "rtx-4050-laptop",
+      "name": "RTX 4050 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3080-ti-laptop",
+      "name": "RTX 3080 Ti Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3080-laptop-16gb",
+      "name": "RTX 3080 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3080-laptop-8gb",
+      "name": "RTX 3080 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3070-ti-laptop",
+      "name": "RTX 3070 Ti Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3070-laptop",
+      "name": "RTX 3070 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3060-laptop",
+      "name": "RTX 3060 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3050-ti-laptop",
+      "name": "RTX 3050 Ti Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3050-laptop-4gb",
+      "name": "RTX 3050 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "rtx-3050-laptop-6gb",
+      "name": "RTX 3050 Laptop",
+      "family": "nvidia",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1080-ti",
+      "name": "GTX 1080 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1080",
+      "name": "GTX 1080",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1070-ti",
+      "name": "GTX 1070 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1070",
+      "name": "GTX 1070",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1060-6gb",
+      "name": "GTX 1060 6GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1060-3gb",
+      "name": "GTX 1060 3GB",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "gtx-1050-ti",
+      "name": "GTX 1050 Ti",
+      "family": "nvidia",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "radeon-890m-ryzen-ai-9-hx-370",
+      "name": "Radeon 890M (Ryzen AI 9 HX 370)",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "radeon-880m-ryzen-ai-9-365",
+      "name": "Radeon 880M (Ryzen AI 9 365)",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "intel-arc-graphics-meteor-lake-core-ultra-7-155h",
+      "name": "Arc Graphics (Meteor Lake, Core Ultra 7 155H)",
+      "family": "intel",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "snapdragon-8-gen-3-phones",
+      "name": "Snapdragon 8 Gen 3 (phones)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "snapdragon-8-elite-phones",
+      "name": "Snapdragon 8 Elite (phones)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "snapdragon-8-elite-gen-5-phones",
+      "name": "Snapdragon 8 Elite Gen 5 (phones)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "apple-a17-pro-phones",
+      "name": "Apple A17 Pro (iPhone)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "apple-a18-phones",
+      "name": "Apple A18 (iPhone)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "apple-a18-pro-phones",
+      "name": "Apple A18 Pro (iPhone)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "apple-a19-phones",
+      "name": "Apple A19 (iPhone)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "apple-a19-pro-phones",
+      "name": "Apple A19 Pro (iPhone)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "tensor-g4-phones",
+      "name": "Google Tensor G4 (phones)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "tensor-g5-phones",
+      "name": "Google Tensor G5 (phones)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "dimensity-9400-phones",
+      "name": "MediaTek Dimensity 9400 (phones)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "dimensity-9500-phones",
+      "name": "MediaTek Dimensity 9500 (phones)",
+      "family": "mobile",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "raspberry-pi-5",
+      "name": "Raspberry Pi 5",
+      "family": "sbc",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "jetson-orin-nano-super",
+      "name": "Jetson Orin Nano Super",
+      "family": "sbc",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "jetson-agx-orin",
+      "name": "Jetson AGX Orin",
+      "family": "sbc",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "jetson-agx-thor",
+      "name": "Jetson AGX Thor",
+      "family": "sbc",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "ryzen-ai-max-plus-395",
+      "name": "AMD Ryzen AI Max+ 395 (Strix Halo)",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "ryzen-ai-max-390",
+      "name": "AMD Ryzen AI Max 390 (Strix Halo)",
+      "family": "amd",
+      "laptop": false,
+      "possibleMatches": []
+    },
+    {
+      "id": "ryzen-ai-9-hx-370",
+      "name": "AMD Ryzen AI 9 HX 370 (Strix Point)",
+      "family": "amd",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "ryzen-ai-9-365",
+      "name": "AMD Ryzen AI 9 365 (Strix Point)",
+      "family": "amd",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "ryzen-7-7840hs-8845hs",
+      "name": "AMD Ryzen 7 7840HS / 8845HS (Radeon 780M)",
+      "family": "amd",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "core-ultra-200v-lunar-lake",
+      "name": "Intel Core Ultra 7 258V / 268V (Lunar Lake)",
+      "family": "intel",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "core-ultra-200h-arrow-lake-h",
+      "name": "Intel Core Ultra 200H (Arrow Lake-H)",
+      "family": "intel",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "snapdragon-x-elite-laptops",
+      "name": "Snapdragon X Elite (laptops)",
+      "family": "mobile",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "snapdragon-x-plus-laptops",
+      "name": "Snapdragon X Plus (laptops)",
+      "family": "mobile",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "snapdragon-x2-elite-laptops",
+      "name": "Snapdragon X2 Elite (laptops)",
+      "family": "mobile",
+      "laptop": true,
+      "possibleMatches": []
+    },
+    {
+      "id": "snapdragon-x2-elite-extreme-laptops",
+      "name": "Snapdragon X2 Elite Extreme (laptops)",
+      "family": "mobile",
+      "laptop": true,
+      "possibleMatches": []
+    }
+  ],
+  "issues": [
+    {
+      "id": "mba-m1-8c-8",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m1-8c-8",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m1-8c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m1-8c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m2-10c-8",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m2-10c-8",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m2-10c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m2-10c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m2-10c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m2-10c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m3-10c-8",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m3-10c-8",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m3-10c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m3-10c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m3-10c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m3-10c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m4-10c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m4-10c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m4-10c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m4-10c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m4-10c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m4-10c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m5-10c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m5-10c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m5-10c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m5-10c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mba-m5-10c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mba-m5-10c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m1-pro-16c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m1-pro-16c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m1-pro-16c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m1-pro-16c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m1-max-32c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m1-max-32c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m1-max-32c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m1-max-32c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m2-pro-19c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m2-pro-19c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m2-pro-19c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m2-pro-19c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m2-max-38c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m2-max-38c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m2-max-38c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m2-max-38c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m2-max-38c-96",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m2-max-38c-96",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m3-pro-18c-18",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m3-pro-18c-18",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m3-pro-18c-36",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m3-pro-18c-36",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m3-max-30c-36",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m3-max-30c-36",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m3-max-30c-96",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m3-max-30c-96",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m3-max-40c-48",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m3-max-40c-48",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m3-max-40c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m3-max-40c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m3-max-40c-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m3-max-40c-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m4-10c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m4-10c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m4-10c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m4-10c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m4-10c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m4-10c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m4-pro-20c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m4-pro-20c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m4-pro-20c-48",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m4-pro-20c-48",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m4-max-32c-36",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m4-max-32c-36",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m4-max-40c-48",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m4-max-40c-48",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m4-max-40c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m4-max-40c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m4-max-40c-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m4-max-40c-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-10c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-10c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-10c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-10c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-10c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-10c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-pro-20c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-pro-20c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-pro-20c-48",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-pro-20c-48",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-pro-20c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-pro-20c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-max-32c-36",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-max-32c-36",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-max-40c-48",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-max-40c-48",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-max-40c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-max-40c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mbp-m5-max-40c-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mbp-m5-max-40c-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m2-10c-8",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m2-10c-8",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m2-10c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m2-10c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m2-10c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m2-10c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m2-pro-19c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m2-pro-19c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m2-pro-19c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m2-pro-19c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m4-10c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m4-10c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m4-10c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m4-10c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m4-10c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m4-10c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m4-pro-20c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m4-pro-20c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m4-pro-20c-48",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m4-pro-20c-48",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m4-pro-20c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m4-pro-20c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m6-12c-16",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m6-12c-16",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m6-12c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m6-12c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m6-12c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m6-12c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m5-pro-20c-24",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m5-pro-20c-24",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m5-pro-20c-48",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m5-pro-20c-48",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "mini-m5-pro-20c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "mini-m5-pro-20c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m1-max-32c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m1-max-32c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m1-max-32c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m1-max-32c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m1-ultra-64c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m1-ultra-64c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m1-ultra-64c-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m1-ultra-64c-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m2-max-38c-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m2-max-38c-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m2-max-38c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m2-max-38c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m2-max-38c-96",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m2-max-38c-96",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m2-ultra-76c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m2-ultra-76c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m2-ultra-76c-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m2-ultra-76c-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m2-ultra-76c-192",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m2-ultra-76c-192",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m4-max-40c-48",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m4-max-40c-48",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m4-max-40c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m4-max-40c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m4-max-40c-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m4-max-40c-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m3-ultra-80c-96",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m3-ultra-80c-96",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m3-ultra-80c-256",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m3-ultra-80c-256",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m3-ultra-80c-512",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m3-ultra-80c-512",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m5-max-40c-48",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m5-max-40c-48",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m5-max-40c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m5-max-40c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m5-max-40c-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m5-max-40c-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m5-ultra-80c-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m5-ultra-80c-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m5-ultra-80c-128",
+      "issue": "Source explicitly requires review"
+    },
+    {
+      "id": "studio-m5-ultra-80c-256",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m5-ultra-80c-256",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m5-ultra-80c-256",
+      "issue": "Source explicitly requires review"
+    },
+    {
+      "id": "studio-m5-ultra-80c-512",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "studio-m5-ultra-80c-512",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "studio-m5-ultra-80c-512",
+      "issue": "Source explicitly requires review"
+    },
+    {
+      "id": "macpro-m2-ultra-76c-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "macpro-m2-ultra-76c-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "macpro-m2-ultra-76c-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "macpro-m2-ultra-76c-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "macpro-m2-ultra-76c-192",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "macpro-m2-ultra-76c-192",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-3060-12-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-3060-12-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-3090-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-3090-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-3090-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-3090-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-4060-ti-16-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-4060-ti-16-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-4070-ti-super-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-4070-ti-super-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-4080-super-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-4080-super-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-4090-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-4090-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-4090-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-4090-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-5060-ti-16-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-5060-ti-16-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-5070-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-5070-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-5070-ti-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-5070-ti-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-5080-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-5080-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-5090-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-5090-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-5090-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-5090-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rtx-pro-6000-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rtx-pro-6000-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-dual-rtx-3090-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-dual-rtx-3090-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-dual-rtx-3090-128",
+      "issue": "Source explicitly requires review"
+    },
+    {
+      "id": "pc-rx-7900-xt-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rx-7900-xt-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rx-7900-xtx-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rx-7900-xtx-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rx-7900-xtx-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rx-7900-xtx-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-rx-9070-xt-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-rx-9070-xt-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-radeon-ai-pro-r9700-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-radeon-ai-pro-r9700-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-radeon-ai-pro-r9700-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-radeon-ai-pro-r9700-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-arc-b580-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-arc-b580-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-arc-pro-b60-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-arc-pro-b60-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-arc-pro-b60-32",
+      "issue": "Source explicitly requires review"
+    },
+    {
+      "id": "pc-arc-pro-b60-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-arc-pro-b60-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "pc-arc-pro-b60-64",
+      "issue": "Source explicitly requires review"
+    },
+    {
+      "id": "laptop-rtx-4060-laptop-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "laptop-rtx-4060-laptop-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "laptop-rtx-4090-laptop-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "laptop-rtx-4090-laptop-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "laptop-rtx-5090-laptop-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "laptop-rtx-5090-laptop-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "strix-halo-395-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "strix-halo-395-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "strix-halo-395-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "strix-halo-395-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "dgx-spark-128",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "dgx-spark-128",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "dgx-spark-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "dgx-spark-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "laptop-ryzen-ai-hx370-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "laptop-ryzen-ai-hx370-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "laptop-ryzen-ai-hx370-32",
+      "issue": "Source explicitly requires review"
+    },
+    {
+      "id": "laptop-core-ultra-258v-32",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "laptop-core-ultra-258v-32",
+      "issue": "Indicative price lacks dated field-level evidence"
+    },
+    {
+      "id": "laptop-core-ultra-258v-32",
+      "issue": "Source explicitly requires review"
+    },
+    {
+      "id": "pc-cpu-only-9950x-64",
+      "issue": "Missing field-level evidence (legacy record)"
+    },
+    {
+      "id": "pc-cpu-only-9950x-64",
+      "issue": "Indicative price lacks dated field-level evidence"
+    }
+  ]
+}

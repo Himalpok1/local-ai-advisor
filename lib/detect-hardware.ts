@@ -43,7 +43,7 @@ const tokens = (s: string) =>
     .filter(Boolean);
 
 /** Words that tell two GPUs apart beyond their model number. */
-const MODIFIERS = new Set(["ti", "super", "xt", "xtx", "gre", "pro", "2x"]);
+const MODIFIERS = new Set(["ti", "super", "xt", "xtx", "gre", "pro", "2x", "ada", "titan", "rtx", "gtx", "rx"]);
 
 /** Tokens a renderer string must contain for this GPU to match. */
 function requiredTokens(gpuName: string): string[] {

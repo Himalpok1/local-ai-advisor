@@ -31,10 +31,18 @@ function bandwidth(h: HardwareConfiguration) {
   return h.gpu?.bandwidthGBs ?? h.systemRamBandwidthGBs;
 }
 
+const EVIDENCE_FIELD_LABEL: Record<string, string> = {
+  "gpu.vramGB": "GPU memory", "gpu.bandwidthGBs": "Memory bandwidth", "gpu.architecture": "GPU architecture",
+  "gpu.fp16Tflops": "Compute estimate", "cpu": "CPU", "systemRamGB": "Installed RAM", "systemRamBandwidthGBs": "RAM bandwidth",
+  "gpu.apis": "Runtime backends", "os": "Operating systems", "year": "Release year", "approxPriceUSD": "Price",
+};
 const MIN_MEMORY = [0, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 512];
 
 export function HardwareExplorer({ hardware, benchmarkedChips }: { hardware: HardwareConfiguration[]; benchmarkedChips: string[] }) {
   const benchmarked = useMemo(() => new Set(benchmarkedChips), [benchmarkedChips]);
+  const [query, setQuery] = useState("");
+  const [reviewedOnly, setReviewedOnly] = useState(false);
+  const [chartMetric, setChartMetric] = useState<"memory" | "bandwidth">("bandwidth");
   const [vendor, setVendor] = useState("all");
   const [form, setForm] = useState("all");
   const [arch, setArch] = useState<"all" | HardwareConfiguration["memoryArchitecture"]>("all");
@@ -49,6 +57,8 @@ export function HardwareExplorer({ hardware, benchmarkedChips }: { hardware: Har
   const filtered = useMemo(() => {
     const min = Number(minMem);
     const out = hardware.filter((h) => {
+      if (query.trim() && !`${h.name} ${h.gpu?.architecture ?? ""} ${h.chipKey} ${h.tags.join(" ")}`.toLowerCase().includes(query.trim().toLowerCase())) return false;
+      if (reviewedOnly && !h.evidence) return false;
       if (vendor !== "all" && h.vendor !== vendor) return false;
       if (form !== "all" && h.formFactor !== form) return false;
       if (arch !== "all" && h.memoryArchitecture !== arch) return false;
@@ -72,12 +82,14 @@ export function HardwareExplorer({ hardware, benchmarkedChips }: { hardware: Har
       const c = typeof x === "string" ? x.localeCompare(String(y)) : (x as number) - (y as number);
       return sign * c || a.name.localeCompare(b.name);
     });
-  }, [hardware, vendor, form, arch, os, minMem, onlyBench, benchmarked, sort]);
+  }, [hardware, query, reviewedOnly, vendor, form, arch, os, minMem, onlyBench, benchmarked, sort]);
 
   const toggleSort = (key: SortKey) =>
     setSort((s) => (s.key === key ? { key, dir: s.dir === "asc" ? "desc" : "asc" } : { key, dir: key === "name" || key === "price" ? "asc" : "desc" }));
 
   const reset = () => {
+    setQuery("");
+    setReviewedOnly(false);
     setVendor("all");
     setForm("all");
     setArch("all");
@@ -87,10 +99,24 @@ export function HardwareExplorer({ hardware, benchmarkedChips }: { hardware: Har
     setSort({ key: "memory", dir: "desc" });
   };
 
+  const chartRows = useMemo(() => {
+    const chips = new Map<string, HardwareConfiguration>();
+    for (const h of filtered) {
+      const old = chips.get(h.chipKey);
+      if (!old || modelMemoryGB(h) > modelMemoryGB(old)) chips.set(h.chipKey, h);
+    }
+    return [...chips.values()].sort((a, b) => (chartMetric === "memory" ? modelMemoryGB(b) - modelMemoryGB(a) : bandwidth(b) - bandwidth(a))).slice(0, 12);
+  }, [filtered, chartMetric]);
+  const chartValue = (h: HardwareConfiguration) => chartMetric === "memory" ? modelMemoryGB(h) : bandwidth(h);
+  const chartMax = Math.max(1, ...chartRows.map(chartValue));
+
   return (
     <div className="flex flex-col gap-6">
       <Card className="p-4 sm:p-5">
         <form aria-label="Filter hardware" onSubmit={(e) => e.preventDefault()} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          <Field label="Search devices" className="sm:col-span-2 lg:col-span-3 xl:col-span-6">
+            <input type="search" aria-label="Search devices" placeholder="GPU, Mac, architecture or model name…" value={query} onChange={(e) => setQuery(e.target.value)} className="w-full rounded-lg border-2 bg-background px-3 py-2 text-sm" />
+          </Field>
           <Field label="Vendor">
             <Select ariaLabel="Vendor" value={vendor} onChange={setVendor} options={[{ value: "all", label: "All vendors" }, ...vendors.map((v) => ({ value: v, label: VENDOR_LABEL[v] }))]} />
           </Field>
@@ -144,11 +170,29 @@ export function HardwareExplorer({ hardware, benchmarkedChips }: { hardware: Har
             <input type="checkbox" checked={onlyBench} onChange={(e) => setOnlyBench(e.target.checked)} className="size-4 accent-[var(--primary)]" />
             Benchmarked chips only
           </label>
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={reviewedOnly} onChange={(e) => setReviewedOnly(e.target.checked)} className="size-4 accent-[var(--primary)]" />
+            Field-level evidence available
+          </label>
           <Button variant="ghost" size="sm" onClick={reset}>
             <RotateCcw className="size-3.5" aria-hidden /> Reset
           </Button>
         </div>
       </div>
+
+      <Card className="p-4 sm:p-5">
+        <h2 className="mb-3 font-semibold">Compare hardware specifications</h2>
+        <Segmented ariaLabel="Hardware specifications chart metric" value={chartMetric} onChange={setChartMetric} options={[{ value: "bandwidth", label: "Memory bandwidth" }, { value: "memory", label: "Model memory" }]} size="sm" />
+        <p className="my-3 text-xs text-muted-foreground">Top 12 matching chip families. Memory uses the largest matching configuration per chip: VRAM on discrete GPUs, total shared RAM on unified systems. Figures are catalog values, including legacy approximations; expand rows for evidence. They are not measured inference speeds or usable model capacity.</p>
+        <ul className="space-y-3" aria-label="Hardware specification chart">
+          {chartRows.map((h) => <li key={h.chipKey}>
+            <div className="mb-1 flex flex-wrap justify-between gap-x-4 text-sm"><Link href={`/check?hw=${encodeURIComponent(h.id)}`} className="underline">{h.gpu?.name ?? h.cpu.name}</Link><strong>{chartValue(h)} {chartMetric === "memory" ? "GB" : "GB/s"}</strong></div>
+            <div className="h-3 overflow-hidden rounded border bg-muted" aria-hidden="true"><div className="h-full bg-link" style={{ width: `${chartValue(h) / chartMax * 100}%` }} /></div>
+            <p className="mt-1 text-xs text-muted-foreground">{h.evidence ? "Source-reviewed GPU memory/bandwidth; example machine assumptions apply." : "Legacy record: individual fields still need evidence review."}</p>
+          </li>)}
+        </ul>
+        {!chartRows.length && <p className="text-sm text-muted-foreground">No matching devices.</p>}
+      </Card>
 
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
@@ -161,11 +205,11 @@ export function HardwareExplorer({ hardware, benchmarkedChips }: { hardware: Har
                 <SortHeader label="Bandwidth" k="bandwidth" sort={sort} onSort={toggleSort} />
                 <th scope="col" className="px-3 py-2.5 font-medium">GPU</th>
                 <th scope="col" className="px-3 py-2.5 font-medium">
-                  FP16 TFLOPS <span className="font-normal">(approx.)</span>
+                  Compute TFLOPS <span className="font-normal">(approx.)</span>
                 </th>
                 <th scope="col" className="px-3 py-2.5 font-medium">NPU</th>
                 <th scope="col" className="px-3 py-2.5 font-medium">OS</th>
-                <SortHeader label="Approx. launch price" k="price" sort={sort} onSort={toggleSort} />
+                <SortHeader label="Indicative price" k="price" sort={sort} onSort={toggleSort} />
                 <SortHeader label="Year" k="year" sort={sort} onSort={toggleSort} />
                 <th scope="col" className="px-3 py-2.5 font-medium">
                   <span className="sr-only">Actions</span>
@@ -186,6 +230,12 @@ export function HardwareExplorer({ hardware, benchmarkedChips }: { hardware: Har
                         </Badge>
                       )}
                     </span>
+                    <details className="mt-2 text-xs text-muted-foreground">
+                      <summary className="cursor-pointer">Sources and assumptions</summary>
+                      <p className="mt-2"><a className="underline" href={h.source.url} target="_blank" rel="noopener noreferrer">{h.source.title ?? "Specification source"}</a> · checked {h.source.lastVerified} · {h.source.confidence} source confidence</p>
+                      {h.source.note && <p className="mt-1">{h.source.note}</p>}
+                      {h.evidence ? <ul className="mt-2 space-y-2">{h.evidence.map((e, i) => <li key={i}><strong>{e.kind === "vendor-spec" ? "Vendor specification" : e.kind === "derived" ? "Derived" : "Assumption"}:</strong> {e.fields.map((f) => EVIDENCE_FIELD_LABEL[f] ?? f).join(", ")}. {e.detail} <a href={e.source.url} className="underline" target="_blank" rel="noopener noreferrer">Source</a> · {e.source.lastVerified}</li>)}</ul> : <p className="mt-2">Legacy record: individual field evidence has not been recorded. Compute, CPU/RAM defaults and prices may be approximations. A chip benchmark does not verify this entire configuration.</p>}
+                    </details>
                   </th>
                   <td className="px-3 py-3 tabular-nums">
                     {h.memoryArchitecture === "discrete" ? (
@@ -248,8 +298,7 @@ export function HardwareExplorer({ hardware, benchmarkedChips }: { hardware: Har
         </div>
       </Card>
       <p className="text-xs text-muted-foreground">
-        Prices are approximate launch prices in USD for the listed configuration (PC prices include a typical build around the GPU) and are only a rough guide.
-        TFLOPS are approximate dense FP16 figures used for prompt-processing estimates.
+        Legacy prices are indicative USD estimates, including assumed PC build costs; they are not verified current offers. New additions omit unsourced prices. Compute values feed the prediction engine: source details identify vendor FP16 figures or explicit FP32 proxies.
       </p>
     </div>
   );

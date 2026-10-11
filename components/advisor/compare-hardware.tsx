@@ -18,6 +18,7 @@ import { ComfortBadge, ConfidenceBadge } from "./comfort";
 import { defaultsForUseCase, workloadLabel } from "./workload-form";
 import { hardwareSpecLine } from "./hardware-picker";
 import { ShareButton } from "./share-button";
+import { HardwareComparisonChart } from "./performance-charts";
 import { CompareNav } from "./compare-nav";
 import { quantName } from "./recommendation-card";
 
@@ -123,6 +124,7 @@ export function CompareHardware({ initial, initialHardware }: { initial: AppStat
       <p className="mt-6 text-sm text-muted-foreground">
         {model.name} · {workloadLabel(state.workload)}
       </p>
+      <HardwareComparisonChart recommendations={recs} />
       <div className="mt-2 overflow-x-auto rounded-xl border-2 bg-card">
         <table className="w-full min-w-[720px] text-sm">
           <thead>

@@ -96,3 +96,7 @@ The [claude-seo](https://github.com/AgriciDaniel/claude-seo) skills (v2.4.1) are
 - **Monthly:** run `/seo-audit https://iownchatgpt.com` and save the summary as `research/seo-audit-YYYY-MM-DD.md`, with findings in `research/seo-audit-YYYY-MM-DD/`. Compare scores with the previous report (`research/seo-audit-2026-10-01.md` is the baseline). Turn "Still open" items into GitHub issues; fix code-only items, and leave hosting, Search Console, AdSense and policy decisions to Himal.
 - Topic ideas from the audit's search-intent gaps (`seo-audit-*/sxo.md`) go into the Ideas backlog in `research/blog-calendar.md`.
 - The same rules apply as everywhere else: never edit data files or the engine (`lib/`) to chase a score. Open an issue for Himal instead.
+
+## Temporary Muse handoff
+
+Muse: read [MUSE-HANDOFF.md](MUSE-HANDOFF.md) and [the catalog maintenance guide](docs/catalog-maintenance.md) before the next catalog/data/chart update. Himal requested that you store this handoff safely outside the repo, verify the stored copy, then delete `MUSE-HANDOFF.md` and remove this temporary section. Keep the handoff if durable storage has not been verified. The permanent product maintenance guide and audit tooling remain in the repo.

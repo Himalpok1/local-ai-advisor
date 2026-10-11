@@ -52,6 +52,13 @@ describe("detectHardware", () => {
     expect(r.label).toBe("NVIDIA GeForce GTX 1080");
   });
 
+  it("recognizes newly added workstation and named TITAN GPUs", () => {
+    expect(ids("NVIDIA TITAN RTX/PCIe/SSE2").sort()).toEqual(["pc-titan-rtx-32", "pc-titan-rtx-64"]);
+    expect(ids("NVIDIA RTX A6000/PCIe/SSE2").sort()).toEqual(["pc-rtx-a6000-128", "pc-rtx-a6000-64"]);
+    expect(ids("NVIDIA RTX 6000 Ada Generation").sort()).toEqual(["pc-rtx-6000-ada-128", "pc-rtx-6000-ada-64"]);
+    expect(ids("AMD Radeon RX 6000")).toEqual([]);
+  });
+
   it("cleans renderer strings", () => {
     expect(cleanRenderer("ANGLE (Intel, Mesa Intel(R) UHD Graphics 630 (CFL GT2), OpenGL ES 3.2)")).toBe("Mesa Intel(R) UHD Graphics 630 (CFL GT2)");
   });

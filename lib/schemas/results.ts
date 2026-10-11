@@ -153,6 +153,7 @@ export interface PerformanceEstimate {
 }
 
 export interface ContextPoint {
+  basis?: PerformanceBasis;
   context: number;
   fits: boolean;
   supported: boolean;

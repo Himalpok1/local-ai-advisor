@@ -63,7 +63,7 @@ Workload-specific weights decide how much each dimension counts. Critical dimens
 ## Data and honesty
 
 - **Benchmarks:** the 76 benchmark rows are transcribed from public llama.cpp scoreboards and repository bench files, and each one cites its source.
-- **How benchmarks are used:** when a chip has benchmarks they calibrate the estimates for it, and a direct model + quant + engine match counts as *measured*. Otherwise performance is labelled *estimated* and shown as a range.
+- **How benchmarks are used:** when a chip has benchmarks they calibrate the estimates for it, and an exact chip/model/format/quant-variant/engine match produces an *anchored prediction*. Reference speeds are displayed separately; ranges remain heuristic until independently validated.
 - **Freshness:** every entity carries `sourceURL`, `lastVerified` and `confidence`. Data was verified on 2026-09-30, and the hardware and model lineups change quickly.
 - **Capability tiers:** model capability tiers are editorial assessments, not benchmark scores. Recommendation status is never stored on data entries; the engine derives it.
 
@@ -91,3 +91,7 @@ Core curated recommendations do not require a database or sign-in. Accounts, sav
 ### Engineering onboarding and roadmap
 
 See [the October 10 engineering audit](research/onboarding-2026-10-10/report.md) for the architecture, baseline checks, model eligibility policy, competitive evidence, known correctness risks and sequenced roadmap. On this desktop, the default Node wrapper cannot load native package bindings; the report documents the bundled runtime used for verification.
+
+### Muse catalog maintenance
+
+See [catalog maintenance](docs/catalog-maintenance.md) for source evidence, units, device additions, benchmark ingestion and chart checks. Run `npm run audit:catalog -- --date=YYYY-MM-DD` to generate the review queue. Muse should read [the temporary handoff](MUSE-HANDOFF.md), store and verify a durable copy outside the repo, then remove the handoff and its AGENTS.md pointer as instructed.

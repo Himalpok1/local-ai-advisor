@@ -1,5 +1,5 @@
 import type { ContextPoint } from "@/lib/schemas/results";
-import { fmtCtx, fmtGB, fmtSec } from "@/lib/format";
+import { fmtCtx, fmtGB, fmtSec, fmtTps } from "@/lib/format";
 import { ComfortBadge } from "./comfort";
 import { cn } from "@/lib/utils";
 
@@ -7,6 +7,7 @@ export function ContextTable({ points, current }: { points: ContextPoint[]; curr
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
+        <caption className="sr-only">Predicted performance and memory at each context size; speed ranges are heuristic.</caption>
         <thead>
           <tr className="border-b-2 text-left text-xs uppercase tracking-wide text-muted-foreground">
             <th className="py-2 pr-4 font-medium">Context</th>
@@ -23,8 +24,8 @@ export function ContextTable({ points, current }: { points: ContextPoint[]; curr
                 {fmtCtx(p.context)} {p.context === current && <span className="text-xs text-muted-foreground">(selected)</span>}
               </td>
               <td className="py-2 pr-4">{p.supported ? <ComfortBadge level={p.level} size="sm" /> : <span className="text-xs text-muted-foreground">Beyond model limit</span>}</td>
-              <td className="py-2 pr-4 text-right tabular-nums">{p.fits && p.supported ? `≈${Math.round(p.generationTps)} tok/s` : "—"}</td>
-              <td className="py-2 pr-4 text-right tabular-nums">{p.fits && p.supported ? fmtSec(p.coldPromptSec) : "—"}</td>
+              <td className="py-2 pr-4 text-right tabular-nums">{p.fits && p.supported && p.level !== "unsupported" ? fmtTps(p.generationTps, p.basis) : "—"}</td>
+              <td className="py-2 pr-4 text-right tabular-nums">{p.fits && p.supported && p.level !== "unsupported" ? fmtSec(p.coldPromptSec) : "—"}</td>
               <td className={cn("py-2 text-right tabular-nums", p.headroomGB < 1 && "text-technical")}>{p.fits ? fmtGB(p.headroomGB) : "doesn't fit"}</td>
             </tr>
           ))}

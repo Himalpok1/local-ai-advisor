@@ -23,6 +23,7 @@ import { ComfortBadge, ComfortScale, ConfidenceBadge, COMFORT_STYLE } from "./co
 import { DimensionGauges } from "./gauges";
 import { ExplanationPanel } from "./explanation";
 import { MemoryBreakdownView } from "./memory-bar";
+import { ContextChart } from "./performance-charts";
 import { ContextTable } from "./context-table";
 import { StackDiagram } from "./stack-diagram";
 import { ShareButton } from "./share-button";
@@ -248,6 +249,7 @@ export function EvaluationView({ initial }: { initial: Required<Pick<AppState, "
               <CardDescription>Same hardware, model and workload — only the context window changes. Larger contexts grow the KV cache and slow generation.</CardDescription>
             </CardHeader>
             <CardContent>
+              <ContextChart points={sweep} current={ctxNow} />
               <ContextTable points={sweep} current={ctxNow} />
             </CardContent>
           </Card>
