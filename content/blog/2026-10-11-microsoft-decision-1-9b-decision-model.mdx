@@ -1,0 +1,49 @@
+---
+title: "Microsoft Decision-1: a 9B decision model at $0.042 per million tokens"
+date: "2026-10-11"
+excerpt: "Microsoft's Decision-1 returns yes/no and routing scores at $0.042 per million input tokens — built on the open-weight Qwen3.5-9B you can run locally."
+tags: ["ai-news", "new-models", "local-llm", "announcements"]
+author: "Ray, Your Local AI Advisor"
+---
+
+Most chat models write paragraphs. Most software does not need paragraphs — it needs a yes or no, a category, or a score. That gap is where a new model category is forming: decision models that take text in and return probabilities out, with no generated text to parse. On October 9, 2026, Microsoft joined the category with **Microsoft-Decision-1**, a decision-scoring model priced at $0.042 per million input tokens with free output — a direct undercut of OpenAI's competing decision API at $0.10 per million.
+
+![Flat illustration of a glowing processor chip at a network fork, sorting incoming documents into two neat streams of sorted decisions, with a softly glowing laptop in the background](/blog-images/microsoft-decision-1-9b-decision-model-hero.webp)
+
+## What Decision-1 does
+
+A decision model reads your input once and scores a fixed set of options: yes/no, multiple choice, or a rating scale. It returns a calibrated probability for each option, and nothing else. "Calibrated" is the key word — the confidence number is meant to be trustworthy, so your code can decide automatically below a threshold and hand off to a human or a bigger model above one. No output tokens are generated, which is why output is free.
+
+Microsoft positions it for routing incoming queries, classification, verification, and as the control layer in agentic systems — the cheap, fast steps in a pipeline where a chat model is overkill. Its context window is 32,768 tokens, and it handles text only.
+
+## The numbers Microsoft claims
+
+Microsoft tested Decision-1 across 36 benchmarks and nearly 150,000 questions, reporting 83.5% average accuracy and 85 ms median latency. Its own comparison chart puts the competition behind it:
+
+![Bar chart of accuracy on Microsoft's 36-benchmark comparison chart: Microsoft-Decision-1 at 83.5%, Quyet-1.0-Large at 81.9%, GPT-6 Luna Decisions at 79.4%, and H2O-Lightning-4B at 77.2%. All figures are Microsoft-reported and vendor-run.](/blog-images/microsoft-decision-1-9b-decision-model-fig1.webp)
+
+Microsoft also reports internal results: Xbox Research used it to label more than 10,000 feedback items at quality competitive with GPT-6 Sol, running over 14 times faster and costing 200 times less. The Copilot team found it competitive with GPT-5.6 Luna at 100 times the speed, and Microsoft Discovery reports scoring 46 times more consistent than an LLM-based approach with fourfold faster replanning.
+
+A note of honesty: every one of these benchmarks was run by Microsoft, and the latency comparison is already disputed — H2O.ai says the JevBench adjusted figures Microsoft used for competitor latencies overstate its model's time (it claims a measured 29 ms, not 210 ms), and Decision-1 itself does not appear on the JevBench board. Treat the chart as a vendor's best case, not an independent test.
+
+## Why it matters for running AI yourself
+
+Here is the part that matters for this site: Decision-1 is post-trained from **Qwen3.5-9B**, Alibaba's open-weight model released under the Apache 2.0 license. You cannot download Microsoft's exact checkpoint — Decision-1 is a closed, hosted-only API on Microsoft Foundry and OpenRouter. But the base model it was built on is open, and the same decision-scoring recipe is already available locally.
+
+[Nimble 9B](https://blog.devgenius.io/evaluating-a-decision-model-nimble-9b-and-its-base-model-qwen3-5-9b-a845c2bbd7f0) from Bespoke Labs is an Apache 2.0 model fine-tuned from the same Qwen3.5-9B base for decision scoring, and it speaks the same `/v1/systemone` typed-decision API that [Ollama 0.35 added](/blog/2026-10-02-ollama-035-decision-models). Nimble's model page reports 75.7% mean accuracy across 13 public decision datasets, and Ollama's announcement cites 91 ms per decision on a MacBook Pro M5 Max — both vendor numbers, but the same order of magnitude as Microsoft's 85 ms. A 9B model at Q4 quantization fits in roughly 6 GB, so it runs comfortably on a 16 GB laptop at zero marginal cost per decision.
+
+The cost math shows why local is worth considering. At $0.042 per million input tokens, one dollar buys about 23.8 million tokens. Classifying 10,000 support tickets at roughly 500 tokens each is 5 million tokens — about $0.21 via the API, or free on your own machine.
+
+## The takeaway
+
+Decision models are becoming a commodity: Microsoft, OpenAI, Cloudflare, H2O.ai, and TypeSafe are all racing to own the cheap decision layer for agents. Microsoft's move undercuts the API market — but because it was built on open weights, the underlying capability does not belong to any cloud. If you want calibrated yes/no scores on your own hardware today, a Qwen3.5-9B-based decision model already runs there.
+
+## Sources
+
+- [Microsoft AI Releases Microsoft-Decision-1: A Qwen3.5-9B Decision-Scoring Model](https://www.marktechpost.com/2026/10/09/microsoft-ai-releases-microsoft-decision-1-a-qwen3-5-9b-decision-scoring-model/), MarkTechPost
+- [Microsoft's Decision-1 model enters the fast-growing AI decision model race](https://the-decoder.com/microsofts-decision-1-model-enters-the-fast-growing-ai-decision-model-race/), THE DECODER
+- [Microsoft Ships Decision-1, a Qwen3.5-9B Classifier Model Priced at $0.042/M Input and Free Output](https://aiweekly.co/alerts/microsoft-ships-decision-1-a-qwen35-9b-classifier-model-priced-at-0042m-input), AI Weekly
+- [Microsoft launches Decision-1 model in Foundry](https://www.testingcatalog.com/microsoft-launches-decision-1-model-in-foundry/), TestingCatalog
+- [Alibaba's small, open source Qwen3.5-9B beats OpenAI's gpt-oss-120B and can run on standard laptops](https://venturebeat.com/technology/alibabas-small-open-source-qwen3-5-9b-beats-openais-gpt-oss-120b-and-can-run), VentureBeat
+- [Decision models are a new category, and Microsoft just joined it](https://dev.to/shouvik12/decision-models-are-a-new-category-and-microsoft-just-joined-it-5d21), DEV Community
+- [Evaluating a decision model: Nimble 9B and its base model Qwen3.5-9B](https://blog.devgenius.io/evaluating-a-decision-model-nimble-9b-and-its-base-model-qwen3-5-9b-a845c2bbd7f0), DEV Genius
