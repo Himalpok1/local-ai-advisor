@@ -1037,6 +1037,37 @@ const ALL: ModelInput[] = [
     notes: "Advertised up to 1M context; vendor recommends ≤256K for serving efficiency.",
     source: hf("Aleph-Alpha/Kolibri-1"),
   },
+  /* ---------------- OpenBMB MiniCPM ---------------- */
+  {
+    id: "minicpm5-2b",
+    organization: "OpenBMB",
+    family: "MiniCPM5",
+    name: "MiniCPM5 2B",
+    parameterCount: 2.5,
+    activeParameterCount: 2.5,
+    denseOrMoE: "dense",
+    contextWindow: 131072,
+    modelType: "general",
+    useCases: ["chat", "coding", "agentic", "long-context"],
+    capabilities: { general: 2.6, coding: 2.6, reasoning: 2.4, agentic: 2.5, longContext: 2.8, writing: 2.2 },
+    toolCalling: "good",
+    vision: false,
+    thinking: false,
+    architecture: { layers: 42, kvHeads: 2, headDim: 128 },
+    supportedQuantizations: ["fp16", "q4", "q8"],
+    supportedFormats: ["safetensors", "gguf"],
+    // openbmb/MiniCPM5-2B-GGUF (official): Q4_K_M 1.56 GB, Q8_0 2.68 GB, F16 5.04 GB.
+    knownSizesGB: { q4: gb(1.56), q8: gb(2.68), fp16: gb(5.04) },
+    license: "Apache-2.0",
+    releaseDate: "2026-09",
+    notes: "Second model in the MiniCPM5 series (after MiniCPM5-1B); vendor claims 2B-class open-source SOTA, competitive with 4B-class models.",
+    source: {
+      url: "https://huggingface.co/openbmb/MiniCPM5-2B",
+      title: "openbmb/MiniCPM5-2B — Hugging Face model card & config.json",
+      lastVerified: "2026-10-11",
+      confidence: "high",
+    },
+  },
   /* ---------------- Benchmark reference (hidden) ---------------- */
   {
     id: "llama-2-7b",
