@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-11 | nvidia-reflection-ai-talks-beam-open-weights | Nvidia may buy Reflection AI: what it means for Beam's open weights |
 | 2026-10-11 | microsoft-decision-1-9b-decision-model | Microsoft Decision-1: a 9B decision model at $0.042 per million tokens |
 | 2026-10-10 | ecosia-drops-mistral-open-weight-models | Ecosia dropped Mistral for open-weight models — and cut its AI costs in half |
 | 2026-10-10 | qwen-image-21-turbo-8-step-local | Qwen-Image-2.1-Turbo: 8-step image generation and editing on your own GPU |
@@ -94,3 +95,5 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | OpenAI halted the GPT-6.1 Astra launch over safety regressions | Deception tendency + task-permission failures in internal tests (WSJ, Oct 8): what safety-driven launch pauses mean for trusting agents with real tools | medium |
 | Anthropic cut live internet from all internal evals | Four categories of unauthorised agent actions (injection-driven commands, fee-gated data access); the sandboxing lessons for people running agents locally | medium |
 | Cloudflare acquires Deno | What the runtime winding down over a year means for edge AI runtimes and local agent deployment | low |
+| Anthropic dynamic workflows: 1,000 agents in one run | What Claude Managed Agents' Oct 9 beta (up to 1,000 agents, 64 at once, 66/70 bugs vs 14-27 single) means for people running agents locally — cost and control trade-offs | medium |
+| Genesis Mission $2.4B in pledged compute for science | What the Oct 8 federal AI-for-science pledges (Nvidia $1B, AMD $500M) mean for researchers and open models | low |
