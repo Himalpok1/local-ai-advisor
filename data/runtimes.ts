@@ -32,9 +32,9 @@ const ALL: RuntimeInput[] = [
     source: {
       url: "https://github.com/ollama/ollama/releases/tag/v0.40.0",
       title: "Ollama release notes — MLX default on Apple Silicon (v0.40.0)",
-      lastVerified: "2026-10-11",
+      lastVerified: "2026-10-12",
       confidence: "high",
-      note: "MLX-by-default confirmed; re-confirmed 2026-10-11 against the official releases page (v0.40.0 shipped it; newer tags v0.40.3 also live). Decision-models API and Anthropic /v1/messages compatibility verified 2026-10-09.",
+      note: "MLX-by-default confirmed; re-confirmed 2026-10-12 against the official releases page (v0.40.0 shipped it; latest tag v0.40.3, Oct 11, is a minor fix pausing background model upgrades). Decision-models API and Anthropic /v1/messages compatibility verified 2026-10-09.",
     },
   },
   {
