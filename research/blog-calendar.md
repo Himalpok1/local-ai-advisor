@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-12 | embeddinggemma-2-local-multimodal-search | EmbeddingGemma 2: search your files by meaning, image, and sound |
 | 2026-10-12 | what-is-muse-meta-personal-ai-agent | What is Muse? Meta's personal AI agent, explained |
 | 2026-10-11 | nvidia-reflection-ai-talks-beam-open-weights | Nvidia may buy Reflection AI: what it means for Beam's open weights |
 | 2026-10-11 | microsoft-decision-1-9b-decision-model | Microsoft Decision-1: a 9B decision model at $0.042 per million tokens |
@@ -86,7 +87,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Ollama 0.35.0 stable: what the full release adds | Structured outputs on thinking models in one pass, faster Qwen 3.8 on Apple Silicon, Nemotron H vision MLX; beyond the 0.35 decision-model post | medium |
 
 | MiniCPM-V 4.7: phone-class vision models get an upgrade | OpenBMB release watch (1B and 35B-A3B); inference support prepared in llama.cpp, vLLM, SGLang since late Sep; what VRAM each variant needs | medium |
-| EmbeddingGemma 2: search your own files by meaning, image, and sound | Google's 740M open multimodal embedding model runs fully on-device; what it means for private local search/RAG on laptops and phones | medium |
 | Copilot's local routing goes live: HydraFusion on Windows, revisited | Follow-up once the experimental HydraFusion local-model preview ships in Copilot/CLI/VS Code later in October: what routes where, measured | medium |
 | Ecosia follow-up: one month after the switch | Did the open-weight routing hold up — quality, cost, censorship handling revisited | low |
 | Official Turbo vs Viggle's 6-step LoRA: quality gap on typography | Hands-on comparison of Qwen's official 8-step Turbo against the earlier unofficial DMD distilled LoRA on text rendering and editing | low |
@@ -98,3 +98,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Cloudflare acquires Deno | What the runtime winding down over a year means for edge AI runtimes and local agent deployment | low |
 | Anthropic dynamic workflows: 1,000 agents in one run | What Claude Managed Agents' Oct 9 beta (up to 1,000 agents, 64 at once, 66/70 bugs vs 14-27 single) means for people running agents locally — cost and control trade-offs | medium |
 | Genesis Mission $2.4B in pledged compute for science | What the Oct 8 federal AI-for-science pledges (Nvidia $1B, AMD $500M) mean for researchers and open models | low |
+| Perplexity pplx-embed-v2-late: build the index big, query it small | MIT ColBERT models in 0.6B and 9B sharing one space; a 9B index queried by the 0.6B model, with honest storage cost per token | medium |
+| MAI-Code-1.1-Flash local: a 137B coding model in 53 GB | Microsoft's quantized on-device coding model, 70.8% SWE-Bench Verified in its own tests, but peak 75.5 GB at 256K context and a 120 GB-plus RAM recommendation | medium |
+| Is your local AI server exposed? A one-minute security check | Ollama CVE-2026-103663 and network-exposure checks for Ollama, LM Studio, llama.cpp and Open WebUI; what to update and close | high |
