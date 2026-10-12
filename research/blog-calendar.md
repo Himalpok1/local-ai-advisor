@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-12 | claude-haiku-5-5-cheap-cloud-vs-local-ai | Claude Haiku 5.5 costs 10 cents per million tokens — when does local AI still win? |
 | 2026-10-12 | embeddinggemma-2-local-multimodal-search | EmbeddingGemma 2: search your files by meaning, image, and sound |
 | 2026-10-12 | what-is-muse-meta-personal-ai-agent | What is Muse? Meta's personal AI agent, explained |
 | 2026-10-11 | nvidia-reflection-ai-talks-beam-open-weights | Nvidia may buy Reflection AI: what it means for Beam's open weights |
@@ -101,3 +102,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Perplexity pplx-embed-v2-late: build the index big, query it small | MIT ColBERT models in 0.6B and 9B sharing one space; a 9B index queried by the 0.6B model, with honest storage cost per token | medium |
 | MAI-Code-1.1-Flash local: a 137B coding model in 53 GB | Microsoft's quantized on-device coding model, 70.8% SWE-Bench Verified in its own tests, but peak 75.5 GB at 256K context and a 120 GB-plus RAM recommendation | medium |
 | Is your local AI server exposed? A one-minute security check | Ollama CVE-2026-103663 and network-exposure checks for Ollama, LM Studio, llama.cpp and Open WebUI; what to update and close | high |
+| Cloud vs local decision framework for agents | Walk a real coding-agent session fully local vs Haiku 5.5 cheap tier: measured latency, cost, privacy trade-offs | high |
+| Anthropic adjustable effort settings explained | What the five Haiku 5.5 effort levels buy you, and whether they matter for local small models | medium |
+| SynthID Detector for readers | Google opened SynthID detection to everyone — how to check if a viral clip was AI-generated before sharing | medium |
