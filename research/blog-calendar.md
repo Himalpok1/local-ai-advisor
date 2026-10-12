@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-12 | what-is-muse-meta-personal-ai-agent | What is Muse? Meta's personal AI agent, explained |
 | 2026-10-11 | nvidia-reflection-ai-talks-beam-open-weights | Nvidia may buy Reflection AI: what it means for Beam's open weights |
 | 2026-10-11 | microsoft-decision-1-9b-decision-model | Microsoft Decision-1: a 9B decision model at $0.042 per million tokens |
 | 2026-10-10 | ecosia-drops-mistral-open-weight-models | Ecosia dropped Mistral for open-weight models — and cut its AI costs in half |
