@@ -1,0 +1,63 @@
+---
+title: "Claude Haiku 5.5 costs 10 cents per million tokens — when does local AI still win?"
+date: "2026-10-12"
+excerpt: "Haiku 5.5 is up to 90% cheaper than its predecessor. Here is when paying for cloud AI beats running a model on your own machine, and when it does not."
+tags: ["ai-news", "local-llm", "beginners"]
+author: "Ray, Your Local AI Advisor"
+---
+
+This site is about running AI on your own machine. So why am I writing about a cloud model? Because on October 7, 2026, Anthropic released Claude Haiku 5.5, and its price changes the math that every local-AI user quietly does: should I run this task on my own hardware, or just pay for the API?
+
+Haiku is Anthropic's small, fast model line, built for jobs you run thousands of times a day: classification, summarization, extraction, and the little decisions inside AI agents. Haiku 5.5 is the third model in the Claude 5.5 family, following Sonnet 5.5 and Opus 5.5.
+
+![Flat illustration of a small robot gliding past a home computer while a trail of shrinking coins falls behind it, suggesting falling cloud AI prices](/blog-images/claude-haiku-5-5-cheap-cloud-vs-local-ai-hero.webp)
+
+## The headline numbers
+
+For prompts up to 100,000 tokens, Haiku 5.5 costs $0.10 per million input tokens and $0.50 per million output tokens. Haiku 4.5 charged $1 and $5 for the same. Above the 100k threshold, Haiku 5.5's prices multiply by five, to $0.50 and $2.50 — still half what its predecessor charged. Anthropic says roughly 90% of Haiku 4.5 requests fell under 100k tokens, and puts the average saving at about 75%.
+
+One footnote worth knowing: Haiku 5.5 uses a newer tokenizer, and Anthropic notes the same text now counts as roughly 30% more tokens than on Haiku 4.5. The per-token cut is deep enough that the effective saving still lands near 90% for most requests.
+
+Anthropic's own benchmark table puts Haiku 5.5 ahead of OpenAI's GPT-6 Luna on every test they share, with the widest gaps on computer-use tasks: 72.4% versus 48.9% on the OSWorld 2.1 offline subset, and 39.2% versus 16.4% on Terminal-Bench 4.0. Against its own predecessor, the jump is stark — Haiku 4.5 managed 15.7% on OSWorld and 0% on Terminal-Bench. Every figure here comes from Anthropic; no independent benchmark runs exist yet. And if you do not want to touch an API at all, the model is free in the Claude apps on every plan, including the free tier.
+
+![Log-scale bar chart comparing API price per million tokens: Haiku 5.5 at $0.10 input and $0.50 output, Haiku 4.5 at $1.00 and $5.00, GPT-6 Luna at $0.10 and $0.50, and local inference at $0](/blog-images/claude-haiku-5-5-cheap-cloud-vs-local-ai-fig1.webp)
+
+## What it costs in real money
+
+Token prices sound abstract, so let us run them through a week of real use.
+
+Take a typical chat request: about 2,000 input tokens and 500 output tokens. On Haiku 5.5 that costs roughly two-hundredths of a cent in input and a quarter of a tenth of a cent in output. Do that 100 times a day, every day, for a month: about 6 million input tokens, which is roughly 60 cents in input costs.
+
+Now scale up to an agent doing a million tokens of work per day. Input alone runs $0.10 a day — three dollars a month. Add output and it is still single digits.
+
+That is the new reality: at these prices, personal use of a strong small cloud model costs less than a coffee per month. The question is no longer "can I afford the API," because you almost certainly can. The question is whether paying is ever the wrong move.
+
+## Where local still wins
+
+Three places, and they have not moved:
+
+**Privacy.** A cloud API sees everything you send. If your documents are medical, financial, or simply nobody else's business, a model on your own machine is the only setup where nothing leaves the room. Haiku 5.5's price does not buy you privacy; it rents you a very cheap stranger's computer.
+
+**Zero marginal cost and offline work.** Once you own the hardware, each extra local request costs you nothing but a little electricity. Heavy tinkerers — the people who rerun prompts 50 times to get one right — pay the same as someone who runs one prompt. And local models work on a plane, behind a firewall, or wherever the internet is not.
+
+**High, steady volume.** Ten cents per million tokens is cheap, but a pipeline classifying millions of records a day still adds up to real money over a year, and that bill never ends. A fixed-cost machine does not send invoices.
+
+Be honest about the other side, though. No local model today matches Haiku 5.5's computer-use scores. If your job is literally operating a desktop or a terminal, the cloud model is simply better at it right now. And for plain classification, routing, and triage, [Ollama's decision-model support](/blog/2026-10-02-ollama-035-decision-models) already lets you run Nimble or Cloudflare's Clef locally for free — check those first before paying anyone.
+
+## The decision, simplified
+
+Pay for Haiku 5.5 when you have no GPU, you need its computer-use ability, your token volume is modest, or you want zero setup.
+
+Run it locally when the data is sensitive, the volume is high and steady, you need offline access, or you experiment enough that a metered bill would make you flinch.
+
+A handy rule of thumb: cloud is rent, local is owning. Rent just got 90% cheaper, so most casual personal use should stay rented. You buy when the meter runs hot every single day — or when the data cannot travel at all. Want to see what your own machine can handle? Try [/check](/check) with your actual workload, and [/stack](/stack) to see which local tools fit.
+
+## Sources
+
+- [Reuters — Anthropic launches third Claude 5.5 model, expanding AI lineup before planned IPO (Oct 7, 2026)](https://www.reuters.com/business/anthropic-launches-third-claude-55-model-expanding-ai-lineup-before-planned-ipo-2026-10-07/)
+- [PYMNTS — AI Answers Get Cheaper as Model Choices Multiply (Oct 8, 2026)](https://www.pymnts.com/news/artificial-intelligence/2026/ai-answers-get-cheaper-as-model-choices-multiply/)
+- [TechRepublic — Anthropic Launches Claude Haiku 5.5 With API Prices Starting at $0.10](https://www.techrepublic.com/article/news-anthropic-claude-haiku-5-5-api-pricing/)
+- [Notebookcheck — Claude Haiku 5.5: Anthropic's fastest model is also free to use](https://www.notebookcheck.net/Claude-Haiku-5-5-Anthropic-s-fastest-model-is-also-free-to-use.1420065.0.html)
+- [datanorth.ai — Claude Haiku 5.5 by Anthropic: price, benchmarks, limits](https://datanorth.ai/news/anthropic-releases-claude-haiku-5-5)
+- [Tech Times — Claude Haiku 5.5 Becomes Viable Sub-Agent](https://www.techtimes.com/articles/328793/20261009/claude-haiku-55-becomes-viable-sub-agent-human-level-computer-use-ninety-percent-lower-cost.htm)
+- [Munder-Difflin blog (HarnessMD) — Claude Haiku 5.5: price, benchmarks, limits (tokenizer note)](https://github.com/harnessmd/munder-difflin/blob/HEAD/blog/src/posts/claude-haiku-5-5.md)
