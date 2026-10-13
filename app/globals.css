@@ -342,6 +342,105 @@ label {
   to { background-position: 0 32px; }
 }
 
+/*
+ * Dot, the pixel mascot (components/brand/dot.tsx). The box is reserved by aspect-ratio, so no layout shift.
+ * Idle: irregular blinks, slow breathing squash, a rare hop. Happy hop while a [data-dot-cue] in the same
+ * .dot-stage is hovered, focused or pressed. Reduced motion: fully static.
+ */
+.dot {
+  display: inline-block;
+  flex-shrink: 0;
+  aspect-ratio: 14 / 12;
+}
+.dot-hop {
+  display: block;
+  height: 100%;
+}
+.dot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: 50% 100%;
+}
+.dot .dot-arms-up,
+.dot .dot-eyes-closed,
+.dot .dot-eyes-happy,
+.dot[data-pose="blink"] .dot-eyes-open,
+.dot[data-pose="happy"] .dot-eyes-open,
+.dot[data-pose="happy"] .dot-arms-down {
+  display: none;
+}
+.dot[data-pose="blink"] .dot-eyes-closed,
+.dot[data-pose="happy"] .dot-eyes-happy,
+.dot[data-pose="happy"] .dot-arms-up {
+  display: inline;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dot[data-pose="idle"] .dot-hop {
+    animation: dot-hop 11.3s ease-out infinite 2.4s;
+  }
+  .dot[data-pose="idle"] svg {
+    animation: dot-breathe 3.8s ease-in-out infinite;
+  }
+  .dot[data-pose="idle"] .dot-eyes-closed {
+    display: inline;
+    opacity: 0;
+    animation: dot-lids 7.7s step-end infinite;
+  }
+  .dot[data-pose="idle"] .dot-eyes-open {
+    animation: dot-eyes 7.7s step-end infinite;
+  }
+  .dot-stage:has([data-dot-cue]:is(:hover, :focus-visible, :active)) .dot .dot-hop {
+    animation: dot-happy-hop 0.55s ease-out infinite;
+  }
+  .dot-stage:has([data-dot-cue]:is(:hover, :focus-visible, :active)) .dot :is(.dot-eyes-open, .dot-eyes-closed, .dot-arms-down) {
+    display: none;
+  }
+  .dot-stage:has([data-dot-cue]:is(:hover, :focus-visible, :active)) .dot :is(.dot-eyes-happy, .dot-arms-up) {
+    display: inline;
+  }
+}
+@keyframes dot-breathe {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.97); }
+}
+/* Blinks at uneven points of a long cycle, including one double blink. */
+@keyframes dot-eyes {
+  0% { opacity: 1; }
+  23% { opacity: 0; }
+  24.5% { opacity: 1; }
+  61% { opacity: 0; }
+  62.4% { opacity: 1; }
+  65% { opacity: 0; }
+  66.4% { opacity: 1; }
+  91% { opacity: 0; }
+  92.6% { opacity: 1; }
+}
+@keyframes dot-lids {
+  0% { opacity: 0; }
+  23% { opacity: 1; }
+  24.5% { opacity: 0; }
+  61% { opacity: 1; }
+  62.4% { opacity: 0; }
+  65% { opacity: 1; }
+  66.4% { opacity: 0; }
+  91% { opacity: 1; }
+  92.6% { opacity: 0; }
+}
+/* One quick hop near the end of a long, otherwise still cycle. */
+@keyframes dot-hop {
+  0%, 94%, 100% { transform: translateY(0); }
+  95.5% { transform: translateY(-22%); }
+  97% { transform: translateY(0); }
+  97.8% { transform: translateY(-5%); }
+  98.6% { transform: translateY(0); }
+}
+@keyframes dot-happy-hop {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-30%); }
+}
+
 /* Blog articles (MDX). Plain elements in, site typography out. */
 .blog-prose {
   font-size: 1.0625rem;

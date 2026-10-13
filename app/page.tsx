@@ -6,6 +6,7 @@ import { buttonClass } from "@/components/ui/button";
 import { Eyebrow, Sticker, type StickerColor } from "@/components/art/sticker";
 import { BurstBadge, ShapeField } from "@/components/art/shapes";
 import { ChipMascot, LaptopArt, MemoryArt, TiersArt } from "@/components/art/illustrations";
+import { Dot } from "@/components/brand/dot";
 import { HeroChat } from "@/components/explainers/hero-chat";
 import { LocalAiDiagram } from "@/components/explainers/local-ai-diagram";
 import { SpeedFeel } from "@/components/explainers/speed-feel";
@@ -64,7 +65,7 @@ export default function Home() {
           ]}
         />
         <div className="relative mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] items-center gap-12 px-4 pb-28 pt-10 sm:px-6 sm:pt-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14 lg:pb-24 lg:pt-20">
-          <div className="text-center lg:text-left">
+          <div className="dot-stage text-center lg:text-left">
             <Sticker color="white" rotate={-2} className="animate-fade-up text-xs sm:text-sm">
               <span className="relative flex size-2.5">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-sticker-green opacity-70" />
@@ -80,7 +81,7 @@ export default function Home() {
               exactly how to install them.
             </p>
             <div className="mt-8 flex animate-fade-up flex-col items-center gap-4 [animation-delay:240ms] sm:flex-row sm:justify-center lg:justify-start">
-              <Link href="/check" className={cn(buttonClass("primary", "lg"), "group w-full sm:w-auto")}>
+              <Link href="/check" data-dot-cue className={cn(buttonClass("primary", "lg"), "group w-full sm:w-auto")}>
                 Check my computer <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link href="/learn" className={cn(buttonClass("outline", "lg"), "w-full sm:w-auto")}>
@@ -89,6 +90,7 @@ export default function Home() {
             </div>
             <p className="mt-4 flex animate-fade-up items-center justify-center gap-1.5 text-sm font-medium text-foreground/70 [animation-delay:300ms] lg:justify-start">
               <Clock className="size-4" /> The check takes about a minute
+              <Dot className="-my-1 ml-1 w-7" />
             </p>
           </div>
 
