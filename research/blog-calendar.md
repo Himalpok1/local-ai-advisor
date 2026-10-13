@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-13 | stepfun-step-5-preview-open-weights | StepFun Step 5 Preview: a 600B agent model's open weights drop October 15 |
 | 2026-10-13 | nvidia-nemotron-35-bolt-74b-24gb-agents | NVIDIA Nemotron 3.5 Bolt: a 74B open agent model that fits in 24 GB |
 | 2026-10-12 | claude-haiku-5-5-cheap-cloud-vs-local-ai | Claude Haiku 5.5 costs 10 cents per million tokens — when does local AI still win? |
 | 2026-10-12 | embeddinggemma-2-local-multimodal-search | EmbeddingGemma 2: search your files by meaning, image, and sound |
@@ -38,6 +39,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 | topic | angle | priority |
 | --- | --- | --- |
+| StepFun Step 5 weights drop follow-up | If weights land Oct 15 as planned: license check, first GGUF builds, real memory math, engine support day-one status | high |
 | How much memory do you need to run AI locally? | Turn RAM/VRAM numbers into "what can I run with 8, 16, 32, 64 GB", using /hardware-for-model | high |
 | Ollama vs LM Studio for a first-time user | Which app to install first, with honest trade-offs, linking to /stack | high |
 | Quantization explained with one picture | What Q4 vs Q8 means for quality, size and speed; link /learn | high |
