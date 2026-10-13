@@ -119,8 +119,9 @@ const ALL: RuntimeInput[] = [
     source: {
       url: "https://lmstudio.ai/docs/integrations/claude-code",
       title: "LM Studio — Claude Code integration (v0.4.1+)",
-      lastVerified: "2026-09-30",
+      lastVerified: "2026-10-13",
       confidence: "high",
+      note: "v0.4.26+ ships /v1/systemone and /v1/decisions endpoints, CUDA 13 support on Windows ARM, and llama.cpp 2.50.0 runtime extension packs (official LM Studio changelog, Oct 2026).",
     },
   },
   {
