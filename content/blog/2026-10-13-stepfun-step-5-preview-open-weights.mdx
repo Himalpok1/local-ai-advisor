@@ -1,0 +1,64 @@
+---
+title: "StepFun Step 5 Preview: a 600B agent model's open weights drop October 15"
+date: "2026-10-13"
+excerpt: "StepFun's 600B-total agent model opens its weights on October 15. It only uses 27B per token — here is what that means for your own machine."
+tags: ["new-models", "local-llm", "ai-news", "beginners"]
+author: "Ray, Your Local AI Advisor"
+---
+
+Two days from now, another frontier-class model is scheduled to become downloadable. StepFun, the Shanghai lab behind the Step series, says the open weights for Step 5 Preview — a 600-billion-parameter model built for agentic work — land on October 15. The API has been live since September 20, but weights you can download and self-host are a different thing, and this is the kind of release local-AI watchers plan around. Here is what the specs mean, why you almost certainly will not run this one at home, and what still matters for your machine.
+
+![Flat illustration of a dark grid of neural-network tiles with one small amber cluster glowing, showing selective expert activation in a mixture-of-experts model](/blog-images/stepfun-step-5-preview-open-weights-hero.webp)
+
+## What StepFun announced
+
+Step 5 Preview is StepFun's flagship for agentic work: software engineering, professional knowledge tasks, and finance. The announcement, made on September 20 via the company's X account, gave three numbers that matter:
+
+- **600 billion total parameters, 27 billion active per token.** It is a sparse mixture-of-experts model, so each token only wakes up about 4.5% of the weights. Secondary reporting describes a 92-layer Transformer design.
+- **1 million-token context window**, with up to 64,000 tokens of output and text, image, and video inputs. That is agent-scale context: whole codebases, long research trails.
+- **Agent features in the API:** streaming, tool calling, JSON mode and structured outputs, prompt caching, and adjustable reasoning effort (low, medium, high).
+
+On company-reported benchmarks, Step 5 Preview scored 67.7% on DeepSWE v1.1 (agentic coding) and 66.4 on FrontierFinance, and Artificial Analysis gives it a 44 on its Intelligence Index. Treat those as the vendor's own numbers until independent tests weigh in.
+
+## Giant weights, small compute: the MoE picture
+
+The headline figure to keep straight is that "600B" and "27B" describe two different things. The full model is 600 billion parameters — every one of them has to live in memory when you serve it. But per token, the router only activates about 27 billion of them. That is the lever that makes this model cheap to run at scale: you store a lot, but you compute a little. Mistral Large 4 uses the same trick at a bigger scale (about 1.05 trillion total, 52 billion active).
+
+![Bar chart comparing total parameters with active parameters per token for Step 5 Preview (600B total, 27B active) and Mistral Large 4 (1050B total, 52B active)](/blog-images/stepfun-step-5-preview-open-weights-fig1.webp)
+
+## The memory math: why your PC cannot host this one
+
+Weights are numbers, and each number needs storage. At full precision (BF16, 2 bytes per parameter), 600 billion parameters need about **1.2 terabytes of memory** — before the context window (KV cache) takes its share. A 4-bit quantization would still be around 300 GB. Even the 27-billion-active slice alone, if you could serve just that, would be about 54 GB at full precision.
+
+This is not a home-PC model, and it will not become one just because the weights are open. Plan on multi-GPU server hardware, or on renting it. If you want a model you can actually run tonight, [/check](/check) will size one for the machine you already have — but it will not be this one.
+
+## What the open weights still change for local AI
+
+Honest first: on October 15, nothing you can run at home changes. But the release matters for three reasons.
+
+**1. The license.** StepFun's earlier open releases — Step 3.5 Flash (196B total, 11B active) and Step 3.7 Flash — shipped under Apache 2.0, which permits commercial use. Step 5's license has not been named yet. A permissive license makes this a serious open alternative to closed frontier models for companies; a restrictive one does not. Check the actual license on release day.
+
+**2. The runnable tier comes later.** Giant open MoE models follow a familiar arc: weights land, then community builds compress them (GGUF quants for llama.cpp and Ollama), then distills squeeze the capability into smaller models that fit one GPU. We saw it with the POCKET-Darwin-180B builds and with today's Nemotron 3.5 Bolt family. A 27B-active-per-token footprint is exactly the kind of profile that distills well. Watch for the follow-ups, not the raw release.
+
+**3. The API is cheap today.** You do not have to wait to try it. Reported pricing is $1.00 per million input tokens, $0.05 for cached input, and $2.70 per million output tokens — positioned well below closed frontier models. StepFun even documents a Claude Code integration. That makes it a reasonable agent brain for coding and research work right now, while you wait to see what the open release makes runnable.
+
+## What to check on October 15
+
+Weight drops have a habit of being announced loudly and arriving quietly, so verify the concrete things:
+
+- The license, and whether the checkpoint actually appears on Hugging Face.
+- Whether llama.cpp, vLLM, and Ollama add day-one support (the architecture is new, so engine support is not automatic).
+- Independent benchmarks — company numbers are the starting point, not the verdict.
+- What the API pricing does after open weights ship.
+
+## The takeaway
+
+Step 5 Preview's open weights land on October 15 as a 600B-total, 27B-active agent model with a 1M-token context — a serious open release you will not run on your own hardware. For local builders, the real story is the arc that follows: license, community quants, engine support, and the distills that eventually fit one GPU. Track the release, try the API if the price fits your work, and let the smaller models carry your local agents until the runnable tier shows up.
+
+## Sources
+
+- [StepFun launches Step 5 Preview, a 600B-total-parameter agent model](https://www.gobignews.com/ai/stepfun-launches-step-5-preview-a-600b-total-parameter-agent-model), Go Big News (reporting the September 20 announcement, the October 15 open-weights plan, API pricing, and Step 3.5/3.7 Apache 2.0 licenses)
+- [Step 5 Preview API Pricing: Availability and Production Use](https://aireiter.com/blog/step-5-preview-api-pricing-official-availability), AI Reiter (confirming official specs: 600B total, 27B active, 1M context)
+- [StepFun Launches Step 5 Preview: A 600B-Total, 27B-Active MoE Model](https://www.marktechpost.com/2026/09/20/stepfun-launches-step-5-preview/), MarkTechPost (model specs, 1.2 TB BF16 arithmetic, API feature list)
+- [StepFun Step 5 Preview: a 600B Agent Model at $1 per Million](https://genztech.blog/p/stepfun-step-5-preview-600b-moe-1-dollar-per-million-tokens/), GenZTech (Artificial Analysis Index score of 44, license unannounced)
+- [Mistral Large 4: Specs, Pricing, Benchmarks and Weights Date](https://www.developersdigest.tech/blog/mistral-large-4-open-weight-model-2026), Developers Digest (Mistral Large 4: 1.05T total, 52B active)
