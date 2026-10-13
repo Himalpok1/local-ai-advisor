@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-13 | nvidia-nemotron-35-bolt-74b-24gb-agents | NVIDIA Nemotron 3.5 Bolt: a 74B open agent model that fits in 24 GB |
 | 2026-10-12 | claude-haiku-5-5-cheap-cloud-vs-local-ai | Claude Haiku 5.5 costs 10 cents per million tokens — when does local AI still win? |
 | 2026-10-12 | embeddinggemma-2-local-multimodal-search | EmbeddingGemma 2: search your files by meaning, image, and sound |
 | 2026-10-12 | what-is-muse-meta-personal-ai-agent | What is Muse? Meta's personal AI agent, explained |
@@ -105,3 +106,5 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Cloud vs local decision framework for agents | Walk a real coding-agent session fully local vs Haiku 5.5 cheap tier: measured latency, cost, privacy trade-offs | high |
 | Anthropic adjustable effort settings explained | What the five Haiku 5.5 effort levels buy you, and whether they matter for local small models | medium |
 | SynthID Detector for readers | Google opened SynthID detection to everyone — how to check if a viral clip was AI-generated before sharing | medium |
+| Bolt E4B 4GB: hands-on with NVIDIA's game-NPC model when it lands Oct 23 | ACE small model for SkyrimNET and embedded interfaces; latency and quality vs bigger local models | medium |
+| Meta Muse Wonder: what a frontier agent model changes for local builders | Oct 12 frontier release aimed at long-horizon agents; what "Active Memory / Active Focus" means vs running agents fully local | medium |
