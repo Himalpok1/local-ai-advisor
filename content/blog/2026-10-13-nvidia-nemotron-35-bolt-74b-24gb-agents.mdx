@@ -1,0 +1,64 @@
+---
+title: "NVIDIA Nemotron 3.5 Bolt: a 74B open agent model that fits in 24 GB"
+date: "2026-10-13"
+excerpt: "NVIDIA says its new Bolt 74B-A9B agent model is fully open and fits a single 24 GB GPU when it lands October 15. Here is the memory math and the 2-bit catch."
+tags: ["new-models", "local-llm", "ai-news", "hardware"]
+author: "Ray, Your Local AI Advisor"
+---
+
+NVIDIA announced a new open model family on October 13, and the headline entry is aimed squarely at people who run AI on their own hardware. Nemotron 3.5 Bolt 74B-A9B is a 74-billion-parameter model built for agents — and NVIDIA says it fits in 24 GB of memory when it releases on October 15. That is the size of one RTX 4090 or RTX 5090. Here is what the announcement says, what the numbers mean, and what to be honest about before you plan around it.
+
+![Flat illustration of a single desktop GPU with glowing amber tiles representing active mixture-of-experts tiles orbiting toward it](/blog-images/nvidia-nemotron-35-bolt-74b-24gb-agents-hero.webp)
+
+## What NVIDIA announced on October 13
+
+The announcement came alongside the software lineup for RTX Spark laptops, which launch October 16. The Bolt 74B-A9B entry has four facts that matter:
+
+- **74 billion total parameters, 9 billion active per token.** It is a mixture-of-experts model, so each token only wakes up a fraction of the weights. That is why the memory figure is smaller than 74 billion parameters would suggest.
+- **2-bit quantization, fitting in 24 GB.** NVIDIA describes it as compressed to 24 GB using 2-bit quantization.
+- **Fully open, including training data.** NVIDIA says Bolt 74B will be open source with training data, weights, and recipes — wider than most open-weight releases, which usually stop at the weights.
+- **Day-one local tooling.** It is expected to be available through llama.cpp, vLLM, Ollama, Unsloth, and LM Studio at launch, and usable with agents such as Hermes and OpenClaw.
+
+There is a smaller sibling, Bolt E4B 4GB, arriving October 23 for game NPCs and embedded interfaces. It is a different product for a different job; the rest of this post is about the 74B agent model.
+
+## The memory math
+
+A 74-billion-parameter model stores one number per parameter. Multiply the parameter count by the bits per parameter and you get the weight size:
+
+- BF16 (16-bit): 74B × 2 bytes = **148 GB**
+- Q8 (8-bit): 74B × 1 byte = **74 GB**
+- Q4 (4-bit): 74B × 0.5 bytes = **37 GB**
+- 2-bit quant: 74B × 0.25 bytes = **18.5 GB**
+
+![Bar chart comparing weight memory for a 74B-parameter model at BF16, Q8, Q4, and 2-bit precision, with a dashed line marking a 24 GB GPU](/blog-images/nvidia-nemotron-35-bolt-74b-24gb-agents-fig1.webp)
+
+18.5 GB of weights plus overhead leaves room inside 24 GB for a working context window — that is the arithmetic behind NVIDIA's claim. The numbers above are straight multiplication from the reported 74-billion parameter count, not vendor benchmarks. In practice, add a few GB of headroom for the context (KV cache), so a 24 GB card is the floor, not a luxury buffer.
+
+## Why a 2-bit model is a mixed bag
+
+Getting a 74B model into 24 GB is real progress, and NVIDIA training it natively at 2-bit precision (on Blackwell's NVFP4-style formats) beats naive post-training quantization. But keep three caveats in mind:
+
+1. **Quality is unproven.** 2-bit weights are extreme compression. NVIDIA says Bolt is purpose-built for agentic work — routine coding tasks, data collection, background monitoring, API interaction — not for beating frontier chat models. Until independent tests land after October 15, treat capability claims as NVIDIA's own.
+2. **The weights are not out yet.** Everything in this post rests on the announcement. The concrete check is whether the weights, training data, and recipes actually appear on October 15 with the promised openness.
+3. **It is NVIDIA-first.** The 2-bit format runs best on Blackwell GPUs and RTX Spark machines. Community ports may extend support, but on older or non-NVIDIA hardware, a well-supported 32B model at Q4 may be the smoother choice today.
+
+If you want a model you can actually run tonight, run your machine through [/check](/check) and pick from what already ships. Bolt is one to watch, not one to rebuild your setup around yet.
+
+## What changes for your machine
+
+If the October 15 release lands as described, this is what changes:
+
+- **Single-GPU owners:** a 24 GB card (RTX 4090, RTX 5090) can host a 74B-class open agent model locally — no second GPU, no offloading.
+- **Mac owners:** 32 GB of unified memory should hold it too, via Ollama or LM Studio, since Apple Silicon shares memory between CPU and GPU.
+- **Always-on agents:** a small-active-parameter MoE (9B active) is cheap per token, which is what background agents need. This is the same routing logic we have been seeing across the agent-model releases: fast cheap models for routine work, heavier models for hard reasoning. See our [hardware-for-model page](/hardware-for-model) for how to size a machine for this class of model.
+
+Bolt is not the first model to promise big-at-home — Reflection's Beam and Mistral's trillion-parameter model both trade larger size for server-class memory. Bolt's pitch is the opposite: deliberately squeezed so one consumer GPU is enough.
+
+## The takeaway
+
+A fully open, 74B-parameter agent model that fits one 24 GB GPU would be a genuine step for local AI — if the weights land on October 15 with the data and recipes NVIDIA promised, and if independent tests back up the quality at 2-bit precision. Watch for the release itself, not the announcement. Everything else about Bolt is still NVIDIA's description of its own model.
+
+## Sources
+
+- [NVIDIA Announces Software Ecosystem Updates Ahead of RTX Spark Laptop Launch](https://blockchain.news/news/nvidia-rtx-spark-software-ecosystem-updates-october-2026), Blockchain.News (citing NVIDIA's October 13 announcement)
+- [NVIDIA unveiled the compact Nemotron 3.5 Bolt E4B language model](https://en.gamegpu.com/news/igry/nvidia-predstavila-kompaktnuyu-yazykovuyu-model-nemotron-3-5-bolt-e4b-dlya-umnykh-npc-v-igrakh), GameGPU
