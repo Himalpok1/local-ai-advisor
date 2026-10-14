@@ -1,0 +1,63 @@
+---
+title: "Fish Audio Drama 3: an open-weight voice model you can direct like an actor"
+date: "2026-10-14"
+excerpt: "Fish Audio released Drama 3's weights: a 35B voice model that takes plain-language direction and leads an independent pronunciation test."
+tags: ["ai-news", "local-llm", "new-models", "apps"]
+author: "Ray, Your Local AI Advisor"
+---
+
+Yesterday, a voice model you can download happened. Fish Audio published the full weights of Drama 3 — the text-to-speech model the company calls its most emotive — on Hugging Face. You can grab it today and run it on your own hardware, free for commercial use if your revenue is under $500,000 a year. Here is the part that matters, and the part that will decide whether it belongs on your machine.
+
+![A flat illustration of a home studio desk where a script ribbon flows into a glowing computer chip and three colorful voice waves come out](/blog-images/fish-audio-drama-3-open-weight-voice-hero.webp)
+
+## What changed yesterday
+
+Drama 3 had been in a gated preview since late September. On October 13 it went fully public: weights on Hugging Face, reference code on GitHub, and serving support through SGLang-Omni on day one. It is also available on Fish Audio's own web app, mobile apps, and API — with the API priced at $10 per million characters until November 12, 80% off the $50 list price, and new creator plans half off.
+
+Most voice models take text and hand you a read. Drama 3 takes direction. You write a line the way you would give it to an actor — something like "barely holding it together, forcing a smile" — and the read holds together, cracks, or drops to a whisper where you wrote it. The direction can even change mid-sentence: calm at the start, a terrified whisper at the end. It speaks 83 languages, and the direction itself can be written in whatever language you think in. Paired tags like `<emphasis>...</emphasis>` aim the direction at specific words.
+
+## The number that matters: 93.2%
+
+Pronunciation accuracy is the least glamorous test in voice AI and the one that decides whether a voice agent survives contact with reality. Misread an account number, a drug name, or a file path and the whole performance is useless. Artificial Analysis, an independent benchmarking firm, tests exactly this: hard words, numbers, and codes placed in English sentences, checked by human listeners.
+
+Drama 3 scored 93.2% — the top result on that leaderboard, against 88.1% for its predecessor S2.1 Pro. The biggest jumps are on the hard stuff: names of brands, places, and technical terms went from 87.3% to 95.9%, and exact sequences like codes, paths, and emails went from 79.4% to 86.3%. Reporting on the launch adds that it leads every model tested, open or closed — ahead of ElevenLabs' Eleven v4 and v4 Turbo on this metric.
+
+![Bar chart of Artificial Analysis Pronunciation Robustness scores: Drama 3 beats S2.1 Pro in all four categories and overall, 93.2% to 88.1%](/blog-images/fish-audio-drama-3-open-weight-voice-fig1.webp)
+
+## Can you run it on your own machine?
+
+Here is the honest math. Drama 3 has 35 billion parameters total, but it is a mixture-of-experts model: only about 3 billion activate per token (8 of 256 routed experts plus one shared expert), so per step it computes like a much smaller model. The checkpoint is 39.6 GB on disk, with the experts stored in FP8 and the rest in BF16 — which means roughly 40 GB of GPU memory to load it at full precision.
+
+Realistically, today that means a 48 GB card, a 64 GB-class box, a 128 GB Mac, or two GPUs splitting the load. A 24 GB gaming card cannot hold the full checkpoint, and no community 4-bit builds had been announced as of the launch coverage — those are what would bring it down to consumer GPUs, and they are worth watching for.
+
+Speed is not the problem: once loaded, a single stream decodes 271 audio frames per second on an H200, against 177 for the older S2. Audio itself runs at about 21.5 frames per second, so that is roughly twelve times faster than real time. Memory, not speed, is the gate.
+
+![Diagram of the Drama 3 pipeline: a directed script enters the model, which produces three separate speaker voice tracks in one pass](/blog-images/fish-audio-drama-3-open-weight-voice-fig2.webp)
+
+## The license, read honestly
+
+Drama 3 comes under the Fish Audio Community License v1.0. Free for research and non-commercial use, and free for commercial use if you and your affiliates earn under $500,000 a year. Above that line — or if you offer Drama 3 to others as a TTS, voice-cloning, or inference service — you need a license from Fish Audio. The license also bans cloning a real person's voice without their consent.
+
+That is a generous, real open-weight release. It is not the same as open source: read the terms before you ship a product on it.
+
+## What this changes for you
+
+The practical takeaway depends on your setup:
+
+- **If you narrate videos, podcasts, or audiobooks:** this is the first downloadable voice model that combines state-of-the-art pronunciation with plain-language direction. Under the revenue line it costs nothing per character — your scripts never leave your machine, and there is no cloud round-trip. For people whose voice stack is currently a subscription API, that is a direct, free alternative to test.
+- **If you build voice agents:** pronunciation robustness is the production metric. A free model that reads codes and numbers more reliably than the leading closed models changes what you can demo without a paid contract.
+- **If you make multi-character audio:** one Drama 3 generation can carry up to 16 speakers in a single pass, using tags like `<|speaker:0|>`. That replaces the old workflow of stitching separate single-voice clips.
+- **If your scripts change after the take:** Fish Audio is testing word-level audio inpainting — mark one word, regenerate only that word, keep the rest of the approved take. It is still invite-only, with a public editing API promised.
+
+## The limits, stated plainly
+
+Weights are not a one-click app. Running Drama 3 today means standing up SGLang-Omni or the reference code yourself, with about 40 GB of VRAM and comfort around server-style software — not an Ollama one-liner. And pronunciation scores measure whether words land, not whether the emotion convinces you; the expressive direction is tuned by human preference, which is harder to verify independently than a word-accuracy test. Treat the emotion demos as promising, not proven.
+
+The one clear takeaway: the best-tested voice direction in the open world now runs on your own hardware, for free under half a million in revenue, if you have the memory for it. If you do not, the promo-priced API and the free web tier are the practical route — and the community quants worth watching are the ones that squeeze those 39.6 GB onto a 24 GB card. Run your own numbers on [/check](/check) before you download anything.
+
+## Sources
+
+- [Fish Audio — Drama 3 launch announcement](https://fish.audio/blog/fish-audio-drama-3/) — release date, license terms, benchmark table, pricing offer, architecture details
+- [Erogol — technical analysis of Drama 3](http://erogol.com/2026/10/14/fish-audio-drama-3-a-35b-moe-tts-whose-codebook-decoder-attends-over-all-past-frames) — parameter counts from config and safetensors headers, 39.6 GB checkpoint, FP8 expert precision
+- [kie.ai — Drama 3 deep dive](https://kie.ai/blog/fish-audio-drama-3-deep-dive-35b-moe-tts) — SGLang-Omni serving, speaker tags, single-GPU deployment baseline
+- [Startup Fortune — launch reporting](https://startupfortune.com/fish-audio-releases-drama-3-a-free-voice-model-that-beats-elevenlabs-on-pronunciation/) — Speech Arena open-weights #1, lead over ElevenLabs Eleven v4/v4 Turbo on Pronunciation Robustness
