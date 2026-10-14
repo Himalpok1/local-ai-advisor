@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-14 | minicpm-v-47-35b-moe-vision-local | MiniCPM-V 4.7: a 35B vision model that acts like a 3B on your hardware |
 | 2026-10-13 | stepfun-step-5-preview-open-weights | StepFun Step 5 Preview: a 600B agent model's open weights drop October 15 |
 | 2026-10-13 | nvidia-nemotron-35-bolt-74b-24gb-agents | NVIDIA Nemotron 3.5 Bolt: a 74B open agent model that fits in 24 GB |
 | 2026-10-12 | claude-haiku-5-5-cheap-cloud-vs-local-ai | Claude Haiku 5.5 costs 10 cents per million tokens — when does local AI still win? |
@@ -110,3 +111,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | SynthID Detector for readers | Google opened SynthID detection to everyone — how to check if a viral clip was AI-generated before sharing | medium |
 | Bolt E4B 4GB: hands-on with NVIDIA's game-NPC model when it lands Oct 23 | ACE small model for SkyrimNET and embedded interfaces; latency and quality vs bigger local models | medium |
 | Meta Muse Wonder: what a frontier agent model changes for local builders | Oct 12 frontier release aimed at long-horizon agents; what "Active Memory / Active Focus" means vs running agents fully local | medium |
+| Fish Audio Drama 3: private voice AI at home | 35B MoE open-weight TTS released Oct 13 — word-level audio inpainting, 16-speaker scenes, Community License terms checked | high |
+| OpenAI Ultrafast tier vs local inference | OpenAI's 8x-faster GPT-6.1 Sol tokens vs running small models at home: speed, cost and privacy compared | medium |
+| Local voice pipelines with ComfyUI | Drama 3's ComfyUI Partner Node and open TTS on your own GPU — a walkthrough for narration and dubbing | medium |
