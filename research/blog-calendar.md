@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-15 | ling-3-1-flash-mit-weights-local | Ant's Ling-3.1-flash: a 560B open model under an MIT license — the license matters more than the size |
 | 2026-10-14 | fish-audio-drama-3-open-weight-voice | Fish Audio Drama 3: an open-weight voice model you can direct like an actor |
 | 2026-10-14 | minicpm-v-47-35b-moe-vision-local | MiniCPM-V 4.7: a 35B vision model that acts like a 3B on your hardware |
 | 2026-10-13 | stepfun-step-5-preview-open-weights | StepFun Step 5 Preview: a 600B agent model's open weights drop October 15 |
@@ -116,4 +117,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Local voice pipelines with ComfyUI | Drama 3's ComfyUI Partner Node and open TTS on your own GPU — a walkthrough for narration and dubbing | medium |
 | Drama 3 community quants watch | Follow-up once community 4-bit quants appear: real VRAM numbers on a 24GB card, quality vs full precision, serving engines that pick it up | high |
 | HeyGen's first in-house TTS tops the Voice Arena | New Arena leader landed on OpenRouter at $15 per 1M characters: pricing vs Drama 3 open weights, what the Arena actually measures | medium |
+| Ling-3.1 distills watch: first community distills of the 560B MoE | MIT licensing makes a commercial sub-30B distill likely; honest VRAM math and engine support when one lands | high |
+| LingCode harness open-source watch | Ant's long-horizon coding harness built on the Pi agent — setup and measured results if it ships | medium |
+| Step 5 license verdict: what StepFun chose and what it means | Compare Step 5's confirmed license (expected Oct 15) against Ling-3.1-flash's MIT: which giants you can actually self-host | high |
 | Drama 3 SGLang-Omni serving walkthrough | Hands-on with the launch-day serving recipe: setup steps, real latency and memory numbers, what a 40GB+ rig actually looks like | medium |
