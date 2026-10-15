@@ -1,0 +1,67 @@
+---
+title: "Step 5 Preview weights are out — what the license allows and the hardware you need"
+date: "2026-10-15"
+excerpt: "StepFun published the Step 5 Preview weights on October 15 under its own Model License 1.0 — the license verdict in plain terms, plus the real memory math."
+tags: [ai-news, local-llm, new-models, hardware, beginners]
+author: "Ray, Your Local AI Advisor"
+---
+
+StepFun kept its October 15 promise: the weights for Step 5 Preview — the 600-billion-parameter agent model it launched on September 20 — are downloadable now. The official `stepfun-ai/Step-5-Preview-BF16` and `stepfun-ai/Step-5-Preview-NVFP4` repositories are public on Hugging Face, NVIDIA has published an NVFP4 serving recipe for its GB300 platform, and an FP8 checkpoint was announced alongside a ModelScope mirror. (The release had a shaky first few hours — reports noted the official repo looked empty overnight — but it is live and downloads are flowing now.)
+
+Two things matter more than the download button: **the license is not MIT**, and **no home machine can run this model**.
+
+![A giant glowing neural network rising from an open box between server racks, with a balance scale for the license](/blog-images/step-5-weights-released-license-and-memory-math-hero.webp)
+
+## What landed today
+
+Step 5 Preview is a sparse mixture-of-experts model: 600B parameters total, only 27B active for each token, a 1-million-token context window, and text, image, and video input. It was built for long-horizon agent work — coding agents, research agents, finance workflows — and StepFun prices the hosted API at $1.00 per million input tokens and $2.70 per million output tokens, with a 95% discount on cached input.
+
+The release ships with guidance for vLLM, SGLang, and Transformers, plus inference scripts in the repository. Huawei, Biren Technology, Muxi Systems, and Moore Threads announced day-one support. NVIDIA says its NVFP4 version reaches nearly 8,000 tokens per second per GPU on GB300 — that is NVIDIA's claim on NVIDIA's own flagship hardware, not an independent measurement.
+
+## The license verdict: generous for you, gated for giants
+
+Earlier Step models (Step 3.5 Flash, Step 3.7 Flash) shipped under Apache 2.0, and this morning's other 600B-class release — Ant's Ling-3.1-flash — shipped under MIT. Step 5 does neither. It uses the new **StepFun Model License 1.0**, and the actual license text is worth reading carefully. Here is what it says in plain terms.
+
+For individuals and small teams, the grant is broad: you can use, copy, distribute, sublicense, and modify the model royalty-free, and fine-tunes, distills, quantizations, and merges all count as permitted derivative works. Internal use, building products on it, and sharing your derivatives are all covered.
+
+The strings attach at two thresholds:
+
+1. **Attribution.** If your commercial product or service using the model passes 100 million monthly active users or $20 million in monthly revenue, you must display "Powered by StepFun AI" prominently.
+
+2. **A separate commercial license is required** if you are a hardware manufacturer shipping the model's capabilities as a device feature — phones, vehicles, wearables, robots, whether the model runs on-device or in the cloud behind the device; or if you run a model-as-a-service business (an API where customers meaningfully control inputs or parameters) with combined revenue over $20 million in any 12-month period.
+
+Internal use that never exposes the model's capabilities to a third party is exempt, as are certified distribution channels. Material breach terminates the grant, with a 30-day cure window after written notice.
+
+The verdict: for a hobbyist, researcher, or small startup hosting agents on top of this model, the license behaves like a normal open license. For device makers and large API businesses, StepFun wants a deal first. This tiered pattern — free for the small, paid for the big — is likely to be copied by other frontier open-weight labs. Read the license before you build a business on it, but for running it yourself, you are in the clear.
+
+## The hardware reality: this is a data-center model
+
+All 600 billion parameters must sit in memory, even though only 27 billion are active per token. Sparse compute, dense memory — that is how mixture-of-experts works, and Step 5 is no exception:
+
+![Bar chart of Step 5 Preview weight sizes: about 1,200 GB at BF16, 600 GB at FP8, 300 GB at NVFP4, and 275 GB in an unverified Q4 conversion](/blog-images/step-5-weights-released-license-and-memory-math-fig1.webp)
+
+At BF16, the weights alone are about 1.2 TB. The announced FP8 checkpoint halves that to about 600 GB. NVIDIA's NVFP4 recipe brings it near 300 GB. Every figure is weights only, before the KV cache — and the cache grows with context length, with a million-token window on offer. None of the official formats come close to a 24 GB gaming GPU, an 80 GB data-center card, or even a 128 GB unified-memory box. Wondering what your hardware could hold instead? Put your setup through [/check](/check) and see the real answer in numbers.
+
+A community GGUF conversion appeared in early October reporting about 275 GB of quantized files. Treat it as unverified: a third-party build with no StepFun endorsement and unconfirmed quality against the official checkpoints. The official FP8 is the honest way to halve the memory requirement for now.
+
+## So what changes for running AI yourself?
+
+On your own machine: nothing yet. The practical route to Step 5 stays the API — which, at $1/$2.70 per million tokens, is among the cheapest agent-grade compute available. What the release really changes is the server side: open 600B-class agent weights with official FP8, NVIDIA recipes, and day-one hardware support mean cheaper self-hosting for teams with data-center access. For the rest of us, the "runs at home" future is **distills** — smaller models distilled from Step 5, which the license explicitly permits the community to create and share.
+
+## What to watch next
+
+- Verified community GGUF builds and measured quality against the official FP8.
+- Independent measurements of NVIDIA's 8,000 tokens-per-second NVFP4 claim.
+- llama.cpp and LM Studio support for this architecture — until then, serving is a vLLM/SGLang job on multi-GPU servers.
+- Community distills: a sub-30B Step 5 derivative would be the first version most people could actually run.
+
+## Sources
+
+- [StepFun's official BF16 weights repository](https://huggingface.co/stepfun-ai/Step-5-Preview-BF16) and [NVFP4 build](https://huggingface.co/stepfun-ai/Step-5-Preview-NVFP4)
+- StepFun Model License 1.0, shipped as LICENSE.txt in the BF16 repository (read from the repository directly)
+- [Launch specs and benchmark figures (MarkTechPost)](https://www.marktechpost.com/2026/09/20/stepfun-launches-step-5-preview/)
+- [NVIDIA GB300 NVFP4 serving claim (RuntimeWire)](https://runtimewire.com/article/stepfun-step-5-preview-open-weights-nvidia-gb300)
+- [BF16/FP8 release, ModelScope mirror, day-one vendor support](https://hitechexpert.top/step-5-preview-model-weights-go-open-source/)
+- [Launch history and Apache 2.0 predecessors (Go Big News)](https://www.gobignews.com/ai/stepfun-launches-step-5-preview-a-600b-total-parameter-agent-model)
+- [Price and cost-per-intelligence analysis (GenZTech)](https://genztech.blog/p/stepfun-step-5-preview-600b-moe-1-dollar-per-million-tokens/)
+- [Coverage of the overnight release timing (Forkast)](https://forkast.news/step-5-bf16-open-weights-miss-their-own-date-the-vendor-promise-class-just-produced-its-first-exhibit/)
