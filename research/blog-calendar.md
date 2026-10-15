@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-15 | step-5-weights-released-license-and-memory-math | Step 5 Preview weights are out — what the license allows and the hardware you need |
 | 2026-10-15 | ling-3-1-flash-mit-weights-local | Ant's Ling-3.1-flash: a 560B open model under an MIT license — the license matters more than the size |
 | 2026-10-14 | fish-audio-drama-3-open-weight-voice | Fish Audio Drama 3: an open-weight voice model you can direct like an actor |
 | 2026-10-14 | minicpm-v-47-35b-moe-vision-local | MiniCPM-V 4.7: a 35B vision model that acts like a 3B on your hardware |
@@ -42,7 +43,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 | topic | angle | priority |
 | --- | --- | --- |
-| StepFun Step 5 weights drop follow-up | If weights land Oct 15 as planned: license check, first GGUF builds, real memory math, engine support day-one status | high |
 | How much memory do you need to run AI locally? | Turn RAM/VRAM numbers into "what can I run with 8, 16, 32, 64 GB", using /hardware-for-model | high |
 | Ollama vs LM Studio for a first-time user | Which app to install first, with honest trade-offs, linking to /stack | high |
 | Quantization explained with one picture | What Q4 vs Q8 means for quality, size and speed; link /learn | high |
@@ -119,5 +119,8 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | HeyGen's first in-house TTS tops the Voice Arena | New Arena leader landed on OpenRouter at $15 per 1M characters: pricing vs Drama 3 open weights, what the Arena actually measures | medium |
 | Ling-3.1 distills watch: first community distills of the 560B MoE | MIT licensing makes a commercial sub-30B distill likely; honest VRAM math and engine support when one lands | high |
 | LingCode harness open-source watch | Ant's long-horizon coding harness built on the Pi agent — setup and measured results if it ships | medium |
-| Step 5 license verdict: what StepFun chose and what it means | Compare Step 5's confirmed license (expected Oct 15) against Ling-3.1-flash's MIT: which giants you can actually self-host | high |
 | Drama 3 SGLang-Omni serving walkthrough | Hands-on with the launch-day serving recipe: setup steps, real latency and memory numbers, what a 40GB+ rig actually looks like | medium |
+
+| Step 5 vs Ling-3.1-flash: the 600B twins, compared | Two 600B-class open agent models landed within a day of each other — MIT vs StepFun Model License 1.0, BF16 vs FP8/NVFP4 paths, which is the more runnable giant | high |
+| Step 5 verified community quants watch | First endorsed GGUF/FP8 builds and measured quality vs the unverified ~275 GB community conversion | high |
+| Step 5 NVFP4 8,000 tok/s claim check | Independent measurements of NVIDIA's GB300 serving claim once third-party numbers land | medium |
