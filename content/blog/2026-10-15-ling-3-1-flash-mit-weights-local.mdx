@@ -1,0 +1,57 @@
+---
+title: "Ant's Ling-3.1-flash: a 560B open model under an MIT license — the license matters more than the size"
+date: "2026-10-15"
+excerpt: "Ant Group published the weights for its 560B-parameter Ling-3.1-flash under an MIT license — what it means for running AI yourself."
+tags: [ai-news, local-llm, new-models, open-weights, beginners]
+author: "Ray, Your Local AI Advisor"
+---
+
+Ant Group's AI lab inclusionAI just did something the biggest open models rarely do: it published the weights for a 560-billion-parameter model under an **MIT license**. The model is Ling-3.1-flash, and the weights landed on Hugging Face on October 15, right after the model's free two-week API trial ended. The MIT license is the real story here — it decides what you are actually allowed to do with the model, and it's the most permissive terms we've seen on a model this large.
+
+![A giant glowing network of cubes representing 560 billion parameters, with only a few cubes lit up along a flowing path, over a dark background with an open padlock](/blog-images/ling-3-1-flash-mit-weights-local-hero.webp)
+
+## What landed today
+
+Ling-3.1-flash is a mixture-of-experts model: 560 billion parameters total, with only 25 billion active for each token it processes. It accepts up to a 1-million-token context window and is positioned for agent work — long coding tasks, tool use, and office productivity. Ant reports strong results on agent and coding benchmarks including Terminal-Bench 4.0, SWE-bench Pro, FrontierSWE, and SkillsBench, plus finance and materials science.
+
+The release timing is worth noting. The model was announced September 30 with a free API trial capped at 256K tokens of context. The trial ended October 14, and the full weights — with the full 1M-token window — appeared alongside the switch to paid API access. That's a straightforward deal: try it free while hosted, then take the weights and run it yourself.
+
+## 560B vs 25B: what mixture-of-experts means for your hardware
+
+The 560B / 25B split is the key to understanding where this model can and can't run. In a mixture-of-experts design, the model contains many specialist parameter sets ("experts"), but each token is routed through only some of them. Ling-3.1-flash has 512 routed experts plus one shared expert, activating 8 routed experts per token. That's how 25B parameters end up doing the work.
+
+Here's the catch for local runners: **sparse compute doesn't mean sparse memory.** Generating each token only needs 25B parameters worth of computation, but the model still needs all 560B parameters loaded somewhere to reach. At BF16 precision that's about 1.12 TB of weight data — before you count any memory for the 1M-token context:
+
+![Bar chart showing Ling-3.1-flash weight sizes: 1,120 GB at BF16 precision and 560 GB at FP8 precision, compared against a dashed line marking 24 GB VRAM](/blog-images/ling-3-1-flash-mit-weights-local-fig1.webp)
+
+Ant's own reference configurations say it plainly: 8× H200 GPUs or 4× GB300 GPUs for SGLang, with verified recipes also listed for H800, H100, and B200. This is not a model for your home PC, and no community GGUF quant builds exist yet as of this morning — treat any random "Ling-3.1-flash Q4" upload that appears today with skepticism until its provenance is confirmed.
+
+## Why the MIT license is the actual news
+
+Most giant open models ship with custom licenses that restrict commercial use or require specific permissions. MIT is about as permissive as it gets: anyone can use, modify, and sell software built on it, with no royalties and no approval to seek.
+
+What that changes for the local-AI community:
+
+- **Distills and derivatives are free to build.** A lab can train a smaller model on Ling-3.1-flash's outputs and release it commercially without a license fee — exactly how today's best small open models get made.
+- **Self-hosting has no legal strings.** Companies that can't send data to a cloud API can run it on their own GPUs without negotiating terms.
+- **Compare this to StepFun Step 5.** Step 5 (600B / 27B) was due to open its weights today too, but as of this morning its license still hasn't been confirmed. MIT on Ling-3.1-flash sets the bar — a trillion-scale rival's license is now the thing to watch.
+
+## What this means for running AI yourself
+
+Honest answer first: you are not running the full Ling-3.1-flash on your laptop, your gaming PC, or even a single 24 GB card. That won't change with quantization math — 560B parameters is 560B parameters.
+
+What does change:
+
+- **If you run agents via API**, the open weights mean more providers can serve it, which usually pushes prices down. The free trial is over, but the model is now in the open ecosystem.
+- **Watch for the distills.** The previous generation, Ling-3.0-flash (124B / 5.1B active), proved a small active count can punch above its weight. A Ling-3.1 distill in the sub-30B range would be genuinely runnable — and MIT licensing makes that far more likely to happen commercially.
+- **LingCode is on the roadmap.** Ant also introduced a coding harness built on the open-source agent Pi, tuned for multi-hour coding sessions with hundreds of tool calls and repeated context compaction. Ant says it's considering open-sourcing it. If that ships, it's a bigger practical win for local agent builders than the weights themselves.
+
+If you want to experiment right now, the model is also listed on ModelScope and OpenRouter. And if you're shopping for something you can actually run today, our [/check](/check) tool will tell you what fits your machine.
+
+## Sources
+
+- [inclusionAI, "Ling-3.1-flash" model card](https://huggingface.co/inclusionAI/Ling-3.1-flash) — specs: 560B total / 25B active, 1M context; 512 routed + 1 shared experts, 8 activated; SGLang reference configs: 8× H200 or 4× GB300; verified recipes for H200, GB300, H800, H100, B200; LingCode harness
+- [Hugging Face model API for inclusionAI/Ling-3.1-flash](https://huggingface.co/api/models/inclusionAI/Ling-3.1-flash) — license tag `license:mit` (verified October 15, 2026)
+- [AI Affairs, "Ant Group publishes Ling-3.1-flash weights under an MIT licence"](https://www.aiaffairs.com/technology/ant-group-ling-3-1-flash-weights-mit-licence/) — free API trial ended October 14; reporting via Pandaily
+
+*Weight-size figures in the chart are computed from the confirmed 560B parameter count (2 bytes/param at BF16, 1 byte/param at FP8); they cover weight data only, not KV cache or context memory. No community GGUF quant builds existed as of the morning of October 15, 2026.*
