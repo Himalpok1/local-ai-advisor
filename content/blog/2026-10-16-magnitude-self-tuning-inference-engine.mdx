@@ -10,6 +10,8 @@ A new local inference engine launched on Hacker News on September 30 and picked 
 
 A *kernel* is one of the low-level math routines an engine uses to run a model: the hot loop where the actual computation happens. Almost every engine today, llama.cpp included, ships precompiled kernels tuned for classes like "Apple Silicon" or "recent NVIDIA GPUs" — one-size-fits-most binaries. Magnitude treats that as a compromise worth removing. Before your first run, it compiles kernels against your machine's exact GPU and memory bandwidth — about a minute per model, once — and never does it again.
 
+> 🎬 Prefer to watch? Here's the [video version of this article](https://youtu.be/CfTuYcXKjjc).
+
 ![Illustration of a computer processor chip being fine-tuned, surrounded by gears, tuning dials and wrenches, with speed lines and glowing tokens streaming out](/blog-images/magnitude-self-tuning-inference-engine-hero.webp)
 
 
