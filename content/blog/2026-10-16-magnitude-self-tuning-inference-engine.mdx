@@ -1,0 +1,63 @@
+---
+title: "Magnitude: a self-tuning local inference engine that compiles kernels for your exact chip"
+date: "2026-10-16"
+excerpt: "Magnitude is a new open-source engine that compiles kernels tuned for your exact chip — its team claims 92% faster decode than llama.cpp on a Mac."
+tags: ["local-llm", "ai-news", "hardware", "beginners"]
+author: "Ray, Your Local AI Advisor"
+---
+
+A new local inference engine launched on Hacker News on September 30 and picked up roughly 6,400 GitHub stars within days. It's called **Magnitude**: a YC-backed, Apache-2.0-licensed engine for running open-weight models on your own hardware. Its core idea fits in one sentence — instead of shipping kernels tuned for broad hardware classes, it compiles and tunes them for **your exact chip**.
+
+A *kernel* is one of the low-level math routines an engine uses to run a model: the hot loop where the actual computation happens. Almost every engine today, llama.cpp included, ships precompiled kernels tuned for classes like "Apple Silicon" or "recent NVIDIA GPUs" — one-size-fits-most binaries. Magnitude treats that as a compromise worth removing. Before your first run, it compiles kernels against your machine's exact GPU and memory bandwidth — about a minute per model, once — and never does it again.
+
+![Illustration of a computer processor chip being fine-tuned, surrounded by gears, tuning dials and wrenches, with speed lines and glowing tokens streaming out](/blog-images/magnitude-self-tuning-inference-engine-hero.webp)
+
+
+## What self-tuning kernels actually buy you
+
+Decode is where the speedup lands. When a model writes its answer one token at a time, it is constantly reading weights from memory, so the speed of that memory path — and how tightly the kernel fits your hardware — decides your tokens per second. A kernel tuned for your exact memory bandwidth wastes fewer cycles than a generic one.
+
+Here are the numbers Magnitude's team published, running Qwen 3.6 (35 billion parameters, 4-bit, 64K context). Read them as **the team's own benchmarks** — nobody outside the project has independently reproduced them yet.
+
+On a Mac M4 Pro with 48 GB of memory, decode went from 30 to 57 tokens per second: the +92% headline. Prefill — the initial read of your prompt — went from 466 to 507 tokens per second (+9%). On an NVIDIA DGX Spark, decode rose from 49 to 58 (+19%) and prefill from 2033 to 2507 (+23%).
+
+![Bar chart comparing decode and prefill speeds of Magnitude vs llama.cpp on a Mac M4 Pro with 48 GB and an NVIDIA DGX Spark: decode rises from 30 to 57 tokens per second (+92%) on the Mac and 49 to 58 (+19%) on the Spark; prefill rises 9% and 23% respectively](/blog-images/magnitude-self-tuning-inference-engine-fig1.webp)
+
+
+The prefill gains are modest, and that is expected: prefill is compute-bound while decode is memory-bandwidth-bound, and kernel tuning mostly helps the bandwidth side. If the numbers hold up independently, the practical effect is a coding agent on a Mac that generates nearly twice as fast — 57 tokens a second on a machine you can buy off the shelf.
+
+## Why it's aimed at coding agents
+
+Magnitude isn't trying to be a better chatbot runner. It's engineered for the workload coding agents actually create: long contexts, repeated system prompts, and several sessions running at once.
+
+The key feature is the **shared prefix cache**. When three agent sessions work in the same repo, they share one cached copy of the common context instead of each recomputing it. The team says each agent session uses about 27–28% less memory than it otherwise would, and the memory is released when the session stops. For local agent runs, memory — not raw speed — is usually what fails first, so this is arguably the more important number.
+
+Magnitude is a desktop app with a bundled CLI that runs on macOS, Linux and Windows across Apple Silicon, NVIDIA, AMD and CPU-only machines. Before you download anything, it profiles your hardware and estimates tokens per second for each model in its catalog — a small feature that saves a very real annoyance: downloading 40 GB on hope and discovering your machine can't feed it.
+
+## The honest catches
+
+Four, because a 92% claim deserves scrutiny.
+
+**One: the catalog is narrow.** Tuned kernels only exist for popular open-weight model families. Your obscure fine-tune isn't covered. This is a specialist, not a llama.cpp replacement.
+
+**Two: the compile tax.** About a minute per model before the first run. Trivial for a daily driver; mildly annoying if you download six models on a Saturday to compare them.
+
+**Three: vendor benchmarks.** Until someone independent reproduces these numbers, they're a claim, not a fact. A very interesting claim — but a claim. Early independent tests are starting to appear; watch those as they land and treat the verdict as open until they converge.
+
+**Four: your chip finally works at full tilt.** One tester joked that Magnitude turns your Mac into a small heater. Tuned kernels mean sustained high utilization — your fans will notice.
+
+## What this means for running AI yourself
+
+If you run coding agents locally on a Mac or a CUDA machine, Magnitude is worth an afternoon of your time. The worst case is you lose a minute of compile time; the best case is your agent generates nearly twice as fast. Start with the hardware profiler before downloading any model — it tells you what your machine can actually sustain.
+
+If you're on other hardware or run models the catalog doesn't cover, nothing changes for now: llama.cpp and Ollama remain the general-purpose picks.
+
+And the bigger pattern is worth watching regardless of who wins. Local AI's bottleneck was never just model quality — it was software treating every machine the same. Engines that tune themselves to your exact chip are where this space is heading.
+
+If you'd like to know what your current setup can run before trying anything new, our [/check](/check) tool will tell you what fits your machine.
+
+## Sources
+
+- [Magnitude: llama.cpp alternative with 92% faster mac decode](https://fireup.pro/news/magnitude-vs-llama-cpp-local-llm-inference-engine) (fireup.pro) — launch details, the team's benchmark numbers, desktop app + CLI, platform support, per-session memory savings, hardware profiler
+- [Magnitude (YC S25) Launches Self-Compiling Inference Engine](https://aiweekly.co/alerts/magnitude-yc-s25-launches-self-compiling-inference-engine-claims-92-faster) (AI Weekly) — YC S25, September 30 launch, 92% Metal / 19% CUDA claims, Apple Silicon / NVIDIA / AMD / CPU support
+- [Magnitude: self-tuning local inference engine 2026](https://developersdigest.tech/blog/magnitude-self-tuning-local-inference-engine-2026) (Developers Digest) — launch background and coverage roundup
