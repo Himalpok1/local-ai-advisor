@@ -1,0 +1,66 @@
+---
+title: "NVIDIA's Nemotron 3.5 Super VL: a 120B agent model that fits on one DGX Spark"
+date: "2026-10-16"
+excerpt: "NVIDIA's open 120B agent model reads PDFs, charts and video, and runs on a single DGX Spark — here's what it actually costs to run it yourself."
+tags: ["local-llm", "new-models", "hardware", "ai-news"]
+author: "Ray, Your Local AI Advisor"
+---
+
+NVIDIA shipped a new flagship open-weight model on October 15: **Nemotron 3.5 Super VL**, a 120-billion-parameter model built for AI agents that read documents. It understands text, images, short video clips and PDFs in a single checkpoint — so one model does the work that used to need a text model, a vision model and an OCR tool chained together. And per NVIDIA's own deployment notes, the quantized version runs on **one DGX Spark**, NVIDIA's $4,000 desktop box.
+
+![Illustration of an AI chip linked to a desktop computer, a chart-filled document, and a film frame on a dark teal background](/blog-images/nemotron-super-vl-120b-agent-model-hero.webp)
+
+## What Super VL actually is
+
+Super VL is a mixture-of-experts (MoE) model. All 120 billion parameters have to live in memory, but only about 12 billion are *active* for each token — so the compute cost per token looks closer to a 12B model. That gap matters: speed depends on the 12B you use, but your hardware has to hold the full 120B.
+
+The architecture mixes Mamba-2 sequence layers with MoE and attention layers, plus a C-RADIO vision encoder. Inputs are text, images and video (MP4 clips up to 2 minutes); output is text. It handles charts, tables, scanned pages and multi-page PDFs natively. Context stretches up to 1 million tokens, and you can toggle the reasoning mode on or off through the chat template (`enable_thinking`). It also has native multi-token prediction, which is built-in speculative decoding — the same trick this site's engine-optimization posts keep recommending.
+
+The license is **OpenMDW-1.1**, and NVIDIA's model card states the model is "ready for commercial or non-commercial use." NVIDIA also published the datasets, training recipes and reinforcement-learning environments alongside the weights, so teams can post-train it on their own data.
+
+## The memory math: why it fits on a DGX Spark
+
+120 billion parameters at full BF16 precision is about 240 GB of weights — far beyond any desktop. NVIDIA instead ships a **NVFP4** checkpoint, quantized from the BF16 model with quantization-aware distillation. At roughly 4 bits per parameter, the weights shrink to around 60 GB, which clears the DGX Spark's 128 GB of unified memory with room to spare for the KV cache.
+
+![Bar chart: Super VL weight size roughly 240 GB at BF16, 120 GB at FP8 and 60 GB at NVFP4, against the 128 GB memory of a DGX Spark](/blog-images/nemotron-super-vl-120b-agent-model-fig1.webp)
+
+These are estimates from NVIDIA's 120B parameter count (rough bit-per-parameter math undercounts metadata, so treat them as the floor). NVIDIA's official deployment list for the NVFP4 checkpoint is:
+
+| Setup | Memory |
+|---|---|
+| 1x DGX Spark | 128 GB unified |
+| 1x H200 | 141 GB |
+| 2x H100 | 160 GB (2x 80 GB) |
+| 1x GB200 | 192 GB |
+
+One honest footnote: the 1-million-token context won't fit anywhere near full length alongside the weights on a Spark — the KV cache at 1M tokens would need far more memory than 128 GB. Practical runs use reduced context. The 1M figure is a ceiling for data-center cards, not a home promise.
+
+## Can you run it at home?
+
+If you have a DGX Spark, yes — NVIDIA's recipe uses **vLLM** with the NVFP4 checkpoint. If you don't, the news is less convenient: Super VL is CUDA/NVIDIA-only on day one. NVFP4 is an NVIDIA-tuned format; community AMD/ROCm notes classify it as NVIDIA-specific and warn it isn't readable by bitsandbytes or GGUF converters. As of launch, there is no Ollama, LM Studio or llama.cpp path for Super VL — only NVIDIA's vLLM stack.
+
+The practical sibling to watch is **Bolt 74B-A9B 24GB**, released the same day and already supported by llama.cpp, Ollama, LM Studio, Unsloth and vLLM. That one fits a 24 GB consumer card (it is a 74B model squeezed into ~2 bits). And Bolt E4B 4GB lands October 23.
+
+## What NVIDIA claims — and the honest catches
+
+NVIDIA says Super VL matches its largest reasoning model on multimodal agentic tasks at roughly one-fifth the parameter count, and claims up to 5x higher throughput than other open models in its class on the Artificial Analysis Intelligence Index. Two vendor-reported enterprise stories: Scale AI cut inference cost 40x with 5x lower latency on financial vendor processing, and Ramp got 50% higher throughput with 10x lower latency parsing receipts. Treat all of these as the vendor's numbers until independent tests land.
+
+From the model card's own benchmark table: GPQA-Diamond at **89.90** with the NVFP4 checkpoint, but tau3-bench banking at only **17.78** — a reminder that one model can be strong at science questions and weak at banking-agent workflows. Specialized claims are narrow by definition.
+
+## What this changes for you
+
+If you run agents over private documents — invoices, reports, contracts, scanned PDFs — Super VL is the first open checkpoint that reads *and* reasons over all of them in one model, and it does so on a single desktop-class machine instead of a GPU rack. Client documents never leave your box. That is the whole point for local AI: not just privacy theater, but a 120B agent that is sized for one desk.
+
+The sensible way to try it first is the **Bolt 74B 24GB** build on hardware you already own, then step up to Super VL if you have (or plan to get) a Spark-class box. Check what your own machine can hold with [/check](/check).
+
+## Sources
+
+- [nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4 model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4), Hugging Face — parameters, architecture, precision, deployment list, license
+- [NVIDIA Releases Nemotron 3.5 Super VL and Two Bolt Models](https://sqmagazine.co.uk/nvidia-nemotron-3-5-super-vl/), SQ Magazine — release overview, open datasets and training recipes
+- [NVIDIA Releases Nemotron 3.5 Super VL, a 120B Open Multimodal Agent Model](https://www.marktechpost.com/2026/10/15/nvidia-nemotron-3-5-super-vl-release/), MarkTechPost — model-card summary, benchmarks, video limits
+- [NVIDIA squeezes a 74B-parameter open model into 24 GB and releases a 120B agent model that reads PDFs](https://maccus.fr/en/nvidia-nemotron-3-5-open-models/), MACCUS — both releases, hardware table, license
+- [NVIDIA Announces The 120B Nemotron 3.5 Super VL Model For AI Agents](https://wccftech.com/nvidia-announces-the-120b-nemotron-3-5-super-vl-model-for-ai-agents-and-2-tiny-4-gb-and-24-gb-edge-models-under-the-nemotron-3-5-bolt-umbrella/), Wccftech — NVIDIA's accuracy and throughput claims
+- [Open source and on device: the strategy behind Nvidia's new AI models](https://www.techtarget.com/ai/news/366652514/Open-source-and-on-device-the-strategy-behind-Nvidias-new-AI-models), TechTarget — open-model strategy context
+- [NVIDIA Launches Open Nemotron 3.5 Super VL and Edge Bolt Models](https://arabianreseller.com/2026/10/16/nvidia-launches-open-nemotron-3-5-super-vl-and-edge-bolt-models-to-drive-enterprise-agentic-ai-deployments/), Arabian Reseller — Scale AI and Ramp early-adopter reports
+- [NVIDIA Releases Open Nemotron 3.5 Super VL, Announces Two Bolt Edge Models for Agents](https://goldenera.si/news/nvidia-nemotron-3-5-super-vl-bolt-edge-models/), Golden Era — Bolt 74B llama.cpp/Ollama/LM Studio support
+- [Precision formats (NVFP4 notes)](https://github.com/yu-amd/nemotron-on-amd/blob/HEAD/docs/precision-formats.md), nemotron-on-amd community notes — NVFP4 as NVIDIA-specific format, not GGUF-readable
