@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-16 | meta-muse-spark-open-816b-mac-studio-memory-math | Meta's Muse Spark Open: 816B open weights that run on two Mac Studios |
 | 2026-10-15 | step-5-weights-released-license-and-memory-math | Step 5 Preview weights are out — what the license allows and the hardware you need |
 | 2026-10-15 | ling-3-1-flash-mit-weights-local | Ant's Ling-3.1-flash: a 560B open model under an MIT license — the license matters more than the size |
 | 2026-10-14 | fish-audio-drama-3-open-weight-voice | Fish Audio Drama 3: an open-weight voice model you can direct like an actor |
@@ -124,3 +125,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Step 5 vs Ling-3.1-flash: the 600B twins, compared | Two 600B-class open agent models landed within a day of each other — MIT vs StepFun Model License 1.0, BF16 vs FP8/NVFP4 paths, which is the more runnable giant | high |
 | Step 5 verified community quants watch | First endorsed GGUF/FP8 builds and measured quality vs the unverified ~275 GB community conversion | high |
 | Step 5 NVFP4 8,000 tok/s claim check | Independent measurements of NVIDIA's GB300 serving claim once third-party numbers land | medium |
+
+| NVIDIA Nemotron 3.5 Super VL 120B-A12B: open multimodal agent model | Released Oct 15: memory math on 120B MoE, what agentic PDF/chart/table workflows mean for running it yourself | high |
+| Liquid AI LFM2.5-24B-A2B: 24B MoE with only 2B active | The efficiency-vs-size story: 2B-active MoE on a laptop, tool-use vs coding trade-offs against Qwen3.6-35B-A3B | medium |
+| Step 5 vs Muse Spark Open: the 600B vs 816B open giants | Two giant open agent models a day apart — licenses, formats (BF16/FP8/NVFP4), and honest memory math for each | high |
