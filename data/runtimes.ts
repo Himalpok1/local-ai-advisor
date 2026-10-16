@@ -63,9 +63,9 @@ const ALL: RuntimeInput[] = [
     source: {
       url: "https://huggingface.co/blog/ggml-org/decision-models-in-llamacpp",
       title: "ggml-org — New in llama.cpp: Decision Models (2026-10-02, /v1/systemone)",
-      lastVerified: "2026-10-09",
+      lastVerified: "2026-10-16",
       confidence: "high",
-      note: "Decision-models serving confirmed; Anthropic Messages API in llama.cpp (2026-01-19) verified earlier.",
+      note: "Decision-models serving confirmed; Anthropic Messages API in llama.cpp (2026-01-19) verified earlier. v0.7.0 released 2026-10-15: LiLiCorr speculative decoding, MTP for GLM5-Next, GPU cache for MoE experts (up to ~2.2x decode speedup).",
     },
   },
   {
