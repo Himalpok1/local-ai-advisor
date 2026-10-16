@@ -1,0 +1,68 @@
+---
+title: "Meta's Muse Spark Open: 816B open weights that run on two Mac Studios"
+date: "2026-10-16"
+excerpt: "Meta released the weights of its 816B coding agent model. Here is the memory math on each format, what hardware it actually runs on, and what changes for you."
+tags: ["ai-news", "new-models", "local-llm", "hardware"]
+author: "Ray, Your Local AI Advisor"
+---
+
+Yesterday Meta did something it has never done at this scale: it released the full weights of Muse Spark Open, an 816-billion-parameter model built for coding and agent work. And it did it together with Apple, so the model runs on Macs — two Mac Studios, to be exact.
+
+![Illustration of two desktop computers connected by a glowing cable with a neural-network brain above them](/blog-images/meta-muse-spark-open-816b-mac-studio-memory-math-hero.webp)
+
+## What Meta released
+
+Muse Spark Open is a mixture-of-experts (MoE) model with 816 billion total parameters, of which only 42 billion are active for any given token. It is natively multimodal — it reads text, images, video, and audio, and writes text — and it holds a 1-million-token context window, enough for an entire software project with its dependencies. Meta built it for long-horizon agent work: fixing real bugs, shipping features, and multi-step reasoning. Meta calls it "the most capable US open-weight model to date."
+
+The weights are downloadable from Hugging Face in two official formats: full-precision BF16 (about 1.65 TB) and a compressed NVFP4 build (about 537 GB). Community makers like AMD, Intel, and Unsloth are already producing smaller quants, reportedly down to roughly 2-bit files around 300 GB.
+
+## The memory math
+
+The rule is simple: parameters × bytes per parameter = memory you need. This is where the MoE design matters — you have to load all 816B parameters into memory, even though each token only wakes up 42B of them. Sparse activation saves compute, not memory.
+
+![Bar chart comparing Muse Spark Open weight formats: BF16 at 1,650 GB, NVFP4 at 537 GB, and 2-bit GGUF at 300 GB, with dashed lines for one Mac Studio at 512 GB and two at roughly 1 TB](/blog-images/meta-muse-spark-open-816b-mac-studio-memory-math-fig1.webp)
+
+- **BF16, 1.65 TB:** 816B × 2 bytes. This is the full-precision release. You need a small cluster, not a desktop.
+- **NVFP4, 537 GB:** 4-bit compressed. The 537 GB number is above the raw 408 GB theory because embeddings, the router, and Meta's 1.8B-parameter perception encoder ride along.
+- **2-bit GGUF, ~300 GB:** community quants. Meta's developer guide reportedly says these run on a 256 GB machine with llama.cpp.
+
+Notice the NVFP4 line sits just above the 512 GB dashed line: one 512 GB Mac Studio is not quite enough on its own, which is why Meta's official Mac setup uses two.
+
+## Why two Mac Studios?
+
+Meta worked with Apple on the latest MLX, Apple's open-source framework for Apple silicon. Each Mac Studio with an M5 Ultra chip can give its GPU access to up to 512 GB of unified memory, with 1.2 TB/s of bandwidth. Meta's line: two machines "behave like one supercomputer with a terabyte of unified memory."
+
+That bandwidth number is the part people miss. With MoE models, each token only reads a small slice of the weights, so you do not need a gaming GPU's raw speed — you need fast access to a huge pile of memory. Unified memory is exactly that. It is the same reason a Mac Studio has quietly become the home supercomputer of the local-AI world.
+
+Beyond Macs, Meta lists support for SGLang, vLLM, TensorRT-LLM, Hugging Face Transformers, MLX, and llama.cpp, on AMD, Apple, Intel, and NVIDIA hardware. Meta also shipped custom auto-tunable Helion GPU kernels in SGLang, claiming up to 3.95x kernel-level speedups on NVIDIA and AMD GPUs.
+
+## What this changes for you
+
+Be honest about where you stand:
+
+- **If you run local models on a normal PC or laptop:** almost nothing changes tomorrow. You still cannot fit 816B of weights, and a quantized MoE that loses quality is not the win it looks like.
+- **If you own a high-memory Mac (or are shopping for one):** the direction of travel is now official. A Meta-scale open model ships with first-party Mac support on day one, and Intel also announced day-zero support. The unified-memory lane for local AI is no longer a hack — it is a launch target.
+- **If you use AI through an API:** this is where you feel it first. Muse Spark Open went live on seven hosted inference platforms on day one — Baseten, Fireworks AI, Groq, Modal, Nebius, OpenRouter, and Together AI — plus weights on Hugging Face, SageMaker, Google Cloud, and Microsoft Foundry. Eleven distribution partners lined up before the announcement is unusually coordinated, and it usually means cheaper, faster API pricing for an open model within weeks.
+
+The bigger pattern: open-weight launches are now arriving with day-one infrastructure. The gap between "weights dropped" and "you can actually use it" is shrinking to zero.
+
+## The honest limits
+
+Meta's own materials keep Spark Open in second place on some fronts. Its published Artificial Analysis Intelligence Index score is 39 — below MiMo-V2.6-Pro's 46 — and Meta has acknowledged that Chinese open-weight models still lead on some software development tasks. On Terminal-Bench 2.1, one comparison puts it at 76.4, behind Kimi K3, GLM 5.3, and Qwen3.8. And remember: Meta's strongest model, Muse Wonder, launched three days earlier and stays closed. Open weights are a gift, not the crown jewels.
+
+Also note the 1M-token context has a cost: the KV cache for long sessions eats memory on top of the weights, so the numbers in the chart above are the floor, not the ceiling.
+
+## Bottom line
+
+Muse Spark Open is not a model you will run this weekend. But it is the clearest signal yet that the local-AI frontier is moving up the memory ladder — and that Apple silicon's unified memory is now a first-class target for the biggest open releases. If you have been wondering whether a high-memory Mac is a serious AI machine or just an expensive laptop, Meta and Apple just answered.
+
+## Sources
+
+- [Meta's announcement, quoted via 9to5Mac (October 15, 2026)](https://9to5mac.com/2026/10/15/meta-launches-new-muse-spark-open-model-optimized-to-run-on-mac-studio/)
+- [Reuters: Meta releases open-weight Muse Spark model for coding, agentic tasks (October 15, 2026)](https://www.reuters.com/business/meta-releases-open-weight-muse-spark-model-coding-agentic-tasks-2026-10-15/)
+- [TechCrunch: Meta launches an open-weight AI model that runs on Macs (October 15, 2026)](https://techcrunch.com/2026/10/15/meta-launches-an-open-weight-model-that-runs-on-macs/)
+- [VentureBeat: Meta unveils Muse Spark Open, the new top U.S. open weights model (October 15, 2026)](https://venturebeat.com/technology/meta-unveils-muse-spark-open-the-new-top-u-s-open-weights-model-and-it-runs-on-two-paired-mac-desktops)
+- [MarkTechPost: model architecture and benchmark details (October 15, 2026)](https://www.marktechpost.com/2026/10/15/meta-muse-spark-open-816b-open-weight-model/)
+- [NVIDIA technical blog coverage: BF16 ~1.65 TB, NVFP4 ~537 GB weight sizes (October 15, 2026)](https://cryptospiel.com/metas-muse-spark-open-lands-on-nvidia-gb300-nvl72-for-agentic-coding/)
+- [madrobot.blog: NVFP4 ~530 GB, community 2-bit formats and 256 GB llama.cpp claim (October 15, 2026)](https://madrobot.blog/2026/10/15/meta-muse-spark-open-weights-apple-mac-studio-m5-ultra/)
+- [Gadgets360: Mac Studio partnership, MLX, supported inference engines (October 15, 2026)](https://www.gadgets360.com/ai/news/meta-muse-spark-open-ai-model-launch-apple-mac-studio-partnership-12194575)
