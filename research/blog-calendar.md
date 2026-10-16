@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-16 | magnitude-self-tuning-inference-engine | Magnitude: a self-tuning local inference engine that compiles kernels for your exact chip |
 | 2026-10-16 | meta-muse-spark-open-816b-mac-studio-memory-math | Meta's Muse Spark Open: 816B open weights that run on two Mac Studios |
 | 2026-10-15 | step-5-weights-released-license-and-memory-math | Step 5 Preview weights are out — what the license allows and the hardware you need |
 | 2026-10-15 | ling-3-1-flash-mit-weights-local | Ant's Ling-3.1-flash: a 560B open model under an MIT license — the license matters more than the size |
