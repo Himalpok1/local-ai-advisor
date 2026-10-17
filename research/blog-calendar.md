@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-17 | deepseek-v4-1-flash-1017-agent-update | DeepSeek V4.1-Flash-1017: faster open-weight agent updates, and what it costs to run one |
 | 2026-10-17 | flux-3-image-klein-8gb-gpu-local | FLUX 3 Image Klein: a 5.6B open-weight image model for your 8GB GPU |
 | 2026-10-16 | nemotron-super-vl-120b-agent-model | NVIDIA's Nemotron 3.5 Super VL: a 120B agent model that fits on one DGX Spark |
 | 2026-10-16 | magnitude-self-tuning-inference-engine | Magnitude: a self-tuning local inference engine that compiles kernels for your exact chip |
@@ -70,7 +71,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Ollama 0.40 pre-release: MLX-by-default on Apple Silicon | What changes for Mac users, and whether to wait on 0.35.1 stable or try the pre-release | medium |
 | Full arXiv archive as a 16TB Hugging Face dataset | Stream 3.1M papers without downloading: the corpus half of a local research agent, pairing with AstaBrief-style synthesis | medium |
 | New 4-bit Kolibri GGUF builds: what memory do they really need? | Follow-up if community quants appear: real memory math vs the FP8 card numbers | high |
-| DeepSeek V4.1 Flash: can it run locally? | Check architecture support and GGUF availability for the Flash release; honest memory math | medium |
 | MoE distills: what the next runnable generation looks like | Track distill releases of Kolibri-class MoE into sub-20B runnable models | medium |
 | Qwen3.8 27B: the new default local agent model? | NVIDIA's clustering benchmark + TensorFold day-1 model; what it costs to run (VRAM math, quants) | medium |
 | What Strix Halo boxes mean for CUDA-free local AI | 128GB AMD mini-PCs at $2,959-3,649 vs DGX Spark; honest limits (no CUDA, slower prefill) with /compare/hardware | medium |
@@ -87,7 +87,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Surface Laptop Ultra 128GB vs DGX Spark 64GB: which box for which workload | 128GB RTX Spark laptop vs 64GB DGX Spark dev box vs Apple Max: price-per-GB memory math and who each suits | medium |
 | First independent RTX Spark LLM benchmarks | Real tokens-per-second on Ollama/llama.cpp from third-party tests, checked against NVIDIA petaflop claims; revisit when tests land after Oct 16 | high |
 | MXC + HydraFusion routing: Windows new agent stack in plain terms | Background agents in Execution Containers and cloud-local routing: what changes for local model use, links to /stack and /learn | medium |
-| Microsoft's 284B-on-laptop claim: does the memory math hold? | Check the Davuluri keynote claim (DeepSeek-V4.1-Flash at 1.6-bit on 128GB RTX Spark) against real quant math; honest pre-ship caveats | medium |
 | Ivo Sage: an open-source contract model from DeepSeek V4 Flash | Legal vertical post-training that went 70% to 91% on contract benchmarks; what size it is and whether it could run locally | medium |
 | llama.cpp 0.6.0's built-in model downloader, tested | Hands-on with the HF Hub download pipeline and the memory-fit estimate; what works today vs the still-open Web UI pull request | medium |
 | OCR bake-off on ugly scans: Interfaze-1-Lite vs Tesseract vs MinerU | Hands-on accuracy and confidence-calibration test on real skewed scans and receipts | medium |
@@ -134,3 +133,6 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Qwen-Image-2.1-Turbo vs FLUX 3 Klein local bake-off | Hands-on comparison of the two 8GB-class open image models on a consumer card: speed, editing quality, typography | medium |
 | FLUX 3 family watch: more open releases coming | BFL says more FLUX 3 open releases follow Klein (Action and Klein so far) — what the family roadmap means for local image/video | medium |
 | Liquid AI d1-ultra: what a multimodal decision model means for local agents | Oct 15 release returns probabilities for yes/no, choice and score questions in one forward pass; API-only for now — the local angle is when a small open decision model does the same job | low |
+| DeepSeek Search/Fetch API vs Brave/Exa for local agents | $0.75/1k requests bundled with a penny-class model: feature-parity check for agent builders, free tier until Nov 1 | medium |
+| Flash-1017 independent benchmark watch | Revisit when third-party reproductions of DeepSWE 77.0 and Terminal-Bench 42.3 land — check DeepSeek's own table | high |
+| V4.1-Flash-1017 community GGUF builds watch | First quants of the exact 1017 checkpoint: real memory math and engine support vs the 0731-family builds | high |
