@@ -4,6 +4,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 
 ## Published
 
+| 2026-10-17 | flux-3-image-klein-8gb-gpu-local | FLUX 3 Image Klein: a 5.6B open-weight image model for your 8GB GPU |
 | 2026-10-16 | nemotron-super-vl-120b-agent-model | NVIDIA's Nemotron 3.5 Super VL: a 120B agent model that fits on one DGX Spark |
 | 2026-10-16 | magnitude-self-tuning-inference-engine | Magnitude: a self-tuning local inference engine that compiles kernels for your exact chip |
 | 2026-10-16 | meta-muse-spark-open-816b-mac-studio-memory-math | Meta's Muse Spark Open: 816B open weights that run on two Mac Studios |
@@ -129,6 +130,7 @@ Every post and idea lives here so topics never repeat. Before writing, check bot
 | Step 5 NVFP4 8,000 tok/s claim check | Independent measurements of NVIDIA's GB300 serving claim once third-party numbers land | medium |
 
 | Liquid AI LFM2.5-24B-A2B: 24B MoE with only 2B active | The efficiency-vs-size story: 2B-active MoE on a laptop, tool-use vs coding trade-offs against Qwen3.6-35B-A3B | medium |
-| FLUX 3 Image Klein: 5.6B open-weight image editing on an 8GB card | Black Forest Labs' Oct 15 release: text-to-image, editing, up to ten references, native 4K; INT8 build runs on 8GB GeForce cards — local VRAM math and license check when weights are verified | medium |
 | Step 5 vs Muse Spark Open: the 600B vs 816B open giants | Two giant open agent models a day apart — licenses, formats (BF16/FP8/NVFP4), and honest memory math for each | high |
+| Qwen-Image-2.1-Turbo vs FLUX 3 Klein local bake-off | Hands-on comparison of the two 8GB-class open image models on a consumer card: speed, editing quality, typography | medium |
+| FLUX 3 family watch: more open releases coming | BFL says more FLUX 3 open releases follow Klein (Action and Klein so far) — what the family roadmap means for local image/video | medium |
 | Liquid AI d1-ultra: what a multimodal decision model means for local agents | Oct 15 release returns probabilities for yes/no, choice and score questions in one forward pass; API-only for now — the local angle is when a small open decision model does the same job | low |
