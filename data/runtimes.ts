@@ -10,7 +10,7 @@ const ALL: RuntimeInput[] = [
   {
     id: "ollama",
     name: "Ollama",
-    description: "The easiest way to run local models. One-line install, model library, background server with Ollama, OpenAI- and Anthropic-compatible (v0.14+) APIs. Since v0.35 (Sep 2026) it also serves decision models through /v1/systemone (returns choices/probabilities/scores instead of text); since v0.40.4 (Oct 2026) decision models also work from the CLI (`ollama run --ask`) and on the MLX runner on Apple Silicon. Since v0.40 (Oct 2026), supported model architectures run on the MLX engine by default on Apple Silicon.",
+    description: "The easiest way to run local models. One-line install, model library, background server with Ollama, OpenAI- and Anthropic-compatible (v0.14+) APIs. Since v0.35 (Sep 2026) it also serves decision models through /v1/systemone (returns choices/probabilities/scores instead of text); since v0.40.4 (Oct 2026) decision models also work from the CLI (`ollama run --ask`) and on the MLX runner on Apple Silicon. Since v0.40 (Oct 2026), supported model architectures run on the MLX engine by default on Apple Silicon. Since v0.40.6 (Oct 2026) it also reads q2_0 GGUF files.",
     kind: "server",
     engine: "llama.cpp",
     backends: [
@@ -30,11 +30,11 @@ const ALL: RuntimeInput[] = [
     apiServer: true,
     docsUrl: "https://docs.ollama.com",
     source: {
-      url: "https://github.com/ollama/ollama/releases/tag/v0.40.4",
-      title: "Ollama release notes — decision models in the CLI (v0.40.4)",
-      lastVerified: "2026-10-14",
+      url: "https://github.com/ollama/ollama/releases/tag/v0.40.6",
+      title: "Ollama release notes — q2_0 GGUF support (v0.40.6)",
+      lastVerified: "2026-10-17",
       confidence: "high",
-      note: "MLX-by-default confirmed; re-confirmed 2026-10-14 against the official releases page (v0.40.0 shipped MLX default; latest tag v0.40.4, Oct 12, adds decision models to the CLI via --ask, decision-model support in the MLX runner, and multimodal embeddings through llama-server). Decision-models API and Anthropic /v1/messages compatibility verified 2026-10-09.",
+      note: "MLX-by-default confirmed; v0.40.6 (Oct 16) adds q2_0 GGUF tensor/file types and Clef cloud decision models. v0.40.4 added decision models to the CLI via --ask and decision-model support in the MLX runner. Decision-models API and Anthropic /v1/messages compatibility verified 2026-10-09.",
     },
   },
   {
