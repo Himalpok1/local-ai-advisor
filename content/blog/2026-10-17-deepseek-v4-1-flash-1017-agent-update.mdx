@@ -1,7 +1,7 @@
 ---
 title: "DeepSeek V4.1-Flash-1017: faster open-weight agent updates, and what it costs to run one"
 date: "2026-10-17"
-excerpt: "DeepSeek's updated Flash model scores 77 on DeepSWE with MIT-licensed weights — and community builds put it within reach of a 128GB machine."
+excerpt: "DeepSeek's updated Flash model scores 77 on DeepSWE with MIT-licensed weights — but it's a server-class 748B model, not a home-PC one."
 tags: ["local-llm", "new-models", "ai-news", "beginners"]
 author: "Ray, Your Local AI Advisor"
 ---
@@ -31,30 +31,25 @@ But per-token pricing is only half the story for agents. What matters is **cost 
 
 ## Can you run it on your own machine? The honest math
 
-DeepSeek did not publish a parameter count for the 1017 checkpoint, but the V4.1 Flash family is the **284-billion-total / 13-billion-active** mixture-of-experts class — only about 3.5% of the parameters fire for any given token, which is what keeps it fast. All 284 billion still have to live somewhere, though, and here is where the tiers break down:
+Here is the part the launch coverage often skips: this is a **748-billion-parameter model**, not a 284-billion one. The smaller figures floating around belong to the older V4 Flash from September. Per DeepSeek's own model card, V4.1 Flash has a **552-billion-parameter backbone** plus **196 billion parameters of Engram conditional memory** (accessed sparsely), with only **8 billion active per token during prefill and 16 billion during decode**. The published checkpoint is **48 safetensors shards totaling about 510 GB**.
 
-- **Native FP8 weights**: roughly **291 GB**. That is multi-GPU or server territory.
-- **Community GGUF builds** (for the V4.1 Flash family): Unsloth's `UD-Q4_K_XL` is **155 GB** and the near-lossless `UD-Q8_K_XL` is **162 GB** — big-RAM workstations or multi-GPU servers.
-- **The measured floor**: a community IQ3 build is a **97 GB** file, and one tester measured a 104 GiB peak running it on a CPU-only 128 GB box — so **128 GB of RAM is the realistic minimum** for running this tier locally today, and it is CPU-slow (about 5.6 tokens/sec in the test).
-- **The wildcard**: at Microsoft's October 7 keynote, Pavan Davuluri showed DeepSeek V4 Flash **quantized to 1.6 bits running in 60 GB of memory** inside Windows ML's new llama.cpp integration. The math checks out on paper — 284 billion × 1.6 bits ≈ 56.8 GB for weights, before overhead — but it is a keynote demo of an unreleased build, and 1.6-bit quantization quality has not been independently tested.
+That puts it firmly in server territory. No single consumer GPU holds 510 GB, and no 128 GB box does either. The realistic local floor is an **8-GPU node** (for example, eight 80 GB H100s give you 640 GB of GPU memory) or a **512 GB-class unified-memory Mac**. Community quants will shrink it over time — a placeholder GGUF repo already exists — but no published community builds of the V4.1 family exist yet, so any smaller number you see is an estimate, not a measurement.
 
-The practical read: **on most PCs, this model stays an API model for now.** If you have 128 GB of RAM or a multi-GPU box, community quants get you there. If Microsoft's 60 GB claim ships in Windows ML, this tier lands on high-memory consumer machines — a DGX Spark-class 128 GB box could hold it comfortably. Watch that space.
+The practical read: **for most people, this model stays an API model.** That is not a loss — at roughly a cent and a half per completed agent task, the API is priced for exactly this. But if you are sizing hardware for open weights, use the V4.1 numbers (748B total, ~510 GB checkpoint), not the older V4 Flash figures.
 
-![Bar chart of DeepSeek V4.1 Flash weight sizes across builds: 291 GB native FP8, 162 GB community Q8, 155 GB community Q4, 97 GB IQ3 file, and the 56.8 GB theoretical 1.6-bit build](/blog-images/deepseek-v4-1-flash-1017-agent-update-fig2.webp)
+![Bar chart comparing DeepSeek V4 Flash (284B backbone, 291 GB checkpoint, 13B active) with the new V4.1 Flash (552B backbone, 510 GB checkpoint, 16B active)](/blog-images/deepseek-v4-1-flash-1017-agent-update-fig2.webp)
 
 ## Three practical takeaways
 
 1. **If you run coding agents**, Flash-1017 at $0.0157 per completed task is worth testing against your current default — especially for batch work where the cloud flagship is overkill. Keep it honest: verify on your own tasks before switching.
-2. **If you run models locally**, wait for community GGUF builds of the 1017 checkpoint specifically; the 0731-family builds above are your reference for what will fit where.
+2. **If you run models locally**, this one is not a target for your rig — size hardware against the V4.1 figures (748B total, ~510 GB checkpoint), not the smaller V4 Flash numbers. Watch for community GGUF builds of the 1017 checkpoint; nothing published yet.
 3. **If you build agents with web search**, compare DeepSeek's $0.75/1k Search API against Brave and Exa once feature-parity is clear — bundled with a one-cent model call, the total cost per agent task is getting remarkably small.
 
 ## Sources
 
-- [DeepSeek-V4.1-Flash-1017 release coverage](https://smartchunks.com/deepseek-v4-1-flash-1017-terminal-bench-deepswe-mit-license/) — model card details: benchmark table, pricing, recommended sampling `temperature 1.0, top_p 1.0`, no Jinja template (use bundled `encoding.py` or `deepseek-recipe`).
+- [DeepSeek-V4.1-Flash-1017 model card, Hugging Face](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017) — "minor update to DeepSeek-V4.1-Flash"; 11-benchmark table (DeepSWE 77.0, Terminal-Bench 4.0 42.3, HLE 42.6); MIT license; 1M context window; 48 safetensors shards, ~510 GB total checkpoint size (from the repo file listing).
+- [DeepSeek-V4.1-Flash model card, Hugging Face](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash) — 552B backbone parameters, 196B Engram conditional memory, 8B active per token during prefill / 16B during decode, 890 bytes/token KV cache; base-model table confirms V4 Flash (Sept) was 284B backbone / 13B active — those smaller figures do not apply to V4.1.
 - [Independent 56-trial cost pilot and Search/Fetch API pricing](https://aiweekly.co/alerts/deepseek-opens-v41-flash-1017-weights-and-075-search-api) — $0.0157 per completed task; $0.75 per 1,000 Search/Fetch requests.
 - [Benchmark table vs Opus 5 and GPT-5.6 Sol, vLLM day-0 serving](https://aicoder.com/news) — pricing unchanged; 830K tok/s per GPU serving figure.
-- [FP8/GGUF weight sizes for the V4.1 Flash family](https://dev.to/euk_ela_a3e7ed01aa3f7314e/deepseek-v4-flash-went-official-checking-the-flash-beats-pro-claim-against-the-model-card-and-235h) — 155/162 GB Unsloth builds, DSpark speculation module, mixed FP4+FP8 weights.
-- [Measured IQ3 build on a CPU-only 128 GB box](https://computingforgeeks.com/run-deepseek-v4-flash-locally/) — 97 GB file, 104.4 GiB measured peak.
-- [Microsoft's 1.6-bit / 60 GB Windows ML keynote claim](https://aiunderstanding.org/news/microsoft-integrates-llama-cpp-and-deepseek-v4-flash-into-windows-ml) — 284B params, 13B active (per NVIDIA IFA 2026), Windows ML llama.cpp integration.
 - [DeepSWE v1.1 77.0 vs Opus 5 74.0 and GPT-5.6 Sol 73.0](https://dealroom.co/news/163453-deepseek-moves-up-the-stack-v4-1-flash-update-ships-alongside-its-own-se/) — "Pareto improvement" framing, Search API competition.
 - [Score-verification caveats](https://goldenera.si/news/deepseek-v4-1-flash-1017-release/) and [cost/KV-cache memory workup](https://www.techi.com/deepseek-v4-1-flash-1017-update-benchmarks-price/) — DeepSeek's own scores unverified; 42.6 HLE vs 56.3; Terminal-Bench ran on the Claude Code harness; 890 bytes/token KV cache.
