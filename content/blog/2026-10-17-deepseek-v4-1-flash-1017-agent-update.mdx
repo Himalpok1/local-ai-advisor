@@ -1,0 +1,60 @@
+---
+title: "DeepSeek V4.1-Flash-1017: faster open-weight agent updates, and what it costs to run one"
+date: "2026-10-17"
+excerpt: "DeepSeek's updated Flash model scores 77 on DeepSWE with MIT-licensed weights — and community builds put it within reach of a 128GB machine."
+tags: ["local-llm", "new-models", "ai-news", "beginners"]
+author: "Ray, Your Local AI Advisor"
+---
+
+DeepSeek released **V4.1-Flash-1017** today, October 17 — a "minor update" to the V4.1 Flash model it launched in September, with open weights under the **MIT license** on Hugging Face. The headline: DeepSeek's own benchmark table shows higher scores on all 11 tests it reports, while the model finishes tasks faster and writes shorter answers. For anyone building agents on a budget, the most interesting part is the cost: an independent pilot measured completed agentic tasks at about **a cent and a half each** — roughly a quarter of what the cheapest Claude and GPT options cost on the same workload.
+
+![Flat illustration of a blue lightning bolt and a small robot assembling glowing code blocks](/blog-images/deepseek-v4-1-flash-1017-agent-update-hero.webp)
+
+## What the numbers actually say
+
+DeepSeek's model card reports the new checkpoint's scores against the September Flash, plus Claude Opus 5 and GPT-5.6 Sol on the same harnesses. Two benchmarks matter most for agent work:
+
+- **DeepSWE v1.1** (does the model actually fix software bugs?): **77.0**, up from 74.2 on the old Flash — and ahead of Opus 5's 74.0 and GPT-5.6 Sol's 73.0 in DeepSeek's table.
+- **Terminal-Bench 4.0** (can it work in a real terminal?): **42.3**, up from 31.2 — an 11.1-point jump. Opus 5 still leads here at 51.8.
+
+On raw reasoning, Opus 5 keeps its edge: Humanity's Last Exam comes in at 42.6 for Flash-1017 against 56.3 for Opus. And one caution that belongs in the first paragraph, not the footnotes: **every score above is DeepSeek's own**, run on harnesses it chose. None has been independently reproduced yet. Treat the rankings as directional until third-party runs land.
+
+The release pairs the update with two developer extras: a public **Search API and Fetch API** ($0.75 per 1,000 successful requests each — a fraction of Brave's $5 and Exa's $4 per 1k, though the features differ), and `deepseek-recipe`, a small Rust library for converting prompts and parsing outputs.
+
+![Grouped bar chart comparing DeepSeek V4.1-Flash-1017's vendor-reported benchmark scores against the previous Flash, Claude Opus 5, and GPT-5.6 Sol](/blog-images/deepseek-v4-1-flash-1017-agent-update-fig1.webp)
+
+## The cost angle: a cent and a half per completed task
+
+The model is already live on DeepSeek's web app and API under the existing `deepseek-flash` name, and API prices did not change: **$0.30 per million input tokens and $1.20 per million output tokens at peak**, halved off-peak (so $0.15/$0.60 — matching the off-peak figures OpenRouter lists), with cached input reads at $0.003 per million. OpenRouter serves the new checkpoint from about **$0.10/$0.50 per million tokens**.
+
+But per-token pricing is only half the story for agents. What matters is **cost per completed task** — and there the shorter outputs matter as much as the price tag. An independent 56-trial pilot measured Flash-1017 completing tasks at **$0.0157** versus $0.0577 for GPT-6.1 Sol and $0.0653 for Claude Sonnet 5.5. That is not a like-for-like capability match, but it tells you the shape of the market: the cheapest open tier now completes agent work at roughly a quarter of the price of the cheapest cloud alternatives.
+
+## Can you run it on your own machine? The honest math
+
+DeepSeek did not publish a parameter count for the 1017 checkpoint, but the V4.1 Flash family is the **284-billion-total / 13-billion-active** mixture-of-experts class — only about 3.5% of the parameters fire for any given token, which is what keeps it fast. All 284 billion still have to live somewhere, though, and here is where the tiers break down:
+
+- **Native FP8 weights**: roughly **291 GB**. That is multi-GPU or server territory.
+- **Community GGUF builds** (for the V4.1 Flash family): Unsloth's `UD-Q4_K_XL` is **155 GB** and the near-lossless `UD-Q8_K_XL` is **162 GB** — big-RAM workstations or multi-GPU servers.
+- **The measured floor**: a community IQ3 build is a **97 GB** file, and one tester measured a 104 GiB peak running it on a CPU-only 128 GB box — so **128 GB of RAM is the realistic minimum** for running this tier locally today, and it is CPU-slow (about 5.6 tokens/sec in the test).
+- **The wildcard**: at Microsoft's October 7 keynote, Pavan Davuluri showed DeepSeek V4 Flash **quantized to 1.6 bits running in 60 GB of memory** inside Windows ML's new llama.cpp integration. The math checks out on paper — 284 billion × 1.6 bits ≈ 56.8 GB for weights, before overhead — but it is a keynote demo of an unreleased build, and 1.6-bit quantization quality has not been independently tested.
+
+The practical read: **on most PCs, this model stays an API model for now.** If you have 128 GB of RAM or a multi-GPU box, community quants get you there. If Microsoft's 60 GB claim ships in Windows ML, this tier lands on high-memory consumer machines — a DGX Spark-class 128 GB box could hold it comfortably. Watch that space.
+
+![Bar chart of DeepSeek V4.1 Flash weight sizes across builds: 291 GB native FP8, 162 GB community Q8, 155 GB community Q4, 97 GB IQ3 file, and the 56.8 GB theoretical 1.6-bit build](/blog-images/deepseek-v4-1-flash-1017-agent-update-fig2.webp)
+
+## Three practical takeaways
+
+1. **If you run coding agents**, Flash-1017 at $0.0157 per completed task is worth testing against your current default — especially for batch work where the cloud flagship is overkill. Keep it honest: verify on your own tasks before switching.
+2. **If you run models locally**, wait for community GGUF builds of the 1017 checkpoint specifically; the 0731-family builds above are your reference for what will fit where.
+3. **If you build agents with web search**, compare DeepSeek's $0.75/1k Search API against Brave and Exa once feature-parity is clear — bundled with a one-cent model call, the total cost per agent task is getting remarkably small.
+
+## Sources
+
+- [DeepSeek-V4.1-Flash-1017 release coverage](https://smartchunks.com/deepseek-v4-1-flash-1017-terminal-bench-deepswe-mit-license/) — model card details: benchmark table, pricing, recommended sampling `temperature 1.0, top_p 1.0`, no Jinja template (use bundled `encoding.py` or `deepseek-recipe`).
+- [Independent 56-trial cost pilot and Search/Fetch API pricing](https://aiweekly.co/alerts/deepseek-opens-v41-flash-1017-weights-and-075-search-api) — $0.0157 per completed task; $0.75 per 1,000 Search/Fetch requests.
+- [Benchmark table vs Opus 5 and GPT-5.6 Sol, vLLM day-0 serving](https://aicoder.com/news) — pricing unchanged; 830K tok/s per GPU serving figure.
+- [FP8/GGUF weight sizes for the V4.1 Flash family](https://dev.to/euk_ela_a3e7ed01aa3f7314e/deepseek-v4-flash-went-official-checking-the-flash-beats-pro-claim-against-the-model-card-and-235h) — 155/162 GB Unsloth builds, DSpark speculation module, mixed FP4+FP8 weights.
+- [Measured IQ3 build on a CPU-only 128 GB box](https://computingforgeeks.com/run-deepseek-v4-flash-locally/) — 97 GB file, 104.4 GiB measured peak.
+- [Microsoft's 1.6-bit / 60 GB Windows ML keynote claim](https://aiunderstanding.org/news/microsoft-integrates-llama-cpp-and-deepseek-v4-flash-into-windows-ml) — 284B params, 13B active (per NVIDIA IFA 2026), Windows ML llama.cpp integration.
+- [DeepSWE v1.1 77.0 vs Opus 5 74.0 and GPT-5.6 Sol 73.0](https://dealroom.co/news/163453-deepseek-moves-up-the-stack-v4-1-flash-update-ships-alongside-its-own-se/) — "Pareto improvement" framing, Search API competition.
+- [Score-verification caveats](https://goldenera.si/news/deepseek-v4-1-flash-1017-release/) and [cost/KV-cache memory workup](https://www.techi.com/deepseek-v4-1-flash-1017-update-benchmarks-price/) — DeepSeek's own scores unverified; 42.6 HLE vs 56.3; Terminal-Bench ran on the Claude Code harness; 890 bytes/token KV cache.
